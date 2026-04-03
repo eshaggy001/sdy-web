@@ -13,6 +13,7 @@ import { JoinPage } from './pages/JoinPage';
 import { ContactPage } from './pages/ContactPage';
 import { PollsPage } from './pages/PollsPage';
 import { AdminPollsPage } from './pages/AdminPollsPage';
+import { AdminSubmissionsPage } from './pages/AdminSubmissionsPage';
 import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
 
@@ -41,6 +42,7 @@ export default function App() {
                   <Route path="contact" element={<ContactPage />} />
                   <Route path="polls" element={<PollsPage />} />
                   <Route path="admin/polls" element={<AdminPollsPage />} />
+                  <Route path="admin/submissions" element={<AdminSubmissionsPage />} />
                 </Route>
               </Routes>
             </AnimatePresence>

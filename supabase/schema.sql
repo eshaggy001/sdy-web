@@ -443,10 +443,6 @@ create table if not exists contact_messages (
   created_at timestamptz not null default now()
 );
 
-alter table contact_messages enable row level security;
-drop policy if exists "public insert contact_messages" on contact_messages;
-create policy "public insert contact_messages" on contact_messages for insert with check (true);
-
 -- ---------------------------------------------------------------
 -- Member applications
 -- ---------------------------------------------------------------
@@ -463,5 +459,15 @@ create table if not exists member_applications (
 );
 
 alter table member_applications enable row level security;
-drop policy if exists "public insert member_applications" on member_applications;
-create policy "public insert member_applications" on member_applications for insert with check (true);
+drop policy if exists "public insert member_applications"  on member_applications;
+drop policy if exists "public update member_applications"  on member_applications;
+drop policy if exists "public delete member_applications"  on member_applications;
+create policy "public insert member_applications"  on member_applications for insert with check (true);
+create policy "public update member_applications"  on member_applications for update using (true) with check (true);
+create policy "public delete member_applications"  on member_applications for delete using (true);
+
+alter table contact_messages enable row level security;
+drop policy if exists "public insert contact_messages"  on contact_messages;
+drop policy if exists "public delete contact_messages"  on contact_messages;
+create policy "public insert contact_messages"  on contact_messages for insert with check (true);
+create policy "public delete contact_messages"  on contact_messages for delete using (true);

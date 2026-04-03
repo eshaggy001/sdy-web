@@ -10,7 +10,7 @@ export const Pillars = () => {
   const { data: pillars, loading } = usePillars();
 
   return (
-    <section id="pillars" className="py-28 bg-white">
+    <section id="pillars" className="py-28 bg-white dark:bg-gray-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
@@ -20,14 +20,14 @@ export const Pillars = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-sdy-red" />
               {t({ mn: 'Бид юуны төлөө зогсдог вэ', en: 'What We Stand For' })}
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-sdy-black tracking-tighter leading-[1.05]">
+            <h2 className="text-4xl md:text-5xl font-black text-sdy-black dark:text-white tracking-tighter leading-[1.05]">
               {t({
                 mn: 'Дөрвөн тулгуур баганаар дамжуулан гэрэлт ирээдүйг бүтээх нь.',
                 en: 'Building a Brighter Tomorrow Through Four Pillars.',
               })}
             </h2>
           </div>
-          <p className="text-gray-500 max-w-sm text-base leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 max-w-sm text-base leading-relaxed">
             {t({
               mn: 'Монголын залуучуудын цогц хөгжил, нийгмийн тогтвортой өсөлтийг хангах үндсэн чиглэлүүд.',
               en: 'Core areas ensuring holistic development of Mongolian youth and sustainable growth of our society.',
@@ -39,9 +39,9 @@ export const Pillars = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {loading ? Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="rounded-2xl aspect-[3/4] bg-gray-100 mb-5" />
-              <div className="h-3 bg-gray-100 rounded w-4/5 mb-2" />
-              <div className="h-3 bg-gray-100 rounded w-3/5" />
+              <div className="rounded-2xl aspect-[3/4] bg-gray-100 dark:bg-gray-800 mb-5" />
+              <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-4/5 mb-2" />
+              <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-3/5" />
             </div>
           )) : pillars.map((pillar, index) => (
             <motion.div
@@ -85,7 +85,7 @@ export const Pillars = () => {
                 </div>
 
                 {/* Description below image */}
-                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-700 transition-colors duration-200">
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-200">
                   {t(pillar.description)}
                 </p>
               </Link>

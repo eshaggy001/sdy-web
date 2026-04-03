@@ -112,12 +112,12 @@ export const JoinFlow = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="absolute bottom-8 left-16 bg-white rounded-2xl px-6 py-5 shadow-2xl z-20 overflow-hidden"
+                className="absolute bottom-8 left-16 bg-white dark:bg-gray-900 rounded-2xl px-6 py-5 shadow-2xl z-20 overflow-hidden"
               >
                 {/* Red left strip */}
                 <div className="absolute left-0 inset-y-0 w-1 bg-sdy-red" />
                 <div className="text-sdy-red font-black text-3xl leading-none mb-1">60K+</div>
-                <div className="text-sdy-black font-bold text-sm">
+                <div className="text-sdy-black dark:text-white font-bold text-sm">
                   {t({ mn: 'Идэвхтэй гишүүд', en: 'Active Members' })}
                 </div>
               </motion.div>

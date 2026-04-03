@@ -9,9 +9,9 @@ export const Hero = () => {
   const { t, l } = useI18n();
 
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden bg-white">
+    <section className="relative min-h-screen flex flex-col overflow-hidden bg-white dark:bg-gray-950">
       {/* Brand arrow watermark — triple chevron, gray, low opacity */}
-      <SdyArrow3 className="absolute right-[-8%] top-1/2 -translate-y-1/2 w-[72vw] max-w-[860px] text-gray-400 opacity-[0.09] z-0 pointer-events-none select-none" />
+      <SdyArrow3 className="absolute right-[-8%] top-1/2 -translate-y-1/2 w-[72vw] max-w-[860px] text-gray-400 dark:text-gray-600 opacity-[0.09] z-0 pointer-events-none select-none" />
 
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[calc(100vh-7rem)]">
@@ -33,7 +33,7 @@ export const Hero = () => {
 
             {/* Main headline — fluid size for all breakpoints */}
             <h1
-              className="font-black text-sdy-black tracking-tighter leading-[0.93] mb-8"
+              className="font-black text-sdy-black dark:text-white tracking-tighter leading-[0.93] mb-8"
               style={{ fontSize: 'clamp(52px, 7.5vw, 96px)' }}
             >
               <span className="block">
@@ -50,7 +50,7 @@ export const Hero = () => {
               </span>
             </h1>
 
-            <p className="text-lg text-gray-500 mb-10 leading-relaxed max-w-[480px] font-medium">
+            <p className="text-lg text-gray-500 dark:text-gray-400 mb-10 leading-relaxed max-w-[480px] font-medium">
               {t({
                 mn: 'Нийгмийн ардчиллын үнэт зүйлс, манлайллын сургалт, орон нутгийн нөлөөллөөр дамжуулан Монголын дараагийн үеийн удирдагчдыг чадваржуулах нь.',
                 en: 'Empowering the next generation of Mongolian leaders through social democratic values, leadership training, and community-driven impact.',
@@ -80,7 +80,7 @@ export const Hero = () => {
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="w-10 h-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden shadow-sm"
+                    className="w-10 h-10 rounded-full border-2 border-white bg-gray-200 dark:bg-gray-700 overflow-hidden shadow-sm"
                   >
                     <img
                       src={`https://i.pravatar.cc/80?u=sdy${i}`}
@@ -92,10 +92,10 @@ export const Hero = () => {
                 ))}
               </div>
               <div>
-                <p className="font-black text-sdy-black text-sm leading-tight">
+                <p className="font-black text-sdy-black dark:text-white text-sm leading-tight">
                   {t({ mn: '60,000+ Гишүүд', en: '60,000+ Members' })}
                 </p>
-                <p className="text-[12px] text-gray-500 font-semibold">
+                <p className="text-[12px] text-gray-500 dark:text-gray-400 font-semibold">
                   {t({ mn: '21 аймаг даяар', en: 'Across 21 Aimags' })}
                 </p>
               </div>
@@ -126,20 +126,20 @@ export const Hero = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute -bottom-7 left-8 bg-white rounded-2xl shadow-2xl z-20 border border-gray-100/80 overflow-hidden"
+              className="absolute -bottom-7 left-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl z-20 border border-gray-100/80 dark:border-gray-800 overflow-hidden"
             >
               <div className="flex items-stretch">
                 <div className="w-1 bg-sdy-red flex-shrink-0" />
                 <div className="px-5 py-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Users size={12} className="text-sdy-red" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.12em] text-gray-400">
+                    <span className="text-[10px] font-black uppercase tracking-[0.12em] text-gray-400 dark:text-gray-500">
                       {t({ mn: 'Орон нутгийн салбар', en: 'Regional Chapters' })}
                     </span>
                   </div>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-4xl font-black text-sdy-black leading-none">21</span>
-                    <span className="text-[12px] font-bold text-gray-400">
+                    <span className="text-4xl font-black text-sdy-black dark:text-white leading-none">21</span>
+                    <span className="text-[12px] font-bold text-gray-400 dark:text-gray-500">
                       {t({ mn: 'аймаг', en: 'aimags' })}
                     </span>
                   </div>
@@ -166,13 +166,13 @@ export const Hero = () => {
                   </div>
                   {/* Text */}
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.12em] text-gray-500 mb-1">
+                    <div className="text-[10px] font-black uppercase tracking-[0.12em] text-gray-500 dark:text-gray-400 mb-1">
                       {t({ mn: 'Олон улсын гишүүн', en: 'International Member' })}
                     </div>
                     <div className="text-base font-black leading-none tracking-tight">
                       IUSY
                     </div>
-                    <div className="text-[10px] text-gray-500 font-semibold leading-snug mt-1 line-clamp-2">
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold leading-snug mt-1 line-clamp-2">
                       {t({ mn: 'Социалист залуучуудын олон улсын холбоо', en: 'Intl. Union of Socialist Youth' })}
                     </div>
                   </div>
@@ -189,7 +189,7 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-gray-400 z-10 hidden md:flex"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-gray-400 dark:text-gray-500 z-10 hidden md:flex"
       >
         <span className="text-[10px] font-black uppercase tracking-[0.2em]">
           {t({ mn: 'Дэлгэрэнгүй', en: 'Scroll' })}

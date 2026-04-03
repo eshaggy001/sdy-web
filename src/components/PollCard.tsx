@@ -47,21 +47,21 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
   return (
     <motion.div
       layout
-      className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-[0_2px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_32px_rgba(0,0,0,0.10)] transition-shadow duration-300"
+      className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-[0_2px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_32px_rgba(0,0,0,0.10)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_4px_32px_rgba(0,0,0,0.4)] transition-shadow duration-300"
     >
       <div className={`flex-1 min-w-0 ${compact ? 'p-6' : 'p-7'}`}>
         {/* Header row */}
         <div className="flex items-center justify-between mb-5">
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
             isExpired
-              ? 'bg-gray-100 text-gray-400'
+              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
               : 'bg-sdy-red/10 text-sdy-red'
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${isExpired ? 'bg-gray-400' : 'bg-sdy-red animate-pulse'}`} />
             {isExpired ? t({ mn: 'Хаагдсан', en: 'Closed' }) : t({ mn: 'Идэвхтэй', en: 'Active' })}
           </span>
 
-          <div className="flex items-center gap-3 text-[11px] font-bold text-gray-400">
+          <div className="flex items-center gap-3 text-[11px] font-bold text-gray-400 dark:text-gray-500">
             {timeRemaining && (
               <span className="flex items-center gap-1">
                 <Clock size={12} className="text-sdy-red" />
@@ -82,7 +82,7 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
         </div>
 
         {/* Question */}
-        <h3 className={`font-black text-sdy-black leading-snug tracking-tight mb-6 ${
+        <h3 className={`font-black text-sdy-black dark:text-white leading-snug tracking-tight mb-6 ${
           compact ? 'text-lg' : 'text-xl md:text-2xl'
         }`}>
           {t(poll.question)}
@@ -113,28 +113,28 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
                       <div className="flex items-center gap-2">
                         {isSelected && <CheckCircle2 size={12} className="text-sdy-red flex-shrink-0" />}
                         <span className={`font-bold text-sm leading-snug ${
-                          isSelected ? 'text-sdy-red' : 'text-sdy-black'
+                          isSelected ? 'text-sdy-red' : 'text-sdy-black dark:text-white'
                         }`}>
                           {t(option.text)}
                         </span>
                       </div>
                       <span className={`text-xl font-black tabular-nums leading-none ml-4 flex-shrink-0 ${
-                        isWinner ? 'text-sdy-black' : 'text-gray-300'
+                        isWinner ? 'text-sdy-black dark:text-white' : 'text-gray-300 dark:text-gray-600'
                       }`}>
                         {percentage}<span className="text-xs font-bold">%</span>
                       </span>
                     </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${percentage}%` }}
                         transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1], delay: idx * 0.07 + 0.1 }}
                         className={`h-full rounded-full ${
-                          isSelected ? 'bg-sdy-red' : isWinner ? 'bg-sdy-black' : 'bg-gray-300'
+                          isSelected ? 'bg-sdy-red' : isWinner ? 'bg-sdy-black dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'
                         }`}
                       />
                     </div>
-                    <p className="text-right text-[10px] font-bold text-gray-400 mt-1">
+                    <p className="text-right text-[10px] font-bold text-gray-400 dark:text-gray-500 mt-1">
                       {option.votes.toLocaleString()} {t({ mn: 'санал', en: 'votes' })}
                     </p>
                   </motion.div>
@@ -153,26 +153,26 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
                   key={option.id}
                   onClick={() => handleVote(option.id)}
                   disabled={!poll.isActive}
-                  className="group relative w-full overflow-hidden rounded-xl border-2 border-gray-100 hover:border-sdy-red transition-colors text-left disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="group relative w-full overflow-hidden rounded-xl border-2 border-gray-100 dark:border-gray-700 hover:border-sdy-red transition-colors text-left disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <div className="absolute inset-0 bg-sdy-red -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
                   <div className="relative flex items-center gap-3 px-4 py-3.5">
-                    <span className="text-lg font-black text-gray-200 group-hover:text-white/30 transition-colors tabular-nums select-none w-7 flex-shrink-0">
+                    <span className="text-lg font-black text-gray-200 dark:text-gray-600 group-hover:text-white/30 transition-colors tabular-nums select-none w-7 flex-shrink-0">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
-                    <span className="flex-grow font-black text-sdy-black group-hover:text-white transition-colors text-sm leading-snug">
+                    <span className="flex-grow font-black text-sdy-black dark:text-white group-hover:text-white transition-colors text-sm leading-snug">
                       {t(option.text)}
                     </span>
                     <ArrowRight
                       size={16}
-                      className="text-gray-200 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0"
+                      className="text-gray-200 dark:text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0"
                     />
                   </div>
                 </button>
               ))}
 
               {!compact && poll.isActive && (
-                <p className="pt-2 text-[10px] text-gray-400 font-bold text-center uppercase tracking-widest">
+                <p className="pt-2 text-[10px] text-gray-400 dark:text-gray-500 font-bold text-center uppercase tracking-widest">
                   {t({
                     mn: 'Таны санал нууц бөгөөд зөвхөн нэг удаа өгнө.',
                     en: 'Anonymous · One vote per person.',

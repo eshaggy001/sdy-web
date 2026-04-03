@@ -99,7 +99,7 @@ export const ImpactBar = () => {
                 <div className="text-4xl md:text-5xl font-black tracking-tighter mb-1.5 tabular-nums">
                   <AnimatedNumber value={stat.value} inView={isInView} />
                 </div>
-                <div className="text-[11px] font-black text-gray-400 uppercase tracking-widest">
+                <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                   {t(stat.label)}
                 </div>
               </motion.div>

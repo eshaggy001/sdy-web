@@ -4,9 +4,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Link } from 'react-router-dom';
 import {
-  LayoutDashboard, FileText, Newspaper, Users2, Columns3, BarChart3,
-  ClipboardList, Inbox, ArrowRight
+  FileText, Newspaper, Users2, Columns3, BarChart3,
+  ClipboardList, Inbox, ArrowUpRight
 } from 'lucide-react';
+import { MemberStats } from '../components/admin/MemberStats';
 
 interface Counts {
   programs: number;
@@ -19,8 +20,15 @@ interface Counts {
   applications: number;
 }
 
+const getGreeting = (lang: 'mn' | 'en') => {
+  const hour = new Date().getHours();
+  if (hour < 12) return lang === 'mn' ? 'Өглөөний мэнд' : 'Good morning';
+  if (hour < 18) return lang === 'mn' ? 'Өдрийн мэнд' : 'Good afternoon';
+  return lang === 'mn' ? 'Оройн мэнд' : 'Good evening';
+};
+
 export const AdminDashboardPage = () => {
-  const { t, l } = useI18n();
+  const { t, l, language } = useI18n();
   const { user, role } = useAuth();
   const [counts, setCounts] = useState<Counts>({
     programs: 0, news: 0, leaders: 0, pillars: 0,
@@ -57,84 +65,86 @@ export const AdminDashboardPage = () => {
   }, []);
 
   const isAdmin = role === 'admin';
+  const userName = user?.email?.split('@')[0] ?? 'Admin';
 
   const cards = [
-    { icon: FileText,      label: t({ mn: 'Хөтөлбөрүүд', en: 'Programs' }),     count: counts.programs,     path: '/admin/programs',     color: 'bg-blue-100 text-blue-600' },
-    { icon: Newspaper,     label: t({ mn: 'Мэдээ', en: 'News' }),                count: counts.news,         path: '/admin/news',         color: 'bg-green-100 text-green-600' },
-    { icon: Users2,        label: t({ mn: 'Удирдлага', en: 'Leaders' }),          count: counts.leaders,      path: '/admin/leaders',      color: 'bg-purple-100 text-purple-600' },
-    { icon: Columns3,      label: t({ mn: 'Тулгуур чиглэл', en: 'Pillars' }),    count: counts.pillars,      path: '/admin/pillars',      color: 'bg-orange-100 text-orange-600' },
-    { icon: BarChart3,     label: t({ mn: 'Статистик', en: 'Stats' }),            count: counts.stats,        path: '/admin/stats',        color: 'bg-cyan-100 text-cyan-600' },
-    { icon: ClipboardList, label: t({ mn: 'Санал асуулга', en: 'Polls' }),        count: counts.polls,        path: '/admin/polls',        color: 'bg-yellow-100 text-yellow-600' },
+    { icon: FileText,      label: t({ mn: 'Хөтөлбөрүүд', en: 'Programs' }),     count: counts.programs,     path: '/admin/programs',     iconBg: 'bg-blue-50', iconColor: 'text-blue-500' },
+    { icon: Newspaper,     label: t({ mn: 'Мэдээ', en: 'News' }),                count: counts.news,         path: '/admin/news',         iconBg: 'bg-emerald-50', iconColor: 'text-emerald-500' },
+    { icon: Users2,        label: t({ mn: 'Удирдлага', en: 'Leaders' }),          count: counts.leaders,      path: '/admin/leaders',      iconBg: 'bg-amber-50', iconColor: 'text-amber-500' },
+    { icon: Columns3,      label: t({ mn: 'Тулгуур чиглэл', en: 'Pillars' }),    count: counts.pillars,      path: '/admin/pillars',      iconBg: 'bg-orange-50', iconColor: 'text-orange-500' },
+    { icon: BarChart3,     label: t({ mn: 'Статистик', en: 'Stats' }),            count: counts.stats,        path: '/admin/stats',        iconBg: 'bg-sky-50', iconColor: 'text-sky-500' },
+    { icon: ClipboardList, label: t({ mn: 'Санал асуулга', en: 'Polls' }),        count: counts.polls,        path: '/admin/polls',        iconBg: 'bg-rose-50', iconColor: 'text-rose-500' },
   ];
 
   const adminCards = [
-    { icon: Inbox,  label: t({ mn: 'Зурвас', en: 'Messages' }),       count: counts.messages,     path: '/admin/submissions', color: 'bg-pink-100 text-pink-600' },
-    { icon: Users2, label: t({ mn: 'Өргөдлүүд', en: 'Applications' }), count: counts.applications, path: '/admin/submissions', color: 'bg-red-100 text-red-600' },
+    { icon: Inbox,  label: t({ mn: 'Зурвас', en: 'Messages' }),       count: counts.messages,     path: '/admin/submissions', iconBg: 'bg-pink-50', iconColor: 'text-pink-500' },
+    { icon: Users2, label: t({ mn: 'Өргөдлүүд', en: 'Applications' }), count: counts.applications, path: '/admin/submissions', iconBg: 'bg-red-50', iconColor: 'text-red-500' },
   ];
 
   return (
     <div className="p-6 md:p-10">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-            <LayoutDashboard size={18} />
-            {t({ mn: 'Хянах самбар', en: 'Dashboard' })}
-          </div>
-          <h1 className="text-3xl md:text-4xl font-black text-sdy-black tracking-tighter">
-            {t({ mn: 'Тавтай морил, ', en: 'Welcome, ' })}
-            <span className="text-sdy-red">{user?.email?.split('@')[0] ?? 'Admin'}</span>
-          </h1>
-          <div className="mt-2 flex items-center gap-2">
-            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-              role === 'admin' ? 'bg-sdy-red/10 text-sdy-red' : 'bg-blue-100 text-blue-600'
-            }`}>
-              {role === 'admin' ? 'Admin' : 'Editor'}
+          <p className="text-sm font-medium text-gray-400 mb-1">
+            {getGreeting(language as 'mn' | 'en')}
+          </p>
+          <h1 className="text-2xl md:text-3xl font-black text-sdy-black tracking-tight">
+            {userName}
+            <span className="text-gray-300 font-medium text-lg md:text-xl ml-2">
+              / {role === 'admin' ? 'Admin' : 'Editor'}
             </span>
-          </div>
+          </h1>
         </div>
 
+        {/* Member Statistics (admin only) */}
+        {isAdmin && <MemberStats />}
+
         {/* Content Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {cards.map(({ icon: Icon, label, count, path, color }) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          {cards.map(({ icon: Icon, label, count, path, iconBg, iconColor }) => (
             <Link
               key={path + label}
               to={l(path)}
-              className="bg-white rounded-2xl p-6 card-shadow hover:shadow-lg transition-all group border-2 border-gray-50"
+              className="group bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gray-200"
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-                  <Icon size={18} />
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${iconBg}`}>
+                  <Icon size={17} className={iconColor} />
                 </div>
-                <ArrowRight size={16} className="text-gray-300 group-hover:text-sdy-red transition-colors" />
+                <ArrowUpRight size={14} className="text-gray-200 group-hover:text-gray-400 transition-colors mt-1" />
               </div>
-              <div className="text-3xl font-black text-sdy-black tabular-nums">
-                {loading ? <div className="w-8 h-8 bg-gray-100 rounded animate-pulse" /> : count}
+              <div className="text-2xl font-black text-sdy-black tabular-nums leading-none mb-1">
+                {loading ? (
+                  <div className="w-8 h-6 bg-gray-100 rounded-md animate-pulse" />
+                ) : count}
               </div>
-              <div className="text-xs font-black text-gray-400 uppercase tracking-widest mt-1">{label}</div>
+              <div className="text-xs font-medium text-gray-400">{label}</div>
             </Link>
           ))}
         </div>
 
         {/* Admin-only Cards */}
         {isAdmin && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {adminCards.map(({ icon: Icon, label, count, path, color }) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {adminCards.map(({ icon: Icon, label, count, path, iconBg, iconColor }) => (
               <Link
                 key={path + label}
                 to={l(path)}
-                className="bg-white rounded-2xl p-6 card-shadow hover:shadow-lg transition-all group border-2 border-gray-50"
+                className="group bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gray-200"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-                    <Icon size={18} />
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${iconBg}`}>
+                    <Icon size={17} className={iconColor} />
                   </div>
-                  <ArrowRight size={16} className="text-gray-300 group-hover:text-sdy-red transition-colors" />
+                  <ArrowUpRight size={14} className="text-gray-200 group-hover:text-gray-400 transition-colors mt-1" />
                 </div>
-                <div className="text-3xl font-black text-sdy-black tabular-nums">
-                  {loading ? <div className="w-8 h-8 bg-gray-100 rounded animate-pulse" /> : count}
+                <div className="text-2xl font-black text-sdy-black tabular-nums leading-none mb-1">
+                  {loading ? (
+                    <div className="w-8 h-6 bg-gray-100 rounded-md animate-pulse" />
+                  ) : count}
                 </div>
-                <div className="text-xs font-black text-gray-400 uppercase tracking-widest mt-1">{label}</div>
+                <div className="text-xs font-medium text-gray-400">{label}</div>
               </Link>
             ))}
           </div>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { NEWS } from '../constants';
+import { useNews } from '../hooks/useNews';
 import { Calendar, ArrowRight, Search, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 
 export const NewsPage = () => {
   const { t, l } = useI18n();
+  const { data: news } = useNews();
 
   const categories = [
     { id: 'All', label: { mn: 'Бүх мэдээ', en: 'All News' } },
@@ -45,7 +46,7 @@ export const NewsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-16">
-            {NEWS.map((item, index) => (
+            {news.map((item, index) => (
               <motion.article 
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}

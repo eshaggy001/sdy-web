@@ -1,5 +1,5 @@
 import React from 'react';
-import { PILLARS } from '../constants';
+import { usePillars } from '../hooks/usePillars';
 import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useI18n } from '../contexts/I18nContext';
 
 export const Pillars = () => {
   const { t, l } = useI18n();
+  const { data: pillars, loading } = usePillars();
 
   return (
     <section id="pillars" className="py-28 bg-white">
@@ -36,7 +37,13 @@ export const Pillars = () => {
 
         {/* Pillars grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PILLARS.map((pillar, index) => (
+          {loading ? Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="rounded-2xl aspect-[3/4] bg-gray-100 mb-5" />
+              <div className="h-3 bg-gray-100 rounded w-4/5 mb-2" />
+              <div className="h-3 bg-gray-100 rounded w-3/5" />
+            </div>
+          )) : pillars.map((pillar, index) => (
             <motion.div
               key={pillar.id}
               initial={{ opacity: 0, y: 28 }}

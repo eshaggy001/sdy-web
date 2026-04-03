@@ -12,8 +12,9 @@ export const PollsSection = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
-    const allPolls = pollService.getPolls();
-    setPolls(allPolls.filter(p => p.showOnHomepage && p.status === 'published').slice(0, 2));
+    pollService.getPolls().then((allPolls) => {
+      setPolls(allPolls.filter(p => p.showOnHomepage && p.status === 'published').slice(0, 2));
+    });
   }, []);
 
   if (polls.length === 0) return null;

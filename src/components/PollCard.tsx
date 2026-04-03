@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Clock, Users, ArrowRight } from 'lucide-react';
-import { Poll } from '../types';
+import { Poll, PollOption } from '../types';
 import { useI18n } from '../contexts/I18nContext';
 import { pollService } from '../services/pollService';
 
@@ -15,9 +15,9 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
   const { t } = useI18n();
   const [poll, setPoll] = useState<Poll>(initialPoll);
 
-  const handleVote = (optionId: string) => {
+  const handleVote = async (optionId: string) => {
     if (poll.userHasVoted || !poll.isActive) return;
-    const updatedPoll = pollService.vote(poll.id, optionId);
+    const updatedPoll = await pollService.vote(poll.id, optionId);
     if (updatedPoll) {
       setPoll(updatedPoll);
       if (onVote) onVote(updatedPoll);
@@ -97,7 +97,7 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
               animate={{ opacity: 1 }}
               className="space-y-4"
             >
-              {poll.options.map((option: import('../types').PollOption, idx: number) => {
+              {poll.options.map((option: PollOption, idx: number) => {
                 const percentage = getPercentage(option.votes);
                 const isSelected = poll.selectedOptionId === option.id;
                 const isWinner = option.votes === maxVotes && poll.totalVotes > 0;
@@ -148,7 +148,7 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
               animate={{ opacity: 1 }}
               className="space-y-2.5"
             >
-              {poll.options.map((option: import('../types').PollOption, idx: number) => (
+              {poll.options.map((option: PollOption, idx: number) => (
                 <button
                   key={option.id}
                   onClick={() => handleVote(option.id)}

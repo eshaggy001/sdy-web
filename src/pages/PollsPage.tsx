@@ -17,7 +17,7 @@ export const PollsPage = () => {
   }, []);
 
   const loadPolls = () => {
-    setPolls(pollService.getPolls());
+    pollService.getPolls().then(setPolls);
   };
 
   const filteredPolls = polls.filter(poll => {

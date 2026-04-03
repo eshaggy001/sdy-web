@@ -2,24 +2,23 @@ import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, ArrowLeft, ArrowRight, Mail, Tag } from 'lucide-react';
-import { NEWS } from '../constants';
+import { useNews, useNewsItem } from '../hooks/useNews';
 import { useI18n } from '../contexts/I18nContext';
 
 export const NewsDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t, l } = useI18n();
+  const { data: article, loading } = useNewsItem(id);
+  const { data: news, loading: newsLoading } = useNews();
 
-  const article = NEWS.find((n) => n.id === id);
+  if (loading) return null;
+  if (!article) return <Navigate to={l('/news')} replace />;
 
-  if (!article) {
-    return <Navigate to={l('/news')} replace />;
-  }
+  const currentIndex = newsLoading ? -1 : news.findIndex((n) => n.id === id);
+  const prevArticle = currentIndex > 0 ? news[currentIndex - 1] : null;
+  const nextArticle = currentIndex < news.length - 1 ? news[currentIndex + 1] : null;
 
-  const currentIndex = NEWS.findIndex((n) => n.id === id);
-  const prevArticle = currentIndex > 0 ? NEWS[currentIndex - 1] : null;
-  const nextArticle = currentIndex < NEWS.length - 1 ? NEWS[currentIndex + 1] : null;
-
-  const relatedArticles = NEWS.filter((n) => n.id !== id).slice(0, 3);
+  const relatedArticles = news.filter((n) => n.id !== id).slice(0, 3);
 
   // Split content into paragraphs for rendering
   const paragraphs = article.content

@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { PROGRAMS } from '../constants';
+import { usePrograms } from '../hooks/usePrograms';
 import { Calendar, MapPin, ArrowRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 
 export const ProgramsPage = () => {
   const { t, l } = useI18n();
+  const { data: programs } = usePrograms();
 
   const categories = [
     { id: 'All', label: { mn: 'Бүгд', en: 'All' } },
@@ -65,7 +66,7 @@ export const ProgramsPage = () => {
 
         {/* Programs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {PROGRAMS.map((program, index) => (
+          {programs.map((program, index) => (
             <motion.div
               key={program.id}
               initial={{ opacity: 0, y: 20 }}

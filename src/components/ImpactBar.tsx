@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { STATS } from '../constants';
+import { useStats } from '../hooks/useStats';
 import { motion, useInView } from 'motion/react';
 import { useI18n } from '../contexts/I18nContext';
 import { SdyArrow } from './SdyArrow';
@@ -70,6 +70,7 @@ const TICKER_ITEMS = [
 
 export const ImpactBar = () => {
   const { t } = useI18n();
+  const { data: stats, loading } = useStats();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
@@ -82,7 +83,13 @@ export const ImpactBar = () => {
       <section className="py-14 bg-sdy-black text-white" ref={ref}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
-            {STATS.map((stat, index) => (
+            {loading ? Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="w-8 h-1 bg-white/20 rounded mb-4" />
+                <div className="h-10 w-24 bg-white/20 rounded mb-2" />
+                <div className="h-3 w-20 bg-white/10 rounded" />
+              </div>
+            )) : stats.map((stat, index) => (
               <motion.div
                 key={t(stat.label)}
                 initial={{ opacity: 0, y: 24 }}

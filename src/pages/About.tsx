@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { LEADERS } from '../constants';
+import { useLeaders } from '../hooks/useLeaders';
 import { Shield, Target, Users, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 
 export const About = () => {
   const { t, l } = useI18n();
+  const { data: leaders, loading: leadersLoading } = useLeaders();
 
   return (
     <motion.div
@@ -93,7 +94,14 @@ export const About = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-            {LEADERS.map((leader) => (
+            {leadersLoading ? Array.from({ length: 2 }).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="rounded-3xl aspect-[4/5] bg-gray-100 mb-6" />
+                <div className="h-5 bg-gray-100 rounded w-2/3 mb-2" />
+                <div className="h-3 bg-gray-100 rounded w-1/2 mb-4" />
+                <div className="h-3 bg-gray-100 rounded w-full" />
+              </div>
+            )) : leaders.map((leader) => (
               <motion.div 
                 key={leader.id}
                 whileHover={{ y: -10 }}

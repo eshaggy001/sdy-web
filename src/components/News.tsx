@@ -1,5 +1,5 @@
 import React from 'react';
-import { NEWS } from '../constants';
+import { useNews } from '../hooks/useNews';
 import { motion } from 'motion/react';
 import { ArrowRight, ArrowUpRight, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,8 +7,9 @@ import { useI18n } from '../contexts/I18nContext';
 
 export const News = () => {
   const { t, l } = useI18n();
+  const { data: news, loading } = useNews();
 
-  const [featured, ...rest] = NEWS;
+  const [featured, ...rest] = news;
 
   return (
     <section id="news" className="py-28 bg-white">
@@ -35,6 +36,28 @@ export const News = () => {
         </div>
 
         {/* Layout: featured large + two smaller */}
+        {loading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 animate-pulse">
+            <div className="lg:col-span-3">
+              <div className="rounded-2xl aspect-[16/10] bg-gray-100 mb-5" />
+              <div className="h-4 bg-gray-100 rounded w-1/4 mb-3" />
+              <div className="h-6 bg-gray-100 rounded w-3/4 mb-2" />
+              <div className="h-4 bg-gray-100 rounded w-full" />
+            </div>
+            <div className="lg:col-span-2 flex flex-col gap-6">
+              {[0, 1].map((i) => (
+                <div key={i} className="flex gap-5">
+                  <div className="w-28 h-24 rounded-xl bg-gray-100 flex-shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-3 bg-gray-100 rounded w-1/3" />
+                    <div className="h-4 bg-gray-100 rounded w-full" />
+                    <div className="h-3 bg-gray-100 rounded w-1/4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
 
           {/* Featured article */}
@@ -114,6 +137,7 @@ export const News = () => {
             ))}
           </div>
         </div>
+        )}
       </div>
     </section>
   );

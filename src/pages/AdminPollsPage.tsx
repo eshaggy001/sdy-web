@@ -18,8 +18,7 @@ export const AdminPollsPage = () => {
 
   const loadPolls = async () => {
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    setPolls(pollService.getPolls());
+    setPolls(await pollService.getPolls());
     setIsLoading(false);
   };
 
@@ -42,38 +41,38 @@ export const AdminPollsPage = () => {
     setIsEditing(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm(t({ mn: 'Та энэ санал асуулгыг устгахдаа итгэлтэй байна уу?', en: 'Are you sure you want to delete this poll?' }))) {
-      pollService.deletePoll(id);
+      await pollService.deletePoll(id);
       loadPolls();
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!currentPoll) return;
-    
+
     if (currentPoll.id) {
-      pollService.updatePoll(currentPoll.id, {
+      await pollService.updatePoll(currentPoll.id, {
         ...currentPoll,
         isActive: currentPoll.status === 'published',
         expiresAt: new Date(currentPoll.expiresAt!).toISOString()
       });
     } else {
-      pollService.createPoll({
+      await pollService.createPoll({
         ...currentPoll,
         isActive: currentPoll.status === 'published',
         expiresAt: new Date(currentPoll.expiresAt!).toISOString()
       });
     }
-    
+
     setIsEditing(false);
     setCurrentPoll(null);
     loadPolls();
   };
 
-  const toggleStatus = (poll: Poll) => {
+  const toggleStatus = async (poll: Poll) => {
     const newStatus: PollStatus = poll.status === 'published' ? 'draft' : 'published';
-    pollService.updatePoll(poll.id, { status: newStatus, isActive: newStatus === 'published' });
+    await pollService.updatePoll(poll.id, { status: newStatus, isActive: newStatus === 'published' });
     loadPolls();
   };
 

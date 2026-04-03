@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Send, CheckCircle2 } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
+import { supabase } from '../lib/supabase';
 
 export const ContactPage = () => {
   const { t } = useI18n();
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    await supabase.from('contact_messages').insert(form);
+    setSending(false);
+    setSent(true);
+  };
 
   return (
     <motion.div
@@ -103,53 +115,81 @@ export const ContactPage = () => {
               <h2 className="text-3xl font-black text-sdy-black mb-10 tracking-tight uppercase">
                 {t({ mn: 'Зурвас илгээх', en: 'Send a Message' })}
               </h2>
-              <form className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+              {sent ? (
+                <div className="text-center py-16">
+                  <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 size={40} />
+                  </div>
+                  <h3 className="text-2xl font-black text-sdy-black mb-4 uppercase tracking-tight">
+                    {t({ mn: 'Зурвас амжилттай илгээгдлээ!', en: 'Message Sent!' })}
+                  </h3>
+                  <p className="text-gray-500 font-bold">
+                    {t({ mn: 'Бид удахгүй тантай холбогдох болно.', en: 'We will get back to you shortly.' })}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
+                        {t({ mn: 'Овог нэр', en: 'Full Name' })}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                        placeholder={t({ mn: 'Таны нэр', en: 'Your name' })}
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
+                        {t({ mn: 'И-мэйл хаяг', en: 'Email Address' })}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                        placeholder="your@email.com"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      />
+                    </div>
+                  </div>
                   <div className="space-y-2">
                     <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                      {t({ mn: 'Овог нэр', en: 'Full Name' })}
+                      {t({ mn: 'Гарчиг', en: 'Subject' })}
                     </label>
                     <input
                       type="text"
+                      required
                       className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                      placeholder={t({ mn: 'Таны нэр', en: 'Your name' })}
+                      placeholder={t({ mn: 'Бид танд юугаар туслах вэ?', en: 'How can we help?' })}
+                      value={form.subject}
+                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                      {t({ mn: 'И-мэйл хаяг', en: 'Email Address' })}
+                      {t({ mn: 'Зурвас', en: 'Message' })}
                     </label>
-                    <input
-                      type="email"
-                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                      placeholder="your@email.com"
+                    <textarea
+                      rows={6}
+                      required
+                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold resize-none"
+                      placeholder={t({ mn: 'Таны зурвас энд...', en: 'Your message here...' })}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                    {t({ mn: 'Гарчиг', en: 'Subject' })}
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                    placeholder={t({ mn: 'Бид танд юугаар туслах вэ?', en: 'How can we help?' })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                    {t({ mn: 'Зурвас', en: 'Message' })}
-                  </label>
-                  <textarea
-                    rows={6}
-                    className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold resize-none"
-                    placeholder={t({ mn: 'Таны зурвас энд...', en: 'Your message here...' })}
-                  ></textarea>
-                </div>
-                <button className="btn-primary w-full py-5 text-xl flex items-center justify-center gap-3">
-                  {t({ mn: 'Зурвас илгээх', en: 'Send Message' })} <Send size={24} />
-                </button>
-              </form>
+                  <button disabled={sending} className="btn-primary w-full py-5 text-xl flex items-center justify-center gap-3 disabled:opacity-60">
+                    {sending ? t({ mn: 'Илгээж байна...', en: 'Sending...' }) : t({ mn: 'Зурвас илгээх', en: 'Send Message' })}
+                    <Send size={24} />
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

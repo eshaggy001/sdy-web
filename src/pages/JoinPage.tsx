@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, User, Mail, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { supabase } from '../lib/supabase';
 
 export const JoinPage = () => {
   const { t, l } = useI18n();
   const [step, setStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,6 +45,20 @@ export const JoinPage = () => {
   ];
 
   const nextStep = () => setStep(step + 1);
+
+  const handleFinalSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    await supabase.from('member_applications').insert({
+      name: formData.name,
+      email: formData.email,
+      age: parseInt(formData.age),
+      location: formData.location,
+      phone: formData.phone,
+    });
+    setSubmitting(false);
+    nextStep();
+  };
 
   return (
     <motion.div
@@ -169,7 +185,7 @@ export const JoinPage = () => {
                   <h2 className="text-3xl font-black text-sdy-black mb-8 tracking-tight">
                     {t({ mn: 'Алхам 2: Байршил ба Холбоо барих', en: 'Step 2: Location & Contact' })}
                   </h2>
-                  <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-6">
+                  <form onSubmit={handleFinalSubmit} className="space-y-6">
                     <div className="space-y-2">
                       <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
                         {t({ mn: 'Байршил (Аймаг/Дүүрэг)', en: 'Region (Aimag)' })}
@@ -216,8 +232,9 @@ export const JoinPage = () => {
                       </p>
                     </div>
                     <div className="flex flex-col gap-4">
-                      <button type="submit" className="w-full btn-primary py-5 text-lg flex items-center justify-center gap-2">
-                        {t({ mn: 'Бүртгэл дуусгах', en: 'Complete Registration' })} <CheckCircle2 size={20} />
+                      <button type="submit" disabled={submitting} className="w-full btn-primary py-5 text-lg flex items-center justify-center gap-2 disabled:opacity-60">
+                        {submitting ? t({ mn: 'Илгээж байна...', en: 'Submitting...' }) : t({ mn: 'Бүртгэл дуусгах', en: 'Complete Registration' })}
+                        <CheckCircle2 size={20} />
                       </button>
                       <button 
                         type="button" 

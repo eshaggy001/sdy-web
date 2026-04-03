@@ -2,24 +2,23 @@ import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, MapPin, ArrowLeft, ArrowRight, Users, Clock, CheckCircle2 } from 'lucide-react';
-import { PROGRAMS } from '../constants';
+import { usePrograms, useProgram } from '../hooks/usePrograms';
 import { useI18n } from '../contexts/I18nContext';
 
 export const ProgramDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t, l } = useI18n();
+  const { data: program, loading } = useProgram(id);
+  const { data: programs, loading: programsLoading } = usePrograms();
 
-  const program = PROGRAMS.find((p) => p.id === id);
+  if (loading) return null;
+  if (!program) return <Navigate to={l('/programs')} replace />;
 
-  if (!program) {
-    return <Navigate to={l('/programs')} replace />;
-  }
+  const currentIndex = programsLoading ? -1 : programs.findIndex((p) => p.id === id);
+  const prevProgram = currentIndex > 0 ? programs[currentIndex - 1] : null;
+  const nextProgram = currentIndex < programs.length - 1 ? programs[currentIndex + 1] : null;
 
-  const currentIndex = PROGRAMS.findIndex((p) => p.id === id);
-  const prevProgram = currentIndex > 0 ? PROGRAMS[currentIndex - 1] : null;
-  const nextProgram = currentIndex < PROGRAMS.length - 1 ? PROGRAMS[currentIndex + 1] : null;
-
-  const relatedPrograms = PROGRAMS.filter((p) => p.id !== id).slice(0, 2);
+  const relatedPrograms = programs.filter((p) => p.id !== id).slice(0, 2);
   const paragraphs = program.content
     ? t(program.content).split('\n\n').filter(Boolean)
     : [];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PROGRAMS } from '../constants';
+import { usePrograms } from '../hooks/usePrograms';
 import { motion } from 'motion/react';
 import { Calendar, MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useI18n } from '../contexts/I18nContext';
 
 export const Programs = () => {
   const { t, l } = useI18n();
+  const { data: programs, loading } = usePrograms();
 
   return (
     <section id="programs" className="py-28 bg-sdy-gray">
@@ -34,7 +35,16 @@ export const Programs = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROGRAMS.map((program, index) => (
+          {loading ? Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="animate-pulse bg-white rounded-xl overflow-hidden card-shadow">
+              <div className="h-52 bg-gray-100" />
+              <div className="p-7 space-y-3">
+                <div className="h-4 bg-gray-100 rounded w-3/4" />
+                <div className="h-3 bg-gray-100 rounded w-full" />
+                <div className="h-3 bg-gray-100 rounded w-5/6" />
+              </div>
+            </div>
+          )) : programs.map((program, index) => (
             <motion.div
               key={program.id}
               initial={{ opacity: 0, y: 24 }}

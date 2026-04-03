@@ -10,28 +10,28 @@ export const Ideology = () => {
   const principles = [
     {
       title: { mn: 'Нийгмийн шударга ёс', en: 'Social Justice' },
-      description: { 
+      description: {
         mn: 'Иргэн бүрт гарал үүсэл, хөрөнгө чинээ үл хамааран тэгш эрх, боломж, нөөц баялгийн шударга хуваарилалтыг хангах.',
         en: 'Ensuring equal rights, opportunities, and fair distribution of resources for all citizens, regardless of their background.'
       },
     },
     {
       title: { mn: 'Эрх чөлөө', en: 'Freedom' },
-      description: { 
+      description: {
         mn: 'Хувь хүний эрх чөлөө, ардчилсан үйл явцад идэвхтэй оролцох язгуур эрхийг хамгаалах.',
         en: 'Protecting individual liberties and the fundamental right to participate actively in the democratic process.'
       },
     },
     {
       title: { mn: 'Эв нэгдэл', en: 'Solidarity' },
-      description: { 
+      description: {
         mn: 'Нийтлэг сорилтуудыг даван туулахын тулд нийгмийн бүх түвшинд хамтын нөхөрлөл, харилцан дэмжлэгийг бэхжүүлэх.',
         en: 'Fostering a deep sense of community and mutual support across all levels of society to overcome shared challenges.'
       },
     },
     {
       title: { mn: 'Тэгш эрх', en: 'Equality' },
-      description: { 
+      description: {
         mn: 'Аливаа хэлбэрийн ялгаварлан гадуурхалтыг арилгаж, хүн бүр өөрийн нөөц бололцоогоо бүрэн дайчлах боломжтой нийгмийг цогцлоох.',
         en: 'Abolishing all forms of discrimination and promoting a society where everyone can thrive and reach their full potential.'
       },
@@ -56,7 +56,7 @@ export const Ideology = () => {
             <span className="text-sdy-red">{t({ mn: 'тулгуур багана.', en: 'Social Democracy.' })}</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
-            {t({ 
+            {t({
               mn: 'Бидний үзэл баримтлал нь хүчирхэг ардчилалд хувь хүний эрх чөлөө болон хамтын хариуцлага хоёулаа чухал гэсэн итгэл үнэмшилд тулгуурладаг. Бид ашгаас илүү хүнийг эрхэмлэдэг бодлогыг дэмждэг.',
               en: 'Our ideology is rooted in the belief that a strong democracy requires both individual freedom and collective responsibility. We advocate for policies that prioritize people over profit.'
             })}
@@ -93,7 +93,7 @@ export const Ideology = () => {
                   {t({ mn: 'Яагаад өнөөдөр чухал вэ?', en: 'Why it matters today.' })}
                 </h2>
                 <p className="text-xl text-gray-400 leading-relaxed mb-12">
-                  {t({ 
+                  {t({
                     mn: 'Хурдацтай өөрчлөгдөж буй дэлхий ертөнцөд нийгмийн ардчиллын үнэт зүйлс нь тогтвортой хөгжлийн зураглалыг гаргаж өгдөг. Бид хот, хөдөөгийн хөгжлийн ялгааг арилгах, хүн бүрт чанартай боловсрол олгох, байгаль орчноо ирээдүй хойч үедээ хамгаалж үлдэхэд анхаарлаа хандуулдаг.',
                     en: 'In a rapidly changing world, social democratic values provide a roadmap for sustainable development. We focus on bridging the gap between urban and rural development, ensuring quality education for all, and protecting our natural environment for future generations.'
                   })}
@@ -109,9 +109,9 @@ export const Ideology = () => {
         {/* Vision Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="rounded-3xl overflow-hidden shadow-2xl">
-            <img 
-              src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&q=80&w=1200"
-              alt="Social Democracy in Action" 
+            <img
+              src="https://images.unsplash.com/photo-1626257673566-df7fb7709f1b?auto=format&fit=crop&q=80&w=1200"
+              alt="Social Democracy in Action"
               className="w-full aspect-video object-cover"
               referrerPolicy="no-referrer"
             />
@@ -121,7 +121,7 @@ export const Ideology = () => {
               {t({ mn: 'Алсын хараа 2030', en: 'Our Vision for 2030' })}
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              {t({ 
+              {t({
                 mn: 'Бид Монгол Улсыг хүний хөгжил, байгаль орчны тогтвортой байдал, ардчиллын үнэт зүйлсээрээ бүс нутагтаа тэргүүлэгч улс болно гэж төсөөлж байна. Манай 2030 оны стратеги нь дижитал шилжилт, ногоон эдийн засаг, хүртээмжтэй засаглалд анхаарлаа хандуулдаг.',
                 en: 'We envision a Mongolia that is a regional leader in human development, environmental sustainability, and democratic integrity. Our 2030 strategy focuses on digital transformation, green economy, and inclusive governance.'
               })}

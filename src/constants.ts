@@ -1,5 +1,5 @@
 import { NavItem, Stat, Pillar, Program, NewsItem, Leader, Testimonial } from './types';
-import { Users, Globe, Zap, Shield, Heart, Award, MessageSquare, Briefcase } from 'lucide-react';
+import { Users, Globe, Zap, Shield, Heart } from 'lucide-react';
 
 export const NAV_ITEMS: NavItem[] = [
   { label: { mn: 'Нүүр', en: 'Home' }, href: '/' },
@@ -61,7 +61,7 @@ export const PILLARS: Pillar[] = [
     },
     icon: Shield,
     href: '/programs?pillar=political',
-    image: 'https://images.unsplash.com/photo-1541872703-74c5e443d1fe?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800',
   },
 ];
 
@@ -88,7 +88,7 @@ export const PROGRAMS: Program[] = [
       mn: 'Орон нутгийн шилдэг оюутнуудад дээд боловсрол эзэмшихэд нь санхүүгийн дэмжлэг, менторшип олгох.',
       en: 'Providing financial support and mentorship for outstanding students from rural aimags to pursue higher education.'
     },
-    image: 'https://images.unsplash.com/photo-1523050335392-9bc567597280?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800',
     date: { mn: 'Эцсийн хугацаа: 5-р сарын 1', en: 'Deadline: May 1' },
     location: { mn: 'Улс даяар', en: 'National' },
   },
@@ -188,7 +188,7 @@ export const NEWS: NewsItem[] = [
     title: { mn: 'Нийслэлийн агаарын бохирдлын эсрэг залуусын жагсаал боллоо', en: 'Youth Rally Against Capital City Air Pollution' },
     category: { mn: 'Байгаль орчин', en: 'Environment' },
     date: { mn: '2026.03.05', en: 'Mar 5, 2026' },
-    image: 'https://images.unsplash.com/photo-1561622539-34bef5bc89ed?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200',
     excerpt: {
       mn: '3,000 гаруй залуу Сүхбаатарын талбайд цугларч, утааны хязгаарлалт, цэвэр эрчим хүчинд шилжих тухай хуулийн шинэчлэлийг нэхэмжиллээ.',
       en: 'Over 3,000 youth gathered at Sukhbaatar Square to demand stricter emissions limits and faster transition to clean energy legislation.'

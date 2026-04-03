@@ -4,6 +4,7 @@ import { NAV_ITEMS } from '../constants';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +81,9 @@ export const Navbar = () => {
 
           {/* Right controls */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
@@ -97,6 +101,7 @@ export const Navbar = () => {
 
           {/* Mobile controls */}
           <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle />
             <button
               onClick={toggleLanguage}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 font-black text-[11px] uppercase tracking-widest text-sdy-black"

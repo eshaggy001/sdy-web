@@ -29,6 +29,7 @@ import { AdminLayout } from './components/admin/AdminLayout';
 import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -90,9 +91,11 @@ export default function App() {
     <HelmetProvider>
     <Router>
       <I18nProvider>
+      <ThemeProvider>
       <AuthProvider>
         <AppContent />
       </AuthProvider>
+      </ThemeProvider>
       </I18nProvider>
     </Router>
     </HelmetProvider>

@@ -1,0 +1,29 @@
+import React from 'react';
+
+interface SdyArrow3Props {
+  /** Tailwind / custom className — control size, color (via `text-*`), opacity, position */
+  className?: string;
+}
+
+/**
+ * Official SDY triple-chevron brand element (>>>).
+ * Source: /documents/sdy-arrow3.svg  (viewBox 0 0 252.19 106.32)
+ *
+ * Use `text-sdy-red` or `text-white` to control fill color.
+ * Use `opacity-[0.05]` etc. for background/decorative use.
+ * Always rendered aria-hidden — never the sole conveyor of meaning.
+ */
+export const SdyArrow3 = ({ className = '' }: SdyArrow3Props) => (
+  <svg
+    viewBox="0 0 252.19 106.32"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    focusable="false"
+    className={className}
+  >
+    <path d="M168.82,47.71l2.35,2.33,3.13,3.01-9.26,9.31-1.56,1.59-1.54,1.58-2.28,2.28-2.4,2.4-2.4,2.4-2.28,2.28-2.4,2.4-2.4,2.39-2.44,2.39-16.53,16.53-2.15,2.2-2.4,2.4-2.29,2.32c-.11.24-.77.81-1.14.81h-43.04s53.13-53.18,53.13-53.18L87.34,9.57,77.76,0h43.63c.95,1.3,1.86,2.11,2.85,3.1l2.28,2.28,2.02,2.05,2.65,2.64,2.41,2.39,2.29,2.28,2.4,2.4,2.28,2.28,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.28,2.28,2.28,2.28,2.4,2.4,2.4,2.4,2.4,2.4,2.26,2.3,2.24,2.21Z" />
+    <polygon points="76.9 33.57 90.86 47.52 93.52 50.16 96.54 53.05 76.94 72.67 74.79 74.88 72.39 77.28 70.01 79.69 67.53 82.06 43.26 106.32 0 106.31 53.13 53.16 9.57 9.58 0 0 43.28 0 52.68 9.37 54.03 10.68 55.84 12.47 58.12 14.75 60.52 17.15 62.8 19.43 65.2 21.84 67.6 24.24 69.99 26.63 72.39 29.03 74.79 31.43 76.9 33.57" />
+    <path d="M249.16,50.05l3.03,3.11-53.17,53.17h-43.26s22.48-22.51,22.48-22.51c.68-.9,1.32-1.49,2.21-2.2l28.45-28.48-43.46-43.43L155.74,0h43.3s9.29,9.24,9.29,9.24l1.94,1.91,2.52,2.5,2.04,2.11,31.77,31.73,2.56,2.54Z" />
+  </svg>
+);

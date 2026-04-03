@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cera Pro", "Outfit", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cera Pro", "Outfit", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+
+  --color-sdy-red: #ED1B24;
+  --color-sdy-red-dark: #cc151e;
+  --color-sdy-black: #1C1917;
+  --color-sdy-white: #FFFFFF;
+  --color-sdy-gray: #FFFFFF;
+  --color-sdy-gray-dark: #44403C;
+
+  --animate-fade-in-up: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-ticker: ticker 35s linear infinite;
+  --animate-bounce-subtle: bounce-subtle 2s ease-in-out infinite;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+  body {
+    @apply bg-sdy-gray text-sdy-black font-sans antialiased overflow-x-hidden;
+    background-color: var(--color-sdy-gray);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-sdy-black;
+  }
+
+  ::selection {
+    background-color: var(--color-sdy-red);
+    color: white;
+  }
+}
+
+@layer utilities {
+  /* Navigation */
+  .glass-nav {
+    @apply fixed top-0 z-50 w-full border-b border-black/5 bg-white/90 backdrop-blur-xl transition-all duration-300;
+  }
+
+  /* Cards */
+  .glass-card {
+    @apply rounded-2xl border border-white/40 bg-white/60 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1;
+  }
+
+  /* ✅ FIXED: card-shadow was used but never defined */
+  .card-shadow {
+    @apply bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-gray-100/80 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:-translate-y-1;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center overflow-hidden rounded-full bg-sdy-red px-8 py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-sdy-red-dark focus:ring-4 focus:ring-sdy-red/20 active:scale-[0.97] shadow-lg shadow-sdy-red/20 hover:shadow-xl hover:shadow-sdy-red/30;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-sdy-black/10 bg-white px-8 py-3.5 text-base font-bold text-sdy-black transition-all duration-300 hover:bg-sdy-black hover:text-white hover:border-sdy-black active:scale-[0.97];
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-white/30 bg-transparent px-8 py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-white hover:text-sdy-black active:scale-[0.97] backdrop-blur-sm;
+  }
+
+  /* Section labels */
+  .section-label {
+    @apply inline-flex items-center gap-2 text-sdy-red font-black uppercase tracking-[0.15em] text-[11px] mb-5;
+  }
+
+  /* Ticker tape */
+  .ticker-wrap {
+    @apply w-full overflow-hidden;
+  }
+
+  .ticker-inner {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 35s linear infinite;
+  }
+
+  .ticker-inner:hover {
+    animation-play-state: paused;
+  }
+
+  /* Background utilities */
+  .bg-gradient-radial-sdy {
+    background: radial-gradient(circle at 100% 0%, rgba(237, 27, 36, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(237, 27, 36, 0.05) 0%, transparent 50%);
+  }
+
+  /* Scroll bounce animation */
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+
+  /* Nav active underline */
+  .nav-active {
+    @apply relative text-sdy-red;
+  }
+
+  .nav-active::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 right-0 h-0.5 bg-sdy-red rounded-full;
+  }
+
+  /* Section divider */
+  .section-divider {
+    @apply border-t border-gray-100;
+  }
+}

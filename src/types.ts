@@ -1,0 +1,85 @@
+import { LucideIcon } from 'lucide-react';
+
+export interface LocalizedString {
+  mn: string;
+  en: string;
+}
+
+export interface NavItem {
+  label: LocalizedString;
+  href: string;
+}
+
+export interface Stat {
+  label: LocalizedString;
+  value: string;
+  icon?: LucideIcon;
+}
+
+export interface Pillar {
+  id: string;
+  title: LocalizedString;
+  description: LocalizedString;
+  icon: LucideIcon;
+  href: string;
+  image: string;
+}
+
+export interface Program {
+  id: string;
+  title: LocalizedString;
+  pillar: LocalizedString;
+  status: LocalizedString;
+  description: LocalizedString;
+  image: string;
+  date?: LocalizedString;
+  location?: LocalizedString;
+}
+
+export interface NewsItem {
+  id: string;
+  title: LocalizedString;
+  category: LocalizedString;
+  date: LocalizedString;
+  image: string;
+  excerpt: LocalizedString;
+  content?: LocalizedString;
+}
+
+export interface Leader {
+  id: string;
+  name: LocalizedString;
+  role: LocalizedString;
+  image: string;
+  bio: LocalizedString;
+}
+
+export interface Testimonial {
+  id: string;
+  name: LocalizedString;
+  role: LocalizedString;
+  content: LocalizedString;
+  image: string;
+}
+
+export type PollStatus = 'draft' | 'published' | 'expired' | 'archived';
+
+export interface PollOption {
+  id: string;
+  text: LocalizedString;
+  votes: number;
+}
+
+export interface Poll {
+  id: string;
+  question: LocalizedString;
+  options: PollOption[];
+  totalVotes: number;
+  createdAt: string;
+  expiresAt: string;
+  status: PollStatus;
+  isActive: boolean;
+  userHasVoted?: boolean;
+  selectedOptionId?: string;
+  showOnHomepage?: boolean;
+}

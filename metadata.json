@@ -1,0 +1,7 @@
+{
+  "name": "Remix: SDY Mongolia - Social Democratic Youth",
+  "description": "The primary digital platform for the Social Democratic Youth Organization of Mongolia. Empowering the next generation through leadership, social impact, and progressive values.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

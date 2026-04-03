@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Users, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Inbox, LogOut } from 'lucide-react';
+import { Mail, Users, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Inbox } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { supabase } from '../lib/supabase';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 
 interface ContactMessage {
   id: string;
@@ -27,8 +25,7 @@ interface MemberApplication {
 }
 
 export const AdminSubmissionsPage = () => {
-  const { t, l } = useI18n();
-  const { signOut } = useAuth();
+  const { t } = useI18n();
   const [tab, setTab] = useState<'messages' | 'applications'>('applications');
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [applications, setApplications] = useState<MemberApplication[]>([]);
@@ -67,43 +64,28 @@ export const AdminSubmissionsPage = () => {
   const pendingCount = applications.filter((a) => a.status === 'pending').length;
 
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-sdy-gray/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="p-6 md:p-10">
+      <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
           <div>
             <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
               <Inbox size={16} />
-              {t({ mn: 'Админ удирдлага', en: 'Admin Dashboard' })}
+              {t({ mn: 'Хүсэлтүүд', en: 'Submissions' })}
             </div>
-            <h1 className="text-5xl md:text-6xl font-black text-sdy-black leading-tight tracking-tighter">
+            <h1 className="text-3xl md:text-4xl font-black text-sdy-black leading-tight tracking-tighter">
               {t({ mn: 'Ирсэн ', en: 'Submissions' })}
               <span className="text-sdy-red">{t({ mn: 'хүсэлтүүд.', en: '.' })}</span>
             </h1>
           </div>
-          <div className="flex items-center gap-4">
-            <Link
-              to={l('/admin/polls')}
-              className="text-sm font-black text-gray-400 hover:text-sdy-black transition-colors uppercase tracking-widest"
-            >
-              {t({ mn: 'Санал асуулга', en: 'Polls' })} →
-            </Link>
-            <button
-              onClick={load}
-              className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
-            >
-              <RefreshCw size={14} />
-              {t({ mn: 'Шинэчлэх', en: 'Refresh' })}
-            </button>
-            <button
-              onClick={() => signOut()}
-              className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
-            >
-              <LogOut size={14} />
-              {t({ mn: 'Гарах', en: 'Logout' })}
-            </button>
-          </div>
+          <button
+            onClick={load}
+            className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
+          >
+            <RefreshCw size={14} />
+            {t({ mn: 'Шинэчлэх', en: 'Refresh' })}
+          </button>
         </div>
 
         {/* Stats */}

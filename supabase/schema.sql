@@ -492,3 +492,75 @@ create policy "public vote polls total"           on polls        for update usi
 create policy "public vote poll_options"          on poll_options for update using (true) with check (true);
 create policy "authenticated insert polls"        on polls        for insert with check (auth.uid() is not null);
 create policy "authenticated update poll_options" on poll_options for update using (auth.uid() is not null);
+
+-- =============================================================
+-- ADMIN: Content write policies (INSERT/UPDATE/DELETE for authenticated)
+-- =============================================================
+
+-- Stats
+drop policy if exists "authenticated insert stats" on stats;
+drop policy if exists "authenticated update stats" on stats;
+drop policy if exists "authenticated delete stats" on stats;
+create policy "authenticated insert stats" on stats for insert with check (auth.uid() is not null);
+create policy "authenticated update stats" on stats for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete stats" on stats for delete using (auth.uid() is not null);
+
+-- Pillars
+drop policy if exists "authenticated insert pillars" on pillars;
+drop policy if exists "authenticated update pillars" on pillars;
+drop policy if exists "authenticated delete pillars" on pillars;
+create policy "authenticated insert pillars" on pillars for insert with check (auth.uid() is not null);
+create policy "authenticated update pillars" on pillars for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete pillars" on pillars for delete using (auth.uid() is not null);
+
+-- Programs
+drop policy if exists "authenticated insert programs" on programs;
+drop policy if exists "authenticated update programs" on programs;
+drop policy if exists "authenticated delete programs" on programs;
+create policy "authenticated insert programs" on programs for insert with check (auth.uid() is not null);
+create policy "authenticated update programs" on programs for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete programs" on programs for delete using (auth.uid() is not null);
+
+-- Program Highlights
+drop policy if exists "authenticated insert program_highlights" on program_highlights;
+drop policy if exists "authenticated update program_highlights" on program_highlights;
+drop policy if exists "authenticated delete program_highlights" on program_highlights;
+create policy "authenticated insert program_highlights" on program_highlights for insert with check (auth.uid() is not null);
+create policy "authenticated update program_highlights" on program_highlights for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete program_highlights" on program_highlights for delete using (auth.uid() is not null);
+
+-- News Items
+drop policy if exists "authenticated insert news_items" on news_items;
+drop policy if exists "authenticated update news_items" on news_items;
+drop policy if exists "authenticated delete news_items" on news_items;
+create policy "authenticated insert news_items" on news_items for insert with check (auth.uid() is not null);
+create policy "authenticated update news_items" on news_items for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete news_items" on news_items for delete using (auth.uid() is not null);
+
+-- Leaders
+drop policy if exists "authenticated insert leaders" on leaders;
+drop policy if exists "authenticated update leaders" on leaders;
+drop policy if exists "authenticated delete leaders" on leaders;
+create policy "authenticated insert leaders" on leaders for insert with check (auth.uid() is not null);
+create policy "authenticated update leaders" on leaders for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete leaders" on leaders for delete using (auth.uid() is not null);
+
+-- Polls delete
+drop policy if exists "authenticated delete polls" on polls;
+create policy "authenticated delete polls" on polls for delete using (auth.uid() is not null);
+
+-- =============================================================
+-- ADMIN: User Roles
+-- =============================================================
+create table if not exists user_roles (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null unique,
+  role       text not null default 'editor'
+               check (role in ('admin', 'editor')),
+  created_at timestamptz not null default now()
+);
+
+alter table user_roles enable row level security;
+drop policy if exists "authenticated read own role" on user_roles;
+create policy "authenticated read own role" on user_roles
+  for select using (auth.uid() = user_id);

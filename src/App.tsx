@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -15,11 +15,67 @@ import { PollsPage } from './pages/PollsPage';
 import { AdminPollsPage } from './pages/AdminPollsPage';
 import { AdminSubmissionsPage } from './pages/AdminSubmissionsPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { AdminProgramsPage } from './pages/AdminProgramsPage';
+import { AdminNewsPage } from './pages/AdminNewsPage';
+import { AdminLeadersPage } from './pages/AdminLeadersPage';
+import { AdminPillarsPage } from './pages/AdminPillarsPage';
+import { AdminStatsPage } from './pages/AdminStatsPage';
+import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AdminLayout } from './components/admin/AdminLayout';
 import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { HelmetProvider } from 'react-helmet-async';
+
+function AppContent() {
+  const location = useLocation();
+  const isAdminRoute = /^\/[a-z]{2}\/admin(\/|$)/.test(location.pathname);
+  const isAdminLogin = /^\/[a-z]{2}\/admin\/login$/.test(location.pathname);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {(!isAdminRoute || isAdminLogin) && <Navbar />}
+      <main className="flex-grow">
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route path="/" element={<Navigate to="/mn" replace />} />
+
+            <Route path="/:lang">
+              {/* Public routes */}
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="ideology" element={<Ideology />} />
+              <Route path="programs" element={<ProgramsPage />} />
+              <Route path="programs/:id" element={<ProgramDetailPage />} />
+              <Route path="news" element={<NewsPage />} />
+              <Route path="news/:id" element={<NewsDetailPage />} />
+              <Route path="join" element={<JoinPage />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="polls" element={<PollsPage />} />
+
+              {/* Admin login (no layout) */}
+              <Route path="admin/login" element={<AdminLoginPage />} />
+
+              {/* Admin routes (with layout) */}
+              <Route path="admin" element={<ProtectedRoute><AdminLayout><AdminDashboardPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/programs" element={<ProtectedRoute><AdminLayout><AdminProgramsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/news" element={<ProtectedRoute><AdminLayout><AdminNewsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/leaders" element={<ProtectedRoute><AdminLayout><AdminLeadersPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/pillars" element={<ProtectedRoute><AdminLayout><AdminPillarsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/stats" element={<ProtectedRoute><AdminLayout><AdminStatsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/polls" element={<ProtectedRoute><AdminLayout><AdminPollsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/submissions" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminSubmissionsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/users" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminUsersPage /></AdminLayout></ProtectedRoute>} />
+            </Route>
+          </Routes>
+        </AnimatePresence>
+      </main>
+      {(!isAdminRoute || isAdminLogin) && <Footer />}
+    </div>
+  );
+}
 
 export default function App() {
   return (
@@ -27,35 +83,7 @@ export default function App() {
     <Router>
       <I18nProvider>
       <AuthProvider>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <AnimatePresence mode="wait">
-              <Routes>
-                {/* Default redirect to /mn */}
-                <Route path="/" element={<Navigate to="/mn" replace />} />
-                
-                {/* Bilingual Routes */}
-                <Route path="/:lang">
-                  <Route index element={<Home />} />
-                  <Route path="about" element={<About />} />
-                  <Route path="ideology" element={<Ideology />} />
-                  <Route path="programs" element={<ProgramsPage />} />
-                  <Route path="programs/:id" element={<ProgramDetailPage />} />
-                  <Route path="news" element={<NewsPage />} />
-                  <Route path="news/:id" element={<NewsDetailPage />} />
-                  <Route path="join" element={<JoinPage />} />
-                  <Route path="contact" element={<ContactPage />} />
-                  <Route path="polls" element={<PollsPage />} />
-                  <Route path="admin/login" element={<AdminLoginPage />} />
-                  <Route path="admin/polls" element={<ProtectedRoute><AdminPollsPage /></ProtectedRoute>} />
-                  <Route path="admin/submissions" element={<ProtectedRoute><AdminSubmissionsPage /></ProtectedRoute>} />
-                </Route>
-              </Routes>
-            </AnimatePresence>
-          </main>
-          <Footer />
-        </div>
+        <AppContent />
       </AuthProvider>
       </I18nProvider>
     </Router>

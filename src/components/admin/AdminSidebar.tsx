@@ -48,8 +48,8 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
               <span className="text-white text-sm font-black">S</span>
             </div>
             <div>
-              <div className="text-base font-black text-sdy-black tracking-tight leading-none">SDY Admin</div>
-              <div className="text-[10px] font-bold text-gray-400 mt-0.5">{t({ mn: 'Удирдлагын самбар', en: 'Management Panel' })}</div>
+              <div className="text-base font-black text-gray-900 dark:text-white tracking-tight leading-none">SDY Admin</div>
+              <div className="text-[10px] font-bold text-gray-500 mt-0.5">{t({ mn: 'Удирдлагын самбар', en: 'Management Panel' })}</div>
             </div>
           </div>
         )}
@@ -60,14 +60,14 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
         )}
         <button
           onClick={onToggle}
-          className="hidden md:flex p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          className="hidden md:flex p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
         >
-          <ChevronLeft size={16} className={`text-gray-400 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
+          <ChevronLeft size={16} className={`text-gray-500 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
         </button>
       </div>
 
       {/* Divider */}
-      <div className="mx-4 border-t border-gray-100 mb-3" />
+      <div className="mx-4 border-t border-gray-200 dark:border-white/6 mb-3" />
 
       {/* Nav Items */}
       <nav className="flex-1 px-3 space-y-0.5">
@@ -80,8 +80,8 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
               onClick={() => setMobileOpen(false)}
               className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150 ${
                 active
-                  ? 'bg-sdy-red/8 text-sdy-red font-bold'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                  ? 'bg-sdy-red/12 text-sdy-red font-bold'
+                  : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
               {active && (
@@ -92,7 +92,7 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
                 <span className="truncate">{language === 'mn' ? labelMn : labelEn}</span>
               )}
               {!collapsed && adminOnly && (
-                <Shield size={10} className="text-gray-300 ml-auto flex-shrink-0" />
+                <Shield size={10} className="text-gray-600 ml-auto flex-shrink-0" />
               )}
             </NavLink>
           );
@@ -101,18 +101,18 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
 
       {/* User info + Logout */}
       <div className="px-3 pb-5 mt-2">
-        <div className="mx-1 border-t border-gray-100 mb-3" />
+        <div className="mx-1 border-t border-gray-200 dark:border-white/6 mb-3" />
         {!collapsed && (
           <div className="px-3 py-2.5 mb-1">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-xs font-bold text-gray-500 uppercase flex-shrink-0">
+              <div className="w-8 h-8 bg-gray-100 dark:bg-white/8 rounded-lg flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-400 uppercase flex-shrink-0">
                 {userName[0]}
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-bold text-sdy-black truncate">{userName}</div>
+                <div className="text-[13px] font-bold text-gray-900 dark:text-white truncate">{userName}</div>
                 <div className="flex items-center gap-1">
                   <span className={`text-[9px] font-bold uppercase tracking-wider ${
-                    role === 'admin' ? 'text-sdy-red' : 'text-blue-500'
+                    role === 'admin' ? 'text-sdy-red' : 'text-blue-400'
                   }`}>
                     {role === 'admin' ? 'Admin' : 'Editor'}
                   </span>
@@ -123,7 +123,7 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
         )}
         <button
           onClick={() => signOut()}
-          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all w-full ${
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-gray-500 hover:bg-red-500/10 hover:text-red-400 transition-all w-full ${
             collapsed ? 'justify-center' : ''
           }`}
         >
@@ -139,21 +139,21 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2.5 bg-white rounded-xl shadow-md border border-gray-100"
+        className="md:hidden fixed top-4 left-4 z-50 p-2.5 bg-white dark:bg-[#16161a] rounded-xl shadow-sm border border-gray-200 dark:border-white/8"
       >
-        <Menu size={18} className="text-gray-600" />
+        <Menu size={18} className="text-gray-500 dark:text-gray-400" />
       </button>
 
       {/* Mobile overlay */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-[270px] bg-white flex flex-col shadow-2xl">
+          <div className="absolute inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-[2px]" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 bottom-0 w-[270px] bg-white dark:bg-[#111114] flex flex-col shadow-2xl">
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-5 right-4 p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+              className="absolute top-5 right-4 p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
             >
-              <X size={16} className="text-gray-400" />
+              <X size={16} className="text-gray-500" />
             </button>
             {navContent}
           </div>
@@ -161,7 +161,7 @@ export const AdminSidebar: React.FC<{ collapsed: boolean; onToggle: () => void }
       )}
 
       {/* Desktop sidebar */}
-      <aside className={`hidden md:flex flex-col bg-white border-r border-gray-100/80 h-screen sticky top-0 transition-all duration-300 ${
+      <aside className={`hidden md:flex flex-col bg-white dark:bg-[#111114] border-r border-gray-200 dark:border-white/6 h-screen sticky top-0 transition-all duration-300 ${
         collapsed ? 'w-[68px]' : 'w-[260px]'
       }`}>
         {navContent}

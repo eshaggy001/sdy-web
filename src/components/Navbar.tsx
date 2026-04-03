@@ -36,7 +36,7 @@ export const Navbar = () => {
     <nav
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)] py-3'
+          ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)] py-3 dark:bg-gray-950/95 dark:border-gray-800 dark:shadow-[0_1px_12px_rgba(0,0,0,0.3)]'
           : 'bg-white/0 py-5'
       }`}
     >
@@ -63,7 +63,7 @@ export const Navbar = () => {
                   className={`relative px-3 py-2 text-[13px] font-bold rounded-lg transition-all duration-200 ${
                     active
                       ? 'text-sdy-red'
-                      : 'text-sdy-black/70 hover:text-sdy-black hover:bg-gray-50'
+                      : 'text-sdy-black/70 hover:text-sdy-black hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'
                   }`}
                 >
                   {t(item.label)}
@@ -87,7 +87,7 @@ export const Navbar = () => {
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 hover:border-sdy-red/40 transition-all font-black text-[11px] uppercase tracking-widest text-sdy-black/60 hover:text-sdy-red bg-white/60"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 hover:border-sdy-red/40 transition-all font-black text-[11px] uppercase tracking-widest text-sdy-black/60 hover:text-sdy-red bg-white/60 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800/60"
             >
               <Globe size={12} className="text-sdy-red" />
               {language === 'mn' ? 'EN' : 'MN'}
@@ -104,14 +104,14 @@ export const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 font-black text-[11px] uppercase tracking-widest text-sdy-black"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 font-black text-[11px] uppercase tracking-widest text-sdy-black dark:border-gray-700 dark:text-gray-300"
             >
               <Globe size={11} className="text-sdy-red" />
               {language === 'mn' ? 'EN' : 'MN'}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors text-sdy-black"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors text-sdy-black dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -128,7 +128,7 @@ export const Navbar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden bg-white border-t border-gray-100 overflow-hidden shadow-xl"
+            className="md:hidden bg-white border-t border-gray-100 overflow-hidden shadow-xl dark:bg-gray-950 dark:border-gray-800"
           >
             <div className="px-4 pt-4 pb-8 space-y-1">
               {NAV_ITEMS.map((item, i) => {
@@ -145,7 +145,7 @@ export const Navbar = () => {
                       className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-base transition-colors ${
                         active
                           ? 'bg-sdy-red/8 text-sdy-red'
-                          : 'text-sdy-black hover:bg-gray-50'
+                          : 'text-sdy-black hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800'
                       }`}
                     >
                       {t(item.label)}

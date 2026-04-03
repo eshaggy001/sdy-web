@@ -1,17 +1,44 @@
 import React, { useState } from 'react';
 import { SEOMeta } from '../components/SEOMeta';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, User, Mail, Phone, MapPin } from 'lucide-react';
+import { CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, User, Mail, Phone, MapPin, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { supabase } from '../lib/supabase';
 
+const LOCATIONS = [
+  { value: 'Улаанбаатар', mn: 'Улаанбаатар', en: 'Ulaanbaatar' },
+  { value: 'Архангай', mn: 'Архангай', en: 'Arkhangai' },
+  { value: 'Баян-Өлгий', mn: 'Баян-Өлгий', en: 'Bayan-Ölgii' },
+  { value: 'Баянхонгор', mn: 'Баянхонгор', en: 'Bayankhongor' },
+  { value: 'Булган', mn: 'Булган', en: 'Bulgan' },
+  { value: 'Говь-Алтай', mn: 'Говь-Алтай', en: 'Govi-Altai' },
+  { value: 'Говьсүмбэр', mn: 'Говьсүмбэр', en: 'Govisümber' },
+  { value: 'Дархан-Уул', mn: 'Дархан-Уул', en: 'Darkhan-Uul' },
+  { value: 'Дорноговь', mn: 'Дорноговь', en: 'Dornogovi' },
+  { value: 'Дорнод', mn: 'Дорнод', en: 'Dornod' },
+  { value: 'Дундговь', mn: 'Дундговь', en: 'Dundgovi' },
+  { value: 'Завхан', mn: 'Завхан', en: 'Zavkhan' },
+  { value: 'Орхон', mn: 'Орхон', en: 'Orkhon' },
+  { value: 'Өвөрхангай', mn: 'Өвөрхангай', en: 'Övörkhangai' },
+  { value: 'Өмнөговь', mn: 'Өмнөговь', en: 'Ömnögovi' },
+  { value: 'Сүхбаатар', mn: 'Сүхбаатар', en: 'Sükhbaatar' },
+  { value: 'Сэлэнгэ', mn: 'Сэлэнгэ', en: 'Selenge' },
+  { value: 'Төв', mn: 'Төв', en: 'Töv' },
+  { value: 'Увс', mn: 'Увс', en: 'Uvs' },
+  { value: 'Ховд', mn: 'Ховд', en: 'Khovd' },
+  { value: 'Хөвсгөл', mn: 'Хөвсгөл', en: 'Khövsgöl' },
+  { value: 'Хэнтий', mn: 'Хэнтий', en: 'Khentii' },
+  { value: 'Гадаад', mn: 'Гадаад', en: 'Abroad' },
+] as const;
+
 export const JoinPage = () => {
-  const { t, l } = useI18n();
+  const { t, l, language } = useI18n();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     age: '',
     location: '',
@@ -21,7 +48,7 @@ export const JoinPage = () => {
   const benefits = [
     {
       title: { mn: 'Манлайллын сургалт', en: 'Leadership Training' },
-      description: { 
+      description: {
         mn: 'НАЗХ Академи болон үндэсний улс төрийн удирдагчидтай хийх онцгой сургалтуудад хамрагдах.',
         en: 'Access to SDY Academy and exclusive workshops with national political leaders.'
       },
@@ -29,7 +56,7 @@ export const JoinPage = () => {
     },
     {
       title: { mn: 'Олон улсын сүлжээ', en: 'Global Network' },
-      description: { 
+      description: {
         mn: 'Олон улсын залуучуудын холбоо (IUSY)-оор дамжуулан олон улсын солилцоо, залуучуудын форумд оролцох боломж.',
         en: 'Opportunities for international exchange and youth forums through IUSY.'
       },
@@ -37,7 +64,7 @@ export const JoinPage = () => {
     },
     {
       title: { mn: 'Бодит нөлөөлөл', en: 'Real Impact' },
-      description: { 
+      description: {
         mn: 'Орон нутагтаа нийгмийн өөрчлөлтийг авчрах төслүүдийг удирдан зохион байгуулах.',
         en: 'Lead community projects that drive social change in your local region.'
       },
@@ -47,19 +74,30 @@ export const JoinPage = () => {
 
   const nextStep = () => setStep(step + 1);
 
+  const [error, setError] = useState('');
+
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    await supabase.from('member_applications').insert({
-      name: formData.name,
+    setError('');
+    const { error: err } = await supabase.from('member_applications').insert({
+      first_name: formData.firstName,
+      last_name: formData.lastName,
       email: formData.email,
       age: parseInt(formData.age),
       location: formData.location,
       phone: formData.phone,
     });
     setSubmitting(false);
+    if (err) {
+      console.error('Insert error:', err);
+      setError(t({ mn: 'Алдаа гарлаа. Дахин оролдоно уу.', en: 'Something went wrong. Please try again.' }));
+      return;
+    }
     nextStep();
   };
+
+  const update = (field: string, value: string) => setFormData({ ...formData, [field]: value });
 
   return (
     <>
@@ -86,12 +124,12 @@ export const JoinPage = () => {
               <span className="text-sdy-red">{t({ mn: 'болох.', en: 'Member.' })}</span>
             </h1>
             <p className="text-xl text-gray-600 mb-12 leading-relaxed">
-              {t({ 
+              {t({
                 mn: 'Монголын залуучуудын улс төрийн хамгийн том байгууллагад нэгдээрэй. Хамтдаа бид хүн бүрт хүртээмжтэй, илүү хүчирхэг ирээдүйг цогцлоож байна.',
                 en: 'Join Mongolia\'s largest youth political organization. Together, we are building a stronger, more equitable future for all.'
               })}
             </p>
-            
+
             <div className="space-y-10">
               {benefits.map((benefit, i) => (
                 <div key={i} className="flex gap-6 group">
@@ -108,9 +146,25 @@ export const JoinPage = () => {
           </div>
 
           {/* Right Side: Form */}
-          <div className="bg-white rounded-[3rem] p-8 md:p-16 card-shadow relative overflow-hidden">
+          <div className="bg-white rounded-4xl p-8 md:p-16 card-shadow relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-sdy-red/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-            
+
+            {/* Step indicator */}
+            <div className="flex items-center gap-2 mb-8">
+              {[1, 2].map((s) => (
+                <div key={s} className="flex items-center gap-2">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all duration-300 ${
+                    step > s ? 'bg-emerald-500 text-white' :
+                    step === s ? 'bg-sdy-red text-white' :
+                    'bg-gray-100 text-gray-400'
+                  }`}>
+                    {step > s ? <CheckCircle2 size={14} /> : s}
+                  </div>
+                  {s < 2 && <div className={`w-12 h-0.5 rounded-full transition-all duration-500 ${step > 1 ? 'bg-emerald-500' : 'bg-gray-100'}`} />}
+                </div>
+              ))}
+            </div>
+
             <AnimatePresence mode="wait">
               {step === 1 && (
                 <motion.div
@@ -119,63 +173,84 @@ export const JoinPage = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                 >
-                  <h2 className="text-3xl font-black text-sdy-black mb-8 tracking-tight">
-                    {t({ mn: 'Алхам 1: Хувийн мэдээлэл', en: 'Step 1: Personal Details' })}
+                  <h2 className="text-3xl font-black text-sdy-black mb-2 tracking-tight">
+                    {t({ mn: 'Хувийн мэдээлэл', en: 'Personal Details' })}
                   </h2>
-                  <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                        {t({ mn: 'Овог нэр', en: 'Full Name' })}
-                      </label>
-                      <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input 
-                          type="text" 
-                          required
-                          className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                          placeholder={t({ mn: 'Бүтэн нэрээ оруулна уу', en: 'Enter your full name' })}
-                          value={formData.name}
-                          onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        />
+                  <p className="text-sm text-gray-400 mb-8">
+                    {t({ mn: 'Алхам 1/2 — Үндсэн мэдээлэл', en: 'Step 1 of 2 — Basic information' })}
+                  </p>
+                  <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-5">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                          {t({ mn: 'Овог', en: 'Last Name' })}
+                        </label>
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                          <input
+                            type="text"
+                            required
+                            className="input input-icon"
+                            placeholder={t({ mn: 'Овог', en: 'Last name' })}
+                            value={formData.lastName}
+                            onChange={(e) => update('lastName', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                          {t({ mn: 'Нэр', en: 'First Name' })}
+                        </label>
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                          <input
+                            type="text"
+                            required
+                            className="input input-icon"
+                            placeholder={t({ mn: 'Нэр', en: 'First name' })}
+                            value={formData.firstName}
+                            onChange={(e) => update('firstName', e.target.value)}
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
                         {t({ mn: 'И-мэйл хаяг', en: 'Email Address' })}
                       </label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input 
-                          type="email" 
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                        <input
+                          type="email"
                           required
-                          className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                          className="input input-icon"
                           placeholder="your@email.com"
                           value={formData.email}
-                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          onChange={(e) => update('email', e.target.value)}
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
                         {t({ mn: 'Нас (18-35)', en: 'Age (18-35)' })}
                       </label>
                       <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-black text-xs uppercase">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 font-black text-xs uppercase">
                           {t({ mn: 'НАС', en: 'AGE' })}
                         </span>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           min="18"
                           max="35"
                           required
-                          className="w-full pl-16 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                          className="input pl-16"
                           placeholder={t({ mn: 'Таны нас', en: 'Your age' })}
                           value={formData.age}
-                          onChange={(e) => setFormData({...formData, age: e.target.value})}
+                          onChange={(e) => update('age', e.target.value)}
                         />
                       </div>
                     </div>
-                    <button type="submit" className="w-full btn-primary py-5 text-lg flex items-center justify-center gap-2">
+                    <button type="submit" className="btn-primary btn-xl btn-full flex items-center gap-2">
                       {t({ mn: 'Дараагийн алхам', en: 'Next Step' })} <ArrowRight size={20} />
                     </button>
                   </form>
@@ -189,62 +264,70 @@ export const JoinPage = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                 >
-                  <h2 className="text-3xl font-black text-sdy-black mb-8 tracking-tight">
-                    {t({ mn: 'Алхам 2: Байршил ба Холбоо барих', en: 'Step 2: Location & Contact' })}
+                  <h2 className="text-3xl font-black text-sdy-black mb-2 tracking-tight">
+                    {t({ mn: 'Байршил ба Холбоо барих', en: 'Location & Contact' })}
                   </h2>
-                  <form onSubmit={handleFinalSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
-                        {t({ mn: 'Байршил (Аймаг/Дүүрэг)', en: 'Region (Aimag)' })}
+                  <p className="text-sm text-gray-400 mb-8">
+                    {t({ mn: 'Алхам 2/2 — Хаана байдаг вэ?', en: 'Step 2 of 2 — Where are you based?' })}
+                  </p>
+                  <form onSubmit={handleFinalSubmit} className="space-y-5">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                        {t({ mn: 'Аймаг / Хот', en: 'Province / City' })}
                       </label>
                       <div className="relative">
-                        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <select 
+                        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
+                        <select
                           required
-                          className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold appearance-none bg-white"
+                          className="input input-icon appearance-none bg-white pr-10 cursor-pointer"
                           value={formData.location}
-                          onChange={(e) => setFormData({...formData, location: e.target.value})}
+                          onChange={(e) => update('location', e.target.value)}
                         >
-                          <option value="">{t({ mn: 'Байршил сонгох', en: 'Select Location' })}</option>
-                          <option value="Ulaanbaatar">{t({ mn: 'Улаанбаатар', en: 'Ulaanbaatar' })}</option>
-                          <option value="Darkhan">{t({ mn: 'Дархан', en: 'Darkhan' })}</option>
-                          <option value="Erdenet">{t({ mn: 'Эрдэнэт', en: 'Erdenet' })}</option>
-                          <option value="Other">{t({ mn: 'Бусад аймаг', en: 'Other Aimag' })}</option>
+                          <option value="">{t({ mn: 'Аймаг сонгох', en: 'Select province' })}</option>
+                          {LOCATIONS.map((loc) => (
+                            <option key={loc.value} value={loc.value}>
+                              {language === 'mn' ? loc.mn : loc.en}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-sdy-black uppercase tracking-widest">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
                         {t({ mn: 'Утасны дугаар', en: 'Phone Number' })}
                       </label>
                       <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input 
-                          type="tel" 
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                        <input
+                          type="tel"
                           required
-                          className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                          className="input input-icon"
                           placeholder="+976 XXXX XXXX"
                           value={formData.phone}
-                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          onChange={(e) => update('phone', e.target.value)}
                         />
                       </div>
                     </div>
                     <div className="flex items-start gap-3 py-2">
                       <input type="checkbox" required className="mt-1 w-5 h-5 text-sdy-red border-gray-300 rounded focus:ring-sdy-red" />
                       <p className="text-sm text-gray-500 font-bold">
-                        {t({ 
+                        {t({
                           mn: 'Би үйлчилгээний нөхцөлийг зөвшөөрч байгаа бөгөөд НАЗХ-ны нийгмийн ардчиллын үнэт зүйлсийг дэмжиж байна.',
                           en: 'I agree to the terms and conditions and support the social democratic values of SDY Mongolia.'
                         })}
                       </p>
                     </div>
+                    {error && (
+                      <p className="text-sm text-red-500 font-medium">{error}</p>
+                    )}
                     <div className="flex flex-col gap-4">
-                      <button type="submit" disabled={submitting} className="w-full btn-primary py-5 text-lg flex items-center justify-center gap-2 disabled:opacity-60">
+                      <button type="submit" disabled={submitting} className="btn-primary btn-xl btn-full flex items-center gap-2 disabled:opacity-60">
                         {submitting ? t({ mn: 'Илгээж байна...', en: 'Submitting...' }) : t({ mn: 'Бүртгэл дуусгах', en: 'Complete Registration' })}
                         <CheckCircle2 size={20} />
                       </button>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => setStep(1)}
                         className="w-full text-sm font-black text-gray-400 hover:text-sdy-black transition-colors"
                       >
@@ -270,13 +353,13 @@ export const JoinPage = () => {
                   </h2>
                   <p className="text-xl text-gray-600 mb-12 leading-relaxed">
                     {t({ mn: 'Нэгдсэнд баярлалаа, ', en: 'Thank you for joining, ' })}
-                    <span className="text-sdy-red font-black">{formData.name}</span>. <br />
-                    {t({ 
+                    <span className="text-sdy-red font-black">{formData.firstName}</span>. <br />
+                    {t({
                       mn: 'Бид таны и-мэйл хаяг руу танилцуулга илгээсэн. Таны харьяа салбар зөвлөл 3 ажлын өдрийн дотор тантай холбогдох болно.',
                       en: 'We\'ve sent a digital welcome kit to your email. Your local chapter will contact you within 3 business days.'
                     })}
                   </p>
-                  <Link to={l('/')} className="btn-secondary px-12 py-4 inline-flex items-center gap-2">
+                  <Link to={l('/')} className="btn-secondary btn-lg inline-flex items-center gap-2">
                     {t({ mn: 'Нүүр хуудас руу буцах', en: 'Back to Home' })} <ArrowRight size={20} />
                   </Link>
                 </motion.div>

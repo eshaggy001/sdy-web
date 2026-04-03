@@ -39,12 +39,12 @@ export const NewsPage = () => {
           <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-6">
             {t({ mn: 'Мэдээллийн төв', en: 'Media Center' })}
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+          <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
             {t({ mn: 'Мэдээ ба ', en: 'News & ' })}
             <span className="text-sdy-red">{t({ mn: 'шинэчлэлтүүд.', en: 'Updates.' })}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
-            {t({ 
+          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
+            {t({
               mn: 'Манай сүүлийн үеийн үйл ажиллагаа, бодлогын байр суурь, нийгэмд үзүүлж буй нөлөөллийн талаарх мэдээллийг эндээс авна уу.',
               en: 'Stay informed about our latest activities, policy positions, and community impact across Mongolia.'
             })}
@@ -78,7 +78,7 @@ export const NewsPage = () => {
                     </div>
                   </Link>
                   <div className="flex flex-col justify-center">
-                    <div className="flex items-center gap-3 text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest">
+                    <div className="flex items-center gap-3 text-xs font-bold text-gray-400 dark:text-gray-500 mb-4 uppercase tracking-widest">
                       <Calendar size={14} className="text-sdy-red" />
                       {t(item.date)}
                     </div>
@@ -87,10 +87,10 @@ export const NewsPage = () => {
                         {t(item.title)}
                       </h2>
                     </Link>
-                    <p className="text-gray-600 mb-8 leading-relaxed line-clamp-3">
+                    <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed line-clamp-3">
                       {t(item.excerpt)}
                     </p>
-                    <Link to={l(`/news/${item.id}`)} className="inline-flex items-center gap-2 font-black text-sdy-black group-hover:text-sdy-red transition-colors">
+                    <Link to={l(`/news/${item.id}`)} className="inline-flex items-center gap-2 font-black text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors">
                       {t({ mn: 'Дэлгэрэнгүй унших', en: 'Read Full Story' })} <ArrowRight size={20} />
                     </Link>
                   </div>
@@ -112,13 +112,13 @@ export const NewsPage = () => {
             </div>
 
             {/* Categories */}
-            <div className="bg-sdy-gray p-8 rounded-4xl">
-              <h3 className="text-xl font-black text-sdy-black mb-6 uppercase tracking-tight">
+            <div className="bg-sdy-gray dark:bg-gray-900 p-8 rounded-4xl">
+              <h3 className="text-xl font-black text-sdy-black dark:text-white mb-6 uppercase tracking-tight">
                 {t({ mn: 'Ангилал', en: 'Categories' })}
               </h3>
               <div className="space-y-2">
                 {categories.map((cat) => (
-                  <button key={cat.id} className="w-full text-left py-3 px-4 rounded-xl font-bold text-gray-500 hover:bg-white hover:text-sdy-red transition-all">
+                  <button key={cat.id} className="w-full text-left py-3 px-4 rounded-xl font-bold text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:text-sdy-red transition-all">
                     {t(cat.label)}
                   </button>
                 ))}

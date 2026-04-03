@@ -91,34 +91,34 @@ export const NewsDetailPage = () => {
             {/* Back link */}
             <Link
               to={l('/news')}
-              className="inline-flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors mb-10 uppercase tracking-widest"
+              className="inline-flex items-center gap-2 text-sm font-black text-gray-400 dark:text-gray-500 hover:text-sdy-red transition-colors mb-10 uppercase tracking-widest"
             >
               <ArrowLeft size={14} />
               {t({ mn: 'Бүх мэдээ', en: 'All News' })}
             </Link>
 
             {/* Excerpt / lead */}
-            <p className="text-xl text-gray-500 leading-relaxed font-medium mb-10 border-l-4 border-sdy-red pl-6">
+            <p className="text-xl text-gray-500 dark:text-gray-400 leading-relaxed font-medium mb-10 border-l-4 border-sdy-red pl-6">
               {t(article.excerpt)}
             </p>
 
             {/* Body paragraphs */}
-            <div className="space-y-6 text-gray-700 leading-[1.85] text-[17px]">
+            <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-[1.85] text-[17px]">
               {paragraphs.length > 0 ? (
                 paragraphs.map((para: string, i: number) => (
                   <p key={i}>{para}</p>
                 ))
               ) : (
-                <p className="text-gray-400 italic">
+                <p className="text-gray-400 dark:text-gray-500 italic">
                   {t({ mn: 'Нийтлэлийн агуулга удахгүй нэмэгдэнэ.', en: 'Full article content coming soon.' })}
                 </p>
               )}
             </div>
 
             {/* Category tag */}
-            <div className="flex items-center gap-2 mt-12 pt-8 border-t border-gray-100">
+            <div className="flex items-center gap-2 mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
               <Tag size={14} className="text-sdy-red" />
-              <span className="text-xs font-black uppercase tracking-widest text-gray-400">
+              <span className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">
                 {t(article.category)}
               </span>
             </div>
@@ -128,14 +128,14 @@ export const NewsDetailPage = () => {
               {prevArticle ? (
                 <Link
                   to={l(`/news/${prevArticle.id}`)}
-                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all"
+                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all"
                 >
                   <ArrowLeft size={16} className="text-sdy-red flex-shrink-0 mt-1" />
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">
                       {t({ mn: 'Өмнөх', en: 'Previous' })}
                     </p>
-                    <p className="font-black text-sdy-black group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
+                    <p className="font-black text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
                       {t(prevArticle.title)}
                     </p>
                   </div>
@@ -145,14 +145,14 @@ export const NewsDetailPage = () => {
               {nextArticle ? (
                 <Link
                   to={l(`/news/${nextArticle.id}`)}
-                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all sm:text-right sm:flex-row-reverse"
+                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all sm:text-right sm:flex-row-reverse"
                 >
                   <ArrowRight size={16} className="text-sdy-red flex-shrink-0 mt-1" />
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">
                       {t({ mn: 'Дараагийн', en: 'Next' })}
                     </p>
-                    <p className="font-black text-sdy-black group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
+                    <p className="font-black text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
                       {t(nextArticle.title)}
                     </p>
                   </div>
@@ -190,7 +190,7 @@ export const NewsDetailPage = () => {
 
             {/* Related articles */}
             <div>
-              <h3 className="text-lg font-black text-sdy-black mb-6 uppercase tracking-tight">
+              <h3 className="text-lg font-black text-sdy-black dark:text-white mb-6 uppercase tracking-tight">
                 {t({ mn: 'Холбоотой мэдээ', en: 'Related Articles' })}
               </h3>
               <div className="space-y-5">
@@ -209,10 +209,10 @@ export const NewsDetailPage = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                      <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">
                         {t(item.date)}
                       </p>
-                      <p className="font-black text-[13px] leading-snug group-hover:text-sdy-red transition-colors line-clamp-2">
+                      <p className="font-black text-[13px] leading-snug group-hover:text-sdy-red transition-colors line-clamp-2 dark:text-white">
                         {t(item.title)}
                       </p>
                     </div>
@@ -222,7 +222,7 @@ export const NewsDetailPage = () => {
 
               <Link
                 to={l('/news')}
-                className="inline-flex items-center gap-2 mt-8 font-black text-sm text-sdy-black hover:text-sdy-red transition-colors"
+                className="inline-flex items-center gap-2 mt-8 font-black text-sm text-sdy-black dark:text-white hover:text-sdy-red transition-colors"
               >
                 {t({ mn: 'Бүх мэдээг үзэх', en: 'View All News' })}
                 <ArrowRight size={14} />

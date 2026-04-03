@@ -119,11 +119,11 @@ export const JoinPage = () => {
             <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-6">
               {t({ mn: 'Бидэнтэй нэгдэх', en: 'Join Us' })}
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+            <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
               {t({ mn: 'Гишүүн ', en: 'Become a ' })}
               <span className="text-sdy-red">{t({ mn: 'болох.', en: 'Member.' })}</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
               {t({
                 mn: 'Монголын залуучуудын улс төрийн хамгийн том байгууллагад нэгдээрэй. Хамтдаа бид хүн бүрт хүртээмжтэй, илүү хүчирхэг ирээдүйг цогцлоож байна.',
                 en: 'Join Mongolia\'s largest youth political organization. Together, we are building a stronger, more equitable future for all.'
@@ -133,12 +133,12 @@ export const JoinPage = () => {
             <div className="space-y-10">
               {benefits.map((benefit, i) => (
                 <div key={i} className="flex gap-6 group">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:bg-sdy-red group-hover:text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:bg-sdy-red group-hover:text-white">
                     <benefit.icon size={28} />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-sdy-black mb-2 uppercase tracking-tight">{t(benefit.title)}</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">{t(benefit.description)}</p>
+                    <h3 className="text-2xl font-black text-sdy-black dark:text-white mb-2 uppercase tracking-tight">{t(benefit.title)}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">{t(benefit.description)}</p>
                   </div>
                 </div>
               ))}
@@ -146,7 +146,7 @@ export const JoinPage = () => {
           </div>
 
           {/* Right Side: Form */}
-          <div className="bg-white rounded-4xl p-8 md:p-16 card-shadow relative overflow-hidden">
+          <div className="bg-white dark:bg-gray-950 rounded-4xl p-8 md:p-16 card-shadow relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-sdy-red/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
 
             {/* Step indicator */}
@@ -156,11 +156,11 @@ export const JoinPage = () => {
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all duration-300 ${
                     step > s ? 'bg-emerald-500 text-white' :
                     step === s ? 'bg-sdy-red text-white' :
-                    'bg-gray-100 text-gray-400'
+                    'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
                   }`}>
                     {step > s ? <CheckCircle2 size={14} /> : s}
                   </div>
-                  {s < 2 && <div className={`w-12 h-0.5 rounded-full transition-all duration-500 ${step > 1 ? 'bg-emerald-500' : 'bg-gray-100'}`} />}
+                  {s < 2 && <div className={`w-12 h-0.5 rounded-full transition-all duration-500 ${step > 1 ? 'bg-emerald-500' : 'bg-gray-100 dark:bg-gray-800'}`} />}
                 </div>
               ))}
             </div>
@@ -173,16 +173,16 @@ export const JoinPage = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                 >
-                  <h2 className="text-3xl font-black text-sdy-black mb-2 tracking-tight">
+                  <h2 className="text-3xl font-black text-sdy-black dark:text-white mb-2 tracking-tight">
                     {t({ mn: 'Хувийн мэдээлэл', en: 'Personal Details' })}
                   </h2>
-                  <p className="text-sm text-gray-400 mb-8">
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
                     {t({ mn: 'Алхам 1/2 — Үндсэн мэдээлэл', en: 'Step 1 of 2 — Basic information' })}
                   </p>
                   <form onSubmit={(e) => { e.preventDefault(); nextStep(); }} className="space-y-5">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                        <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                           {t({ mn: 'Овог', en: 'Last Name' })}
                         </label>
                         <div className="relative">
@@ -198,7 +198,7 @@ export const JoinPage = () => {
                         </div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                        <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                           {t({ mn: 'Нэр', en: 'First Name' })}
                         </label>
                         <div className="relative">
@@ -215,7 +215,7 @@ export const JoinPage = () => {
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                      <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                         {t({ mn: 'И-мэйл хаяг', en: 'Email Address' })}
                       </label>
                       <div className="relative">
@@ -231,7 +231,7 @@ export const JoinPage = () => {
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                      <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                         {t({ mn: 'Нас (18-35)', en: 'Age (18-35)' })}
                       </label>
                       <div className="relative">
@@ -264,15 +264,15 @@ export const JoinPage = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                 >
-                  <h2 className="text-3xl font-black text-sdy-black mb-2 tracking-tight">
+                  <h2 className="text-3xl font-black text-sdy-black dark:text-white mb-2 tracking-tight">
                     {t({ mn: 'Байршил ба Холбоо барих', en: 'Location & Contact' })}
                   </h2>
-                  <p className="text-sm text-gray-400 mb-8">
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
                     {t({ mn: 'Алхам 2/2 — Хаана байдаг вэ?', en: 'Step 2 of 2 — Where are you based?' })}
                   </p>
                   <form onSubmit={handleFinalSubmit} className="space-y-5">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                      <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                         {t({ mn: 'Аймаг / Хот', en: 'Province / City' })}
                       </label>
                       <div className="relative">
@@ -280,7 +280,7 @@ export const JoinPage = () => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
                         <select
                           required
-                          className="input input-icon appearance-none bg-white pr-10 cursor-pointer"
+                          className="input input-icon appearance-none bg-white dark:bg-gray-950 pr-10 cursor-pointer"
                           value={formData.location}
                           onChange={(e) => update('location', e.target.value)}
                         >
@@ -294,7 +294,7 @@ export const JoinPage = () => {
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                      <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                         {t({ mn: 'Утасны дугаар', en: 'Phone Number' })}
                       </label>
                       <div className="relative">
@@ -311,7 +311,7 @@ export const JoinPage = () => {
                     </div>
                     <div className="flex items-start gap-3 py-2">
                       <input type="checkbox" required className="mt-1 w-5 h-5 text-sdy-red border-gray-300 rounded focus:ring-sdy-red" />
-                      <p className="text-sm text-gray-500 font-bold">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 font-bold">
                         {t({
                           mn: 'Би үйлчилгээний нөхцөлийг зөвшөөрч байгаа бөгөөд НАЗХ-ны нийгмийн ардчиллын үнэт зүйлсийг дэмжиж байна.',
                           en: 'I agree to the terms and conditions and support the social democratic values of SDY Mongolia.'
@@ -329,7 +329,7 @@ export const JoinPage = () => {
                       <button
                         type="button"
                         onClick={() => setStep(1)}
-                        className="w-full text-sm font-black text-gray-400 hover:text-sdy-black transition-colors"
+                        className="w-full text-sm font-black text-gray-400 dark:text-gray-500 hover:text-sdy-black dark:hover:text-white transition-colors"
                       >
                         {t({ mn: 'Буцах', en: 'Go Back' })}
                       </button>
@@ -348,10 +348,10 @@ export const JoinPage = () => {
                   <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
                     <CheckCircle2 size={48} />
                   </div>
-                  <h2 className="text-4xl font-black text-sdy-black mb-6 tracking-tight uppercase">
+                  <h2 className="text-4xl font-black text-sdy-black dark:text-white mb-6 tracking-tight uppercase">
                     {t({ mn: 'НАЗХ-д тавтай морил!', en: 'Welcome to SDY!' })}
                   </h2>
-                  <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+                  <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
                     {t({ mn: 'Нэгдсэнд баярлалаа, ', en: 'Thank you for joining, ' })}
                     <span className="text-sdy-red font-black">{formData.firstName}</span>. <br />
                     {t({

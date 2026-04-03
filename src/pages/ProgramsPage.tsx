@@ -39,11 +39,11 @@ export const ProgramsPage = () => {
             <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-6">
               {t({ mn: 'Боломжууд', en: 'Opportunities' })}
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+            <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
               {t({ mn: 'Хөтөлбөр ба ', en: 'Programs & ' })}
               <span className="text-sdy-red">{t({ mn: 'санаачилгууд.', en: 'Initiatives.' })}</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
               {t({
                 mn: 'НАЗХ Академийн манлайллын сургалтаас эхлээд олон улсын солилцооны хөтөлбөр хүртэл бид Монголын залуучуудад өсөж хөгжих, манлайлах бодит боломжуудыг олгодог.',
                 en: 'From leadership training at SDY Academy to international exchange programs, we provide concrete opportunities for young Mongolians to grow and lead.'
@@ -58,14 +58,14 @@ export const ProgramsPage = () => {
               <input
                 type="text"
                 placeholder={t({ mn: 'Хөтөлбөр хайх...', en: 'Search programs...' })}
-                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 dark:border-gray-800 focus:border-sdy-red outline-none transition-all font-bold"
               />
             </div>
             <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
-                  className={`px-6 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all whitespace-nowrap ${cat.id === 'All' ? 'bg-sdy-black text-white' : 'bg-sdy-gray text-gray-500 hover:bg-gray-200'}`}
+                  className={`px-6 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all whitespace-nowrap ${cat.id === 'All' ? 'bg-sdy-black text-white' : 'bg-sdy-gray text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
                 >
                   {t(cat.label)}
                 </button>
@@ -132,22 +132,22 @@ export const ProgramsPage = () => {
                 </div>
                 <div className="p-8 flex-grow">
                   <h3 className="text-2xl font-black mb-4 group-hover:text-sdy-red transition-colors">{t(program.title)}</h3>
-                  <p className="text-gray-600 mb-8 line-clamp-3 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 mb-8 line-clamp-3 leading-relaxed">
                     {t(program.description)}
                   </p>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500">
+                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
                       <Calendar size={18} className="text-sdy-red" />
                       <span>{t(program.date)}</span>
                     </div>
-                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500">
+                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
                       <MapPin size={18} className="text-sdy-red" />
                       <span>{t(program.location || { mn: 'Улаанбаатар, Монгол', en: 'Ulaanbaatar, Mongolia' })}</span>
                     </div>
                   </div>
                 </div>
                 <div className="p-8 pt-0 flex gap-3">
-                  <Link to={l(`/programs/${program.id}`)} className={`${program.registrationOpen ? 'flex-1' : 'w-full'} inline-flex items-center justify-center gap-2 rounded-xl border-2 border-sdy-black px-4 py-4 text-xs font-black uppercase tracking-wider text-sdy-black transition-all hover:bg-sdy-black hover:text-white active:scale-[0.97]`}>
+                  <Link to={l(`/programs/${program.id}`)} className={`${program.registrationOpen ? 'flex-1' : 'w-full'} inline-flex items-center justify-center gap-2 rounded-xl border-2 border-sdy-black dark:border-white px-4 py-4 text-xs font-black uppercase tracking-wider text-sdy-black dark:text-white transition-all hover:bg-sdy-black hover:text-white dark:hover:bg-white dark:hover:text-sdy-black active:scale-[0.97]`}>
                     {t({ mn: 'Дэлгэрэнгүй', en: 'Learn More' })}
                   </Link>
                   {program.registrationOpen && (

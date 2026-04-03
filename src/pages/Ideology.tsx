@@ -58,11 +58,11 @@ export const Ideology = () => {
           <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-6">
             {t({ mn: 'Бидний үнэт зүйлс', en: 'Our Values' })}
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+          <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
             {t({ mn: 'Нийгмийн ардчиллын ', en: 'The Foundation of ' })}
             <span className="text-sdy-red">{t({ mn: 'тулгуур багана.', en: 'Social Democracy.' })}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
             {t({
               mn: 'Бидний үзэл баримтлал нь хүчирхэг ардчилалд хувь хүний эрх чөлөө болон хамтын хариуцлага хоёулаа чухал гэсэн итгэл үнэмшилд тулгуурладаг. Бид ашгаас илүү хүнийг эрхэмлэдэг бодлогыг дэмждэг.',
               en: 'Our ideology is rooted in the belief that a strong democracy requires both individual freedom and collective responsibility. We advocate for policies that prioritize people over profit.'
@@ -73,7 +73,7 @@ export const Ideology = () => {
         {/* Core Principles Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-32">
           <div className="space-y-12">
-            <h2 className="text-4xl font-black text-sdy-black tracking-tight mb-12 uppercase">
+            <h2 className="text-4xl font-black text-sdy-black dark:text-white tracking-tight mb-12 uppercase">
               {t({ mn: 'Үндсэн зарчмууд', en: 'Core Principles' })}
             </h2>
             <div className="grid grid-cols-1 gap-12">
@@ -83,8 +83,8 @@ export const Ideology = () => {
                     <img src="/sdy-check-icon.png" alt="" className="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-sdy-black mb-3 uppercase tracking-tight">{t(p.title)}</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">{t(p.description)}</p>
+                    <h3 className="text-2xl font-black text-sdy-black dark:text-white mb-3 uppercase tracking-tight">{t(p.title)}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">{t(p.description)}</p>
                   </div>
                 </div>
               ))}
@@ -124,10 +124,10 @@ export const Ideology = () => {
             />
           </div>
           <div className="p-8">
-            <h2 className="text-3xl font-black text-sdy-black mb-6 uppercase tracking-tight">
+            <h2 className="text-3xl font-black text-sdy-black dark:text-white mb-6 uppercase tracking-tight">
               {t({ mn: 'Алсын хараа 2030', en: 'Our Vision for 2030' })}
             </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+            <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8">
               {t({
                 mn: 'Бид Монгол Улсыг хүний хөгжил, байгаль орчны тогтвортой байдал, ардчиллын үнэт зүйлсээрээ бүс нутагтаа тэргүүлэгч улс болно гэж төсөөлж байна. Манай 2030 оны стратеги нь дижитал шилжилт, ногоон эдийн засаг, хүртээмжтэй засаглалд анхаарлаа хандуулдаг.',
                 en: 'We envision a Mongolia that is a regional leader in human development, environmental sustainability, and democratic integrity. Our 2030 strategy focuses on digital transformation, green economy, and inclusive governance.'

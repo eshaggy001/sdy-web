@@ -29,12 +29,12 @@ export const About = () => {
           <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-6">
             {t({ mn: 'Бидний түүх', en: 'Our Story' })}
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+          <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
             {t({ mn: 'Монголын дараагийн үеийн ', en: 'Empowering the Next Generation of ' })}
             <span className="text-sdy-red">{t({ mn: 'удирдагчдыг чадваржуулах нь.', en: 'Mongolian Leaders.' })}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
-            {t({ 
+          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
+            {t({
               mn: '1997 онд байгуулагдсан Нийгмийн Ардчилсан Залуучуудын Холбоо (НАЗХ) нь өдгөө Монгол Улсын өнцөг булан бүрт 60,000 гаруй гишүүнтэй, залуучуудын хамгийн том байгууллага болон өргөжжээ.',
               en: 'Founded in 1997, the Social Democratic Youth (SDY) has grown into Mongolia\'s largest youth organization, representing over 60,000 members across every corner of our nation.'
             })}
@@ -70,11 +70,11 @@ export const About = () => {
             },
           ].map((item, i) => (
             <div key={i} className="group">
-              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-sdy-red group-hover:text-white transition-colors duration-500">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-sdy-red group-hover:text-white transition-colors duration-500">
                 <item.icon size={32} />
               </div>
-              <h3 className="text-2xl font-black text-sdy-black mb-4 uppercase tracking-tight">{t(item.title)}</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">
+              <h3 className="text-2xl font-black text-sdy-black dark:text-white mb-4 uppercase tracking-tight">{t(item.title)}</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                 {t(item.description)}
               </p>
             </div>
@@ -88,11 +88,11 @@ export const About = () => {
               <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4">
                 {t({ mn: 'Бидний баг', en: 'Our Team' })}
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-sdy-black tracking-tighter">
+              <h2 className="text-4xl md:text-5xl font-black text-sdy-black dark:text-white tracking-tighter">
                 {t({ mn: 'Үндэсний удирдлага', en: 'National Leadership' })}
               </h2>
             </div>
-            <p className="text-gray-600 max-w-md text-lg">
+            <p className="text-gray-600 dark:text-gray-300 max-w-md text-lg">
               {t({ 
                 mn: 'Манай хөдөлгөөнийг удирдаж, НАЗХ-ны ирээдүйг тодорхойлж буй зүтгэлтнүүдтэй танилцана уу.',
                 en: 'Meet the dedicated individuals leading our movement and shaping the future of SDY.'
@@ -103,10 +103,10 @@ export const About = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
             {leadersLoading ? Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="rounded-3xl aspect-[4/5] bg-gray-100 mb-6" />
-                <div className="h-5 bg-gray-100 rounded w-2/3 mb-2" />
-                <div className="h-3 bg-gray-100 rounded w-1/2 mb-4" />
-                <div className="h-3 bg-gray-100 rounded w-full" />
+                <div className="rounded-3xl aspect-[4/5] bg-gray-100 dark:bg-gray-800 mb-6" />
+                <div className="h-5 bg-gray-100 dark:bg-gray-800 rounded w-2/3 mb-2" />
+                <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-1/2 mb-4" />
+                <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-full" />
               </div>
             )) : leaders.map((leader) => (
               <motion.div 
@@ -123,9 +123,9 @@ export const About = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-sdy-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <h4 className="text-2xl font-black text-sdy-black mb-1">{t(leader.name)}</h4>
+                <h4 className="text-2xl font-black text-sdy-black dark:text-white mb-1">{t(leader.name)}</h4>
                 <p className="text-sdy-red font-black text-sm uppercase tracking-widest mb-4">{t(leader.role)}</p>
-                <p className="text-gray-600 leading-relaxed line-clamp-3">{t(leader.bio)}</p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3">{t(leader.bio)}</p>
               </motion.div>
             ))}
           </div>

@@ -44,7 +44,7 @@ export const PollsPage = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="pt-32 pb-24 min-h-screen bg-sdy-gray/30"
+        className="pt-32 pb-24 min-h-screen bg-sdy-gray/30 dark:bg-gray-900/30"
       >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -55,11 +55,11 @@ export const PollsPage = () => {
               <BarChart3 size={18} />
               {t({ mn: 'Олон нийтийн санал асуулга', en: 'Public Polls' })}
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-sdy-black leading-tight tracking-tighter mb-8">
+            <h1 className="text-5xl md:text-7xl font-black text-sdy-black dark:text-white leading-tight tracking-tighter mb-8">
               {t({ mn: 'Таны ', en: 'Your ' })}
               <span className="text-sdy-red">{t({ mn: 'дуу хоолой.', en: 'Voice.' })}</span>
             </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
               {t({
                 mn: 'Нийгэм, улс төрийн чухал асуудлуудаар саналаа өгч, залуучуудын байр суурийг илэрхийлээрэй.',
                 en: 'Vote on important social and political issues and express the youth perspective.',
@@ -91,13 +91,13 @@ export const PollsPage = () => {
                 label: t({ mn: 'Идэвхтэй', en: 'Active Polls' }),
               },
             ].map(({ icon: Icon, value, label }) => (
-              <div key={label} className="bg-white rounded-2xl px-6 py-5 card-shadow flex items-center gap-4">
+              <div key={label} className="bg-white dark:bg-gray-950 rounded-2xl px-6 py-5 card-shadow flex items-center gap-4">
                 <div className="w-10 h-10 bg-sdy-red/10 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Icon size={18} className="text-sdy-red" />
                 </div>
                 <div>
-                  <div className="text-2xl font-black text-sdy-black tabular-nums">{value}</div>
-                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{label}</div>
+                  <div className="text-2xl font-black text-sdy-black dark:text-white tabular-nums">{value}</div>
+                  <div className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{label}</div>
                 </div>
               </div>
             ))}
@@ -105,7 +105,7 @@ export const PollsPage = () => {
         )}
 
         {/* Filters & Search */}
-        <div className="bg-white rounded-3xl p-6 card-shadow mb-10 flex flex-col md:flex-row gap-4 items-center">
+        <div className="bg-white dark:bg-gray-950 rounded-3xl p-6 card-shadow mb-10 flex flex-col md:flex-row gap-4 items-center">
           <div className="relative flex-grow w-full">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -123,7 +123,7 @@ export const PollsPage = () => {
                 onClick={() => setFilter(f)}
                 className={`flex-1 md:flex-none px-5 py-4 rounded-xl font-black uppercase tracking-widest text-xs transition-all whitespace-nowrap ${filter === f
                     ? 'bg-sdy-black text-white'
-                    : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
               >
                 {t({
@@ -157,15 +157,15 @@ export const PollsPage = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-24 bg-white rounded-4xl card-shadow"
+              className="text-center py-24 bg-white dark:bg-gray-950 rounded-4xl card-shadow"
             >
-              <div className="w-24 h-24 bg-gray-100 text-gray-300 rounded-full flex items-center justify-center mx-auto mb-8">
+              <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 text-gray-300 dark:text-gray-600 rounded-full flex items-center justify-center mx-auto mb-8">
                 <BarChart3 size={48} />
               </div>
-              <h3 className="text-2xl font-black text-sdy-black mb-4 uppercase tracking-tight">
+              <h3 className="text-2xl font-black text-sdy-black dark:text-white mb-4 uppercase tracking-tight">
                 {t({ mn: 'Санал асуулга олдсонгүй', en: 'No polls found' })}
               </h3>
-              <p className="text-gray-500 font-bold">
+              <p className="text-gray-500 dark:text-gray-400 font-bold">
                 {t({ mn: 'Та хайлтаа өөрчилж үзнэ үү.', en: 'Try adjusting your search or filters.' })}
               </p>
             </motion.div>

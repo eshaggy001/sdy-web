@@ -92,23 +92,23 @@ export const ProgramDetailPage = () => {
           >
             <Link
               to={l('/programs')}
-              className="inline-flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors mb-10 uppercase tracking-widest"
+              className="inline-flex items-center gap-2 text-sm font-black text-gray-400 dark:text-gray-500 hover:text-sdy-red transition-colors mb-10 uppercase tracking-widest"
             >
               <ArrowLeft size={14} />
               {t({ mn: 'Бүх хөтөлбөр', en: 'All Programs' })}
             </Link>
 
             {/* Lead */}
-            <p className="text-xl text-gray-500 leading-relaxed font-medium mb-10 border-l-4 border-sdy-red pl-6">
+            <p className="text-xl text-gray-500 dark:text-gray-400 leading-relaxed font-medium mb-10 border-l-4 border-sdy-red pl-6">
               {t(program.description)}
             </p>
 
             {/* Body */}
-            <div className="space-y-6 text-gray-700 leading-[1.85] text-[17px]">
+            <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-[1.85] text-[17px]">
               {paragraphs.length > 0 ? (
                 paragraphs.map((para, i) => <p key={i}>{para}</p>)
               ) : (
-                <p className="text-gray-400 italic">
+                <p className="text-gray-400 dark:text-gray-500 italic">
                   {t({ mn: 'Дэлгэрэнгүй мэдээлэл удахгүй нэмэгдэнэ.', en: 'Full program details coming soon.' })}
                 </p>
               )}
@@ -116,15 +116,15 @@ export const ProgramDetailPage = () => {
 
             {/* Highlights */}
             {program.highlights && program.highlights.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-gray-100">
-                <h3 className="text-lg font-black text-sdy-black mb-6 uppercase tracking-tight">
+              <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
+                <h3 className="text-lg font-black text-sdy-black dark:text-white mb-6 uppercase tracking-tight">
                   {t({ mn: 'Хөтөлбөрийн онцлогууд', en: 'Program Highlights' })}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {program.highlights.map((h, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <CheckCircle2 size={16} className="text-sdy-red flex-shrink-0" />
-                      <span className="text-sm font-bold text-gray-700">{t(h)}</span>
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{t(h)}</span>
                     </div>
                   ))}
                 </div>
@@ -132,18 +132,18 @@ export const ProgramDetailPage = () => {
             )}
 
             {/* Prev / Next */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 pt-8 border-t border-gray-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
               {prevProgram ? (
                 <Link
                   to={l(`/programs/${prevProgram.id}`)}
-                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all"
+                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all"
                 >
                   <ArrowLeft size={16} className="text-sdy-red flex-shrink-0 mt-1" />
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">
                       {t({ mn: 'Өмнөх', en: 'Previous' })}
                     </p>
-                    <p className="font-black text-sdy-black group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
+                    <p className="font-black text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
                       {t(prevProgram.title)}
                     </p>
                   </div>
@@ -153,14 +153,14 @@ export const ProgramDetailPage = () => {
               {nextProgram ? (
                 <Link
                   to={l(`/programs/${nextProgram.id}`)}
-                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all sm:text-right sm:flex-row-reverse"
+                  className="group flex items-start gap-4 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-sdy-red/30 hover:bg-sdy-red/[0.03] transition-all sm:text-right sm:flex-row-reverse"
                 >
                   <ArrowRight size={16} className="text-sdy-red flex-shrink-0 mt-1" />
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">
                       {t({ mn: 'Дараагийн', en: 'Next' })}
                     </p>
-                    <p className="font-black text-sdy-black group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
+                    <p className="font-black text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors text-sm leading-snug line-clamp-2">
                       {t(nextProgram.title)}
                     </p>
                   </div>
@@ -173,25 +173,25 @@ export const ProgramDetailPage = () => {
           <aside className="space-y-8">
 
             {/* Info card */}
-            <div className="bg-sdy-gray rounded-4xl p-8 space-y-5">
-              <h3 className="font-black text-sdy-black text-lg tracking-tight mb-2">
+            <div className="bg-sdy-gray dark:bg-gray-900 rounded-4xl p-8 space-y-5">
+              <h3 className="font-black text-sdy-black dark:text-white text-lg tracking-tight mb-2">
                 {t({ mn: 'Хөтөлбөрийн мэдээлэл', en: 'Program Info' })}
               </h3>
               {program.date && (
-                <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
+                <div className="flex items-center gap-3 text-sm font-bold text-gray-600 dark:text-gray-300">
                   <Calendar size={18} className="text-sdy-red flex-shrink-0" />
                   <span>{t(program.date)}</span>
                 </div>
               )}
               {program.location && (
-                <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
+                <div className="flex items-center gap-3 text-sm font-bold text-gray-600 dark:text-gray-300">
                   <MapPin size={18} className="text-sdy-red flex-shrink-0" />
                   <span>{t(program.location)}</span>
                 </div>
               )}
               {(program.maxParticipants || program.capacity) && (
                 <div className="space-y-2">
-                  <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-600 dark:text-gray-300">
                     <Users size={18} className="text-sdy-red flex-shrink-0" />
                     <span>
                       {program.maxParticipants
@@ -200,7 +200,7 @@ export const ProgramDetailPage = () => {
                     </span>
                   </div>
                   {program.maxParticipants && (
-                    <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden ml-[30px]" style={{ width: 'calc(100% - 30px)' }}>
+                    <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden ml-[30px]" style={{ width: 'calc(100% - 30px)' }}>
                       <div
                         className={`h-full rounded-full transition-all ${registrationCount >= program.maxParticipants ? 'bg-red-500' : 'bg-sdy-red'}`}
                         style={{ width: `${Math.min((registrationCount / program.maxParticipants) * 100, 100)}%` }}
@@ -210,7 +210,7 @@ export const ProgramDetailPage = () => {
                 </div>
               )}
               {program.deadline && (
-                <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
+                <div className="flex items-center gap-3 text-sm font-bold text-gray-600 dark:text-gray-300">
                   <Clock size={18} className="text-sdy-red flex-shrink-0" />
                   <span>
                     {t({ mn: 'Эцсийн хугацаа: ', en: 'Deadline: ' })}
@@ -299,7 +299,7 @@ export const ProgramDetailPage = () => {
             {/* Related programs */}
             {relatedPrograms.length > 0 && (
               <div>
-                <h3 className="text-lg font-black text-sdy-black mb-6 uppercase tracking-tight">
+                <h3 className="text-lg font-black text-sdy-black dark:text-white mb-6 uppercase tracking-tight">
                   {t({ mn: 'Бусад хөтөлбөрүүд', en: 'Other Programs' })}
                 </h3>
                 <div className="space-y-5">
@@ -318,10 +318,10 @@ export const ProgramDetailPage = () => {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                        <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">
                           {t(item.pillar)}
                         </p>
-                        <p className="font-black text-[13px] leading-snug group-hover:text-sdy-red transition-colors line-clamp-2">
+                        <p className="font-black text-[13px] leading-snug group-hover:text-sdy-red transition-colors line-clamp-2 dark:text-white">
                           {t(item.title)}
                         </p>
                       </div>
@@ -330,7 +330,7 @@ export const ProgramDetailPage = () => {
                 </div>
                 <Link
                   to={l('/programs')}
-                  className="inline-flex items-center gap-2 mt-8 font-black text-sm text-sdy-black hover:text-sdy-red transition-colors"
+                  className="inline-flex items-center gap-2 mt-8 font-black text-sm text-sdy-black dark:text-white hover:text-sdy-red transition-colors"
                 >
                   {t({ mn: 'Бүх хөтөлбөрийг үзэх', en: 'View All Programs' })}
                   <ArrowRight size={14} />

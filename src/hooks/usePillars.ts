@@ -8,14 +8,21 @@ export function usePillars() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from('pillars')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data: rows }) => {
+    const fetch = async () => {
+      try {
+        const { data: rows, error } = await supabase
+          .from('pillars')
+          .select('*')
+          .order('sort_order', { ascending: true });
+        if (error) console.error('[usePillars]', error.message);
         setData((rows ?? []).map(mapPillar));
+      } catch (err) {
+        console.error('[usePillars] fetch failed:', err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetch();
   }, []);
 
   return { data, loading };

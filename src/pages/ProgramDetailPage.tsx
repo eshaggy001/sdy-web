@@ -3,14 +3,18 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, MapPin, ArrowLeft, ArrowRight, Users, Clock, CheckCircle2 } from 'lucide-react';
 import { usePrograms, useProgram } from '../hooks/usePrograms';
+import { useRegistrationCounts } from '../hooks/useRegistrations';
 import { useI18n } from '../contexts/I18nContext';
 import { SEOMeta } from '../components/SEOMeta';
+import { ProgramRegistrationForm } from '../components/ProgramRegistrationForm';
 
 export const ProgramDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t, l } = useI18n();
   const { data: program, loading } = useProgram(id);
   const { data: programs, loading: programsLoading } = usePrograms();
+  const { counts: regCounts, refresh: refreshCounts } = useRegistrationCounts();
+  const registrationCount = id ? (regCounts[id] ?? 0) : 0;
 
   if (loading) return null;
   if (!program) return <Navigate to={l('/programs')} replace />;
@@ -169,7 +173,7 @@ export const ProgramDetailPage = () => {
           <aside className="space-y-8">
 
             {/* Info card */}
-            <div className="bg-sdy-gray rounded-[2rem] p-8 space-y-5">
+            <div className="bg-sdy-gray rounded-4xl p-8 space-y-5">
               <h3 className="font-black text-sdy-black text-lg tracking-tight mb-2">
                 {t({ mn: 'Хөтөлбөрийн мэдээлэл', en: 'Program Info' })}
               </h3>
@@ -185,10 +189,24 @@ export const ProgramDetailPage = () => {
                   <span>{t(program.location)}</span>
                 </div>
               )}
-              {program.capacity && (
-                <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
-                  <Users size={18} className="text-sdy-red flex-shrink-0" />
-                  <span>{t(program.capacity)}</span>
+              {(program.maxParticipants || program.capacity) && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-600">
+                    <Users size={18} className="text-sdy-red flex-shrink-0" />
+                    <span>
+                      {program.maxParticipants
+                        ? `${registrationCount} / ${program.maxParticipants} ${t({ mn: 'бүртгүүлсэн', en: 'registered' })}`
+                        : t(program.capacity!)}
+                    </span>
+                  </div>
+                  {program.maxParticipants && (
+                    <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden ml-[30px]" style={{ width: 'calc(100% - 30px)' }}>
+                      <div
+                        className={`h-full rounded-full transition-all ${registrationCount >= program.maxParticipants ? 'bg-red-500' : 'bg-sdy-red'}`}
+                        style={{ width: `${Math.min((registrationCount / program.maxParticipants) * 100, 100)}%` }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
               {program.deadline && (
@@ -202,23 +220,81 @@ export const ProgramDetailPage = () => {
               )}
             </div>
 
-            {/* CTA */}
-            <div className="bg-sdy-black p-8 rounded-[2rem] text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-sdy-red/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none" />
-              <div className="relative z-10">
-                <img src="/sdy-logo.png" alt="SDY" className="h-6 mb-6 brightness-0 invert opacity-80" />
-                <h3 className="text-xl font-black mb-3 tracking-tight">
-                  {t({ mn: 'Бүртгүүлэхэд бэлэн үү?', en: 'Ready to Apply?' })}
-                </h3>
-                <p className="text-gray-400 mb-6 text-sm font-medium leading-relaxed">
-                  {t({ mn: 'Боломжоо бүү алдаарай. Одоо бүртгүүлж эхлээрэй.', en: "Don't miss your chance. Start your application now." })}
-                </p>
-                <Link to={l('/join')} className="w-full btn-primary py-4 flex items-center justify-center gap-2">
-                  {t({ mn: 'Одоо бүртгүүлэх', en: 'Apply Now' })}
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
-            </div>
+            {/* CTA / Registration Form */}
+            {(() => {
+              const isFull = program.maxParticipants ? registrationCount >= program.maxParticipants : false;
+
+              if (program.registrationOpen && !isFull) {
+                return (
+                  <div id="register">
+                    <ProgramRegistrationForm
+                      program={program}
+                      registrationCount={registrationCount}
+                      onRegistered={refreshCounts}
+                    />
+                  </div>
+                );
+              }
+
+              return (
+                <div className="bg-sdy-black p-8 rounded-4xl text-white relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-sdy-red/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none" />
+                  <div className="relative z-10">
+                    <img src="/sdy-logo.png" alt="SDY" className="h-6 mb-6 brightness-0 invert opacity-80" />
+
+                    {program.registrationOpen && isFull ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-red-500 text-white">
+                            {t({ mn: 'Дүүрсэн', en: 'Full' })}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-black mb-3 tracking-tight">
+                          {t({ mn: 'Бүртгэл дүүрсэн', en: 'Registration Full' })}
+                        </h3>
+                        <p className="text-gray-400 text-sm font-medium leading-relaxed">
+                          {t({ mn: 'Энэ хөтөлбөрийн бүртгэл дүүрсэн байна. Бусад хөтөлбөрүүдийг үзнэ үү.', en: 'This program has reached full capacity. Check out our other programs.' })}
+                        </p>
+                      </>
+                    ) : program.status.en !== 'Active' ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-500 text-white">
+                            {t({ mn: 'Удахгүй', en: 'Coming Soon' })}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-black mb-3 tracking-tight">
+                          {t({ mn: 'Бүртгэл удахгүй нээгдэнэ', en: 'Registration Opening Soon' })}
+                        </h3>
+                        <p className="text-gray-400 text-sm font-medium leading-relaxed">
+                          {t({ mn: 'Энэ хөтөлбөрийн бүртгэл удахгүй нээгдэнэ. Хүлээнэ үү.', en: 'Registration for this program will open soon. Stay tuned.' })}
+                        </p>
+                        {program.deadline && (
+                          <div className="mt-4 flex items-center gap-2 text-sm font-bold text-amber-400">
+                            <Clock size={16} />
+                            {t(program.deadline)}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-gray-500 text-white">
+                            {t({ mn: 'Хаалттай', en: 'Closed' })}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-black mb-3 tracking-tight">
+                          {t({ mn: 'Бүртгэл хаалттай', en: 'Registration Closed' })}
+                        </h3>
+                        <p className="text-gray-400 text-sm font-medium leading-relaxed">
+                          {t({ mn: 'Энэ хөтөлбөрийн бүртгэл одоогоор хаалттай байна.', en: 'Registration for this program is currently closed.' })}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Related programs */}
             {relatedPrograms.length > 0 && (

@@ -116,7 +116,7 @@ export const ContactPage = () => {
 
           {/* Form Column */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-[3rem] p-8 md:p-16 card-shadow relative overflow-hidden">
+            <div className="bg-white rounded-4xl p-8 md:p-16 card-shadow relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-sdy-red/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
 
               <h2 className="text-3xl font-black text-sdy-black mb-10 tracking-tight uppercase">
@@ -145,7 +145,7 @@ export const ContactPage = () => {
                       <input
                         type="text"
                         required
-                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                        className="input"
                         placeholder={t({ mn: 'Таны нэр', en: 'Your name' })}
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -158,7 +158,7 @@ export const ContactPage = () => {
                       <input
                         type="email"
                         required
-                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                        className="input"
                         placeholder="your@email.com"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -172,7 +172,7 @@ export const ContactPage = () => {
                     <input
                       type="text"
                       required
-                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                      className="input"
                       placeholder={t({ mn: 'Бид танд юугаар туслах вэ?', en: 'How can we help?' })}
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -185,13 +185,13 @@ export const ContactPage = () => {
                     <textarea
                       rows={6}
                       required
-                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold resize-none"
+                      className="input resize-none"
                       placeholder={t({ mn: 'Таны зурвас энд...', en: 'Your message here...' })}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                     />
                   </div>
-                  <button disabled={sending} className="btn-primary w-full py-5 text-xl flex items-center justify-center gap-3 disabled:opacity-60">
+                  <button disabled={sending} className="btn-primary btn-xl btn-full flex items-center gap-3 disabled:opacity-60">
                     {sending ? t({ mn: 'Илгээж байна...', en: 'Sending...' }) : t({ mn: 'Зурвас илгээх', en: 'Send Message' })}
                     <Send size={24} />
                   </button>

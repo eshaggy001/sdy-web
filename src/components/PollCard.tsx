@@ -47,7 +47,7 @@ export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, c
   return (
     <motion.div
       layout
-      className="bg-white rounded-[1.75rem] overflow-hidden border border-gray-100 shadow-[0_2px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_32px_rgba(0,0,0,0.10)] transition-shadow duration-300"
+      className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-[0_2px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_32px_rgba(0,0,0,0.10)] transition-shadow duration-300"
     >
       <div className={`flex-1 min-w-0 ${compact ? 'p-6' : 'p-7'}`}>
         {/* Header row */}

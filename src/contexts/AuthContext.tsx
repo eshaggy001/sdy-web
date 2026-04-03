@@ -9,6 +9,8 @@ interface AuthContextType {
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -28,25 +30,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    console.log('[Auth] Starting getSession...');
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       const u = session?.user ?? null;
+      console.log('[Auth] Session:', u ? u.email : 'none');
       setUser(u);
-      await loadRole(u);
+      try {
+        console.log('[Auth] Loading role...');
+        await loadRole(u);
+        console.log('[Auth] Role loaded');
+      } catch (err) {
+        console.error('[Auth] Failed to load role:', err);
+        setRole('editor');
+      }
+      console.log('[Auth] Setting isLoading=false');
       setIsLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const u = session?.user ?? null;
       setUser(u);
-      await loadRole(u);
+      try {
+        await loadRole(u);
+      } catch (err) {
+        console.error('Failed to load role on auth change:', err);
+        setRole('editor');
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string): Promise<{ error: string | null }> => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error ? error.message : null };
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { error: error.message };
+    // Load role immediately so it's ready before navigate
+    if (data.user) {
+      setUser(data.user);
+      await loadRole(data.user);
+    }
+    return { error: null };
+  };
+
+  const resetPassword = async (email: string): Promise<{ error: string | null }> => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/mn/admin/reset-password`,
+    });
+    if (error) return { error: error.message };
+    return { error: null };
+  };
+
+  const updatePassword = async (newPassword: string): Promise<{ error: string | null }> => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) return { error: error.message };
+    return { error: null };
   };
 
   const signOut = async () => {
@@ -54,7 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, isLoading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, role, isLoading, signIn, signOut, resetPassword, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

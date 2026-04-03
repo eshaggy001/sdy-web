@@ -35,42 +35,18 @@ export const AdminStatsPage = () => {
 
   useEffect(() => { load(); }, []);
 
-  const openCreate = () => {
-    setEditId(null);
-    setForm(EMPTY_FORM);
-    setModalOpen(true);
-  };
-
+  const openCreate = () => { setEditId(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (row: StatRow) => {
     setEditId(row.id);
-    setForm({
-      label_mn: row.label_mn,
-      label_en: row.label_en,
-      value: row.value,
-      icon_name: row.icon_name,
-      sort_order: row.sort_order,
-    });
+    setForm({ label_mn: row.label_mn, label_en: row.label_en, value: row.value, icon_name: row.icon_name, sort_order: row.sort_order });
     setModalOpen(true);
   };
 
   const handleSave = async () => {
     setSaving(true);
-    const payload = {
-      label_mn: form.label_mn,
-      label_en: form.label_en,
-      value: form.value,
-      icon_name: form.icon_name,
-      sort_order: form.sort_order,
-    };
-
-    const ok = editId !== null
-      ? await statService.update(editId, payload)
-      : await statService.create(payload);
-
-    if (ok) {
-      setModalOpen(false);
-      await load();
-    }
+    const payload = { label_mn: form.label_mn, label_en: form.label_en, value: form.value, icon_name: form.icon_name, sort_order: form.sort_order };
+    const ok = editId !== null ? await statService.update(editId, payload) : await statService.create(payload);
+    if (ok) { setModalOpen(false); await load(); }
     setSaving(false);
   };
 
@@ -82,91 +58,68 @@ export const AdminStatsPage = () => {
 
   return (
     <div className="p-6 md:p-10">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-              <BarChart3 size={16} />
+            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
               {t({ mn: 'Статистик', en: 'Statistics' })}
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black text-sdy-black leading-tight tracking-tighter">
-              {t({ mn: 'Статистик ', en: 'Statistics' })}
-              <span className="text-sdy-red">{t({ mn: 'удирдлага.', en: 'management.' })}</span>
             </h1>
+            <p className="text-sm text-gray-400 mt-0.5">
+              {t({ mn: `Нийт ${items.length} статистик`, en: `${items.length} stats total` })}
+            </p>
           </div>
-          <button onClick={openCreate} className="btn-primary px-6 py-3 flex items-center gap-2">
-            <Plus size={18} />
-            {t({ mn: 'Нэмэх', en: 'Add New' })}
+          <button onClick={openCreate} className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2">
+            <Plus size={15} />
+            {t({ mn: 'Нэмэх', en: 'Add' })}
           </button>
         </div>
 
-        {/* Table */}
-        <div className="bg-white rounded-[3rem] overflow-hidden card-shadow border-2 border-gray-50">
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-50 border-b-2 border-gray-100">
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Нэр (MN)', en: 'Label (MN)' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Утга', en: 'Value' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Айкон', en: 'Icon' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Эрэмбэ', en: 'Sort' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Нэр', en: 'Label' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Утга', en: 'Value' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Айкон', en: 'Icon' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Эрэмбэ', en: 'Sort' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y-2 divide-gray-50">
+              <tbody className="divide-y divide-gray-50">
                 {loading ? (
-                  [1, 2, 3].map((i) => (
-                    <tr key={i} className="animate-pulse">
-                      <td colSpan={5} className="px-8 py-12 bg-white" />
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="px-5 py-4"><div className="w-28 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-6 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : items.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-16 text-center text-gray-300 font-black uppercase tracking-widest text-sm">
-                      {t({ mn: 'Статистик байхгүй байна', en: 'No statistics yet' })}
+                    <td colSpan={5} className="px-5 py-16 text-center">
+                      <BarChart3 size={24} className="text-gray-200 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400">{t({ mn: 'Статистик байхгүй байна', en: 'No statistics yet' })}</p>
                     </td>
                   </tr>
                 ) : (
                   items.map((row) => (
-                    <motion.tr
-                      key={row.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="hover:bg-gray-50/50 transition-colors"
-                    >
-                      <td className="px-6 py-5">
-                        <div className="font-black text-sdy-black">{row.label_mn}</div>
-                        <div className="text-xs font-bold text-gray-400">{row.label_en}</div>
+                    <motion.tr key={row.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 transition-colors">
+                      <td className="px-5 py-3.5">
+                        <div className="font-semibold text-sdy-black text-sm">{row.label_mn}</div>
+                        <div className="text-xs text-gray-400">{row.label_en}</div>
                       </td>
-                      <td className="px-6 py-5">
-                        <div className="text-sm font-bold text-gray-600">{row.value}</div>
+                      <td className="px-5 py-3.5"><div className="text-sm text-gray-600">{row.value}</div></td>
+                      <td className="px-5 py-3.5">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500">{row.icon_name}</span>
                       </td>
-                      <td className="px-6 py-5">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-100 text-gray-500">
-                          {row.icon_name}
-                        </span>
-                      </td>
-                      <td className="px-6 py-5">
-                        <div className="text-sm font-bold text-gray-400 tabular-nums">{row.sort_order}</div>
-                      </td>
-                      <td className="px-6 py-5">
-                        <div className="flex items-center justify-end gap-2">
-                          <button
-                            onClick={() => openEdit(row)}
-                            className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-all"
-                            title="Edit"
-                          >
-                            <Pencil size={16} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(row.id)}
-                            className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all"
-                            title="Delete"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                      <td className="px-5 py-3.5"><div className="text-sm text-gray-400 tabular-nums">{row.sort_order}</div></td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button onClick={() => openEdit(row)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit"><Pencil size={15} /></button>
+                          <button onClick={() => handleDelete(row.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete"><Trash2 size={15} /></button>
                         </div>
                       </td>
                     </motion.tr>
@@ -177,7 +130,6 @@ export const AdminStatsPage = () => {
           </div>
         </div>
 
-        {/* Modal */}
         <AdminModal
           open={modalOpen}
           title={t({ mn: editId !== null ? 'Статистик засах' : 'Статистик нэмэх', en: editId !== null ? 'Edit Stat' : 'Add Stat' })}
@@ -185,50 +137,19 @@ export const AdminStatsPage = () => {
           onSave={handleSave}
           saving={saving}
         >
-          <BilingualInput
-            label={t({ mn: 'Нэр', en: 'Label' })}
-            valueMn={form.label_mn}
-            valueEn={form.label_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, label_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, label_en: v }))}
-            required
-          />
-          <div className="space-y-2">
-            <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
-              {t({ mn: 'Утга', en: 'Value' })}
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-3 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold text-sm"
-              value={form.value}
-              onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))}
-              placeholder="e.g. 1,200+"
-              required
-            />
+          <BilingualInput label={t({ mn: 'Нэр', en: 'Label' })} valueMn={form.label_mn} valueEn={form.label_en} onChangeMn={(v) => setForm((f) => ({ ...f, label_mn: v }))} onChangeEn={(v) => setForm((f) => ({ ...f, label_en: v }))} required />
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Утга', en: 'Value' })}</label>
+            <input type="text" className="input input-sm" value={form.value} onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))} placeholder="e.g. 1,200+" required />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
-                {t({ mn: 'Айкон нэр', en: 'Icon Name' })}
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-3 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold text-sm"
-                value={form.icon_name}
-                onChange={(e) => setForm((f) => ({ ...f, icon_name: e.target.value }))}
-                placeholder="e.g. Users, Globe, Shield"
-              />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Айкон нэр', en: 'Icon Name' })}</label>
+              <input type="text" className="input input-sm" value={form.icon_name} onChange={(e) => setForm((f) => ({ ...f, icon_name: e.target.value }))} placeholder="e.g. Users, Globe" />
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
-                {t({ mn: 'Эрэмбэ', en: 'Sort Order' })}
-              </label>
-              <input
-                type="number"
-                className="w-full px-3 py-3 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold text-sm"
-                value={form.sort_order}
-                onChange={(e) => setForm((f) => ({ ...f, sort_order: Number(e.target.value) }))}
-              />
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Эрэмбэ', en: 'Sort Order' })}</label>
+              <input type="number" className="input input-sm" value={form.sort_order} onChange={(e) => setForm((f) => ({ ...f, sort_order: Number(e.target.value) }))} />
             </div>
           </div>
         </AdminModal>

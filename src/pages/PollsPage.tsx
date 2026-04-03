@@ -111,7 +111,7 @@ export const PollsPage = () => {
             <input
               type="text"
               placeholder={t({ mn: 'Санал асуулга хайх...', en: 'Search polls...' })}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+              className="input input-icon"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -157,7 +157,7 @@ export const PollsPage = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-24 bg-white rounded-[3rem] card-shadow"
+              className="text-center py-24 bg-white rounded-4xl card-shadow"
             >
               <div className="w-24 h-24 bg-gray-100 text-gray-300 rounded-full flex items-center justify-center mx-auto mb-8">
                 <BarChart3 size={48} />

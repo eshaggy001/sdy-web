@@ -38,6 +38,21 @@ export interface Program {
   highlights?: LocalizedString[];
   capacity?: LocalizedString;
   deadline?: LocalizedString;
+  maxParticipants?: number | null;
+  registrationOpen?: boolean;
+}
+
+export interface ProgramRegistration {
+  id: string;
+  programId: string;
+  programTitle?: LocalizedString;
+  name: string;
+  email: string;
+  phone: string;
+  age?: number;
+  isSdyMember?: boolean;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
 }
 
 export interface NewsItem {

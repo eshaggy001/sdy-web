@@ -90,7 +90,7 @@ export const Navbar = () => {
             </button>
 
             {/* Join CTA */}
-            <Link to={l('/join')} className="btn-primary text-[13px] px-5 py-2.5">
+            <Link to={l('/join')} className="btn-primary btn-sm">
               {t({ mn: 'Элсэх', en: 'Join SDY' })}
             </Link>
           </div>
@@ -153,7 +153,7 @@ export const Navbar = () => {
               <div className="pt-4 px-1">
                 <Link
                   to={l('/join')}
-                  className="w-full btn-primary py-4 flex items-center justify-center text-base"
+                  className="btn-primary btn-lg btn-full flex items-center"
                 >
                   {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
                 </Link>

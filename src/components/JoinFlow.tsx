@@ -35,7 +35,7 @@ export const JoinFlow = () => {
       <SdyArrow3 className="absolute bottom-6 right-0 w-[480px] text-sdy-red opacity-[0.06] pointer-events-none select-none translate-x-24" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-sdy-red rounded-[2.5rem] overflow-hidden relative">
+        <div className="bg-sdy-red rounded-4xl overflow-hidden relative">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch">
 
@@ -83,8 +83,7 @@ export const JoinFlow = () => {
 
               <Link
                 to={l('/join')}
-                className="inline-flex items-center justify-center bg-white text-sdy-red rounded-full text-[16px] font-black hover:bg-red-50 active:scale-[0.97] transition-all gap-2.5 w-fit shadow-xl shadow-black/20"
-                style={{ paddingTop: '1.125rem', paddingBottom: '1.125rem', paddingLeft: '2.25rem', paddingRight: '2.25rem' }}
+                className="btn-secondary btn-lg bg-white text-sdy-red border-white hover:bg-red-50 hover:text-sdy-red hover:border-white gap-2.5 w-fit shadow-xl shadow-black/20"
               >
                 {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
                 <ArrowRight size={18} />

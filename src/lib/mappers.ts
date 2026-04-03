@@ -21,6 +21,8 @@ export function mapProgram(row: Record<string, unknown>): Program {
     highlights: highlights
       ?.sort((a, b) => a.sort_order - b.sort_order)
       .map((h) => ({ mn: h.text_mn, en: h.text_en })),
+    maxParticipants: (row.max_participants as number | null) ?? null,
+    registrationOpen: (row.registration_open as boolean) ?? false,
   };
 }
 

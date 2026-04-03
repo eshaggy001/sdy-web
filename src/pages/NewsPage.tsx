@@ -107,12 +107,12 @@ export const NewsPage = () => {
               <input 
                 type="text" 
                 placeholder={t({ mn: 'Мэдээ хайх...', en: 'Search news...' })}
-                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                className="input input-icon"
               />
             </div>
 
             {/* Categories */}
-            <div className="bg-sdy-gray p-8 rounded-[2rem]">
+            <div className="bg-sdy-gray p-8 rounded-4xl">
               <h3 className="text-xl font-black text-sdy-black mb-6 uppercase tracking-tight">
                 {t({ mn: 'Ангилал', en: 'Categories' })}
               </h3>
@@ -126,7 +126,7 @@ export const NewsPage = () => {
             </div>
 
             {/* Newsletter */}
-            <div className="bg-sdy-black p-8 rounded-[2rem] text-white relative overflow-hidden">
+            <div className="bg-sdy-black p-8 rounded-4xl text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-sdy-red/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
               <div className="relative z-10">
                 <Mail className="w-12 h-12 text-sdy-red mb-6" />
@@ -140,9 +140,9 @@ export const NewsPage = () => {
                   <input 
                     type="email" 
                     placeholder={t({ mn: 'Таны и-мэйл хаяг', en: 'Your email address' })}
-                    className="w-full px-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-sdy-red transition-all font-bold"
+                    className="input input-dark"
                   />
-                  <button className="w-full btn-primary py-4 text-lg">
+                  <button className="btn-primary btn-lg btn-full">
                     {t({ mn: 'Бүртгүүлэх', en: 'Subscribe' })}
                   </button>
                 </form>

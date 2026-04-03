@@ -13,13 +13,13 @@ interface BilingualTextareaProps {
 export const BilingualTextarea: React.FC<BilingualTextareaProps> = ({
   label, valueMn, valueEn, onChangeMn, onChangeEn, rows = 4, required
 }) => (
-  <div className="space-y-2">
-    <label className="text-xs font-black text-sdy-black uppercase tracking-widest">{label}</label>
-    <div className="grid grid-cols-2 gap-3">
+  <div>
+    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{label}</label>
+    <div className="grid grid-cols-2 gap-2.5">
       <div className="relative">
-        <span className="absolute top-2 left-3 text-[9px] font-black text-gray-300 uppercase">MN</span>
+        <span className="absolute top-2 left-3 text-[9px] font-bold text-gray-300 uppercase pointer-events-none">MN</span>
         <textarea
-          className="w-full px-3 pt-6 pb-2 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold text-sm resize-none"
+          className="input input-sm pt-6 pb-2 resize-none"
           value={valueMn}
           onChange={(e) => onChangeMn(e.target.value)}
           rows={rows}
@@ -27,9 +27,9 @@ export const BilingualTextarea: React.FC<BilingualTextareaProps> = ({
         />
       </div>
       <div className="relative">
-        <span className="absolute top-2 left-3 text-[9px] font-black text-gray-300 uppercase">EN</span>
+        <span className="absolute top-2 left-3 text-[9px] font-bold text-gray-300 uppercase pointer-events-none">EN</span>
         <textarea
-          className="w-full px-3 pt-6 pb-2 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold text-sm resize-none"
+          className="input input-sm pt-6 pb-2 resize-none"
           value={valueEn}
           onChange={(e) => onChangeEn(e.target.value)}
           rows={rows}

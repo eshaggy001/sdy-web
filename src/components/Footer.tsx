@@ -50,7 +50,7 @@ export const Footer = () => {
           </p>
           <Link
             to={l('/join')}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-sdy-red text-white font-black text-[13px] hover:bg-sdy-red-dark transition-colors"
+            className="btn-primary btn-sm flex items-center gap-2"
           >
             {t({ mn: 'Өнөөдөр нэгдэх', en: 'Join Today' })}
             <ArrowUpRight size={14} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { BookOpen, Plus, Pencil, Trash2, RefreshCw, X } from 'lucide-react';
+import { useRegistrationCounts } from '../hooks/useRegistrations';
 import { useI18n } from '../contexts/I18nContext';
 import { programService } from '../services/programService';
 import { storageService } from '../services/storageService';
@@ -36,6 +37,8 @@ interface ProgramRow {
   deadline_en: string;
   content_mn: string;
   content_en: string;
+  max_participants: number | null;
+  registration_open: boolean;
   program_highlights: HighlightRow[];
 }
 
@@ -59,12 +62,15 @@ const EMPTY_FORM = {
   deadline_en: '',
   content_mn: '',
   content_en: '',
+  max_participants: '',
+  registration_open: false,
 };
 
 const EMPTY_HIGHLIGHT: HighlightRow = { text_mn: '', text_en: '', sort_order: 0 };
 
 export const AdminProgramsPage = () => {
   const { t } = useI18n();
+  const { counts: regCounts } = useRegistrationCounts();
   const [items, setItems] = useState<ProgramRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -113,6 +119,8 @@ export const AdminProgramsPage = () => {
       deadline_en: item.deadline_en ?? '',
       content_mn: item.content_mn ?? '',
       content_en: item.content_en ?? '',
+      max_participants: item.max_participants != null ? String(item.max_participants) : '',
+      registration_open: item.registration_open ?? false,
     });
     setHighlights(
       (item.program_highlights ?? [])
@@ -169,6 +177,8 @@ export const AdminProgramsPage = () => {
       deadline_en: form.deadline_en,
       content_mn: form.content_mn,
       content_en: form.content_en,
+      max_participants: form.max_participants ? parseInt(form.max_participants) : null,
+      registration_open: form.registration_open,
     };
 
     const highlightPayload = highlights.map((h, i) => ({
@@ -197,62 +207,69 @@ export const AdminProgramsPage = () => {
 
   return (
     <div className="p-6 md:p-10">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-              <BookOpen size={16} />
-              {t({ mn: 'Хөтөлбөр', en: 'Programs' })}
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black text-sdy-black leading-tight tracking-tighter">
-              {t({ mn: 'Хөтөлбөр ', en: 'Programs' })}
-              <span className="text-sdy-red">{t({ mn: 'удирдлага.', en: '.' })}</span>
+            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+              {t({ mn: 'Хөтөлбөрүүд', en: 'Programs' })}
             </h1>
+            <p className="text-sm text-gray-400 mt-0.5">
+              {t({ mn: `Нийт ${items.length} хөтөлбөр`, en: `${items.length} programs total` })}
+            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={load}
-              className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
+              className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-white rounded-lg transition-all"
+              title={t({ mn: 'Шинэчлэх', en: 'Refresh' })}
             >
-              <RefreshCw size={14} />
-              {t({ mn: 'Шинэчлэх', en: 'Refresh' })}
+              <RefreshCw size={15} />
             </button>
             <button
               onClick={openCreate}
-              className="btn-primary flex items-center gap-2 px-6 py-3"
+              className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
             >
-              <Plus size={16} />
+              <Plus size={15} />
               {t({ mn: 'Нэмэх', en: 'Add' })}
             </button>
           </div>
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-[3rem] overflow-hidden card-shadow border-2 border-gray-50">
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-50 border-b-2 border-gray-100">
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Зураг', en: 'Image' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Гарчиг', en: 'Title' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Багана', en: 'Pillar' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Төлөв', en: 'Status' })}</th>
-                  <th className="px-6 py-5 text-xs font-black text-sdy-black uppercase tracking-widest text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Зураг', en: 'Image' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Гарчиг', en: 'Title' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Багана', en: 'Pillar' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Бүртгэл', en: 'Reg.' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y-2 divide-gray-50">
+              <tbody className="divide-y divide-gray-50">
                 {loading ? (
-                  [1, 2, 3].map((i) => (
-                    <tr key={i} className="animate-pulse">
-                      <td colSpan={5} className="px-8 py-12 bg-white" />
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="px-5 py-4"><div className="w-14 h-9 bg-gray-100 rounded-lg animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-32 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-12 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : items.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-16 text-center text-gray-300 font-black uppercase tracking-widest text-sm">
-                      {t({ mn: 'Хөтөлбөр байхгүй байна', en: 'No programs yet' })}
+                    <td colSpan={6} className="px-5 py-16 text-center">
+                      <BookOpen size={24} className="text-gray-200 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400">
+                        {t({ mn: 'Хөтөлбөр байхгүй байна', en: 'No programs yet' })}
+                      </p>
                     </td>
                   </tr>
                 ) : (
@@ -261,45 +278,56 @@ export const AdminProgramsPage = () => {
                       key={item.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="hover:bg-gray-50/50 transition-colors"
+                      className="hover:bg-gray-50/60 transition-colors"
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-5 py-3.5">
                         {item.image ? (
-                          <img src={item.image} alt="" className="w-16 h-10 rounded-lg object-cover border-2 border-gray-100" />
+                          <img src={item.image} alt="" className="w-14 h-9 rounded-lg object-cover border border-gray-100" />
                         ) : (
-                          <div className="w-16 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                            <BookOpen size={14} className="text-gray-300" />
+                          <div className="w-14 h-9 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100">
+                            <BookOpen size={13} className="text-gray-300" />
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-5">
-                        <div className="font-black text-sdy-black max-w-[250px] truncate">{item.title_mn}</div>
+                      <td className="px-5 py-3.5">
+                        <div className="font-semibold text-sdy-black text-sm max-w-[220px] truncate">{item.title_mn}</div>
                       </td>
-                      <td className="px-6 py-5">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-100 text-gray-500">
+                      <td className="px-5 py-3.5">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500">
                           {item.pillar_mn}
                         </span>
                       </td>
-                      <td className="px-6 py-5">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-sdy-red/10 text-sdy-red">
+                      <td className="px-5 py-3.5">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sdy-red/8 text-sdy-red">
                           {item.status_mn}
                         </span>
                       </td>
-                      <td className="px-6 py-5">
-                        <div className="flex items-center justify-end gap-2">
+                      <td className="px-5 py-3.5">
+                        {item.registration_open ? (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-600">
+                            {regCounts[item.id] ?? 0}{item.max_participants ? ` / ${item.max_participants}` : ''}
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-50 text-gray-400">
+                            {t({ mn: 'Хаалттай', en: 'Closed' })}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => openEdit(item)}
-                            className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-all"
+                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                             title="Edit"
                           >
-                            <Pencil size={16} />
+                            <Pencil size={15} />
                           </button>
                           <button
                             onClick={() => handleDelete(item.id)}
-                            className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all"
+                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                             title="Delete"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={15} />
                           </button>
                         </div>
                       </td>
@@ -314,7 +342,7 @@ export const AdminProgramsPage = () => {
         {/* Modal */}
         <AdminModal
           open={modalOpen}
-          title={t({ mn: editingId ? 'Засах' : 'Нэмэх', en: editingId ? 'Edit Program' : 'Add Program' })}
+          title={t({ mn: editingId ? 'Хөтөлбөр засах' : 'Хөтөлбөр нэмэх', en: editingId ? 'Edit Program' : 'Add Program' })}
           onClose={() => setModalOpen(false)}
           onSave={handleSave}
           saving={saving}
@@ -389,6 +417,41 @@ export const AdminProgramsPage = () => {
             onChangeEn={(v) => setForm((f) => ({ ...f, content_en: v }))}
             rows={8}
           />
+          {/* Registration settings */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                {t({ mn: 'Дээд оролцогчид', en: 'Max Participants' })}
+              </label>
+              <input
+                type="number"
+                min={0}
+                value={form.max_participants}
+                onChange={(e) => setForm((f) => ({ ...f, max_participants: e.target.value }))}
+                placeholder={t({ mn: 'Хязгааргүй', en: 'Unlimited' })}
+                className="input input-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                {t({ mn: 'Бүртгэл нээлттэй', en: 'Registration Open' })}
+              </label>
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, registration_open: !f.registration_open }))}
+                className={`w-full px-4 py-3 rounded-xl text-sm font-semibold transition-all border ${
+                  form.registration_open
+                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                    : 'bg-gray-50 text-gray-400 border-gray-100'
+                }`}
+              >
+                {form.registration_open
+                  ? t({ mn: 'Нээлттэй', en: 'Open' })
+                  : t({ mn: 'Хаалттай', en: 'Closed' })}
+              </button>
+            </div>
+          </div>
+
           <ImageUpload
             label={t({ mn: 'Зураг', en: 'Image' })}
             value={form.image}
@@ -396,45 +459,47 @@ export const AdminProgramsPage = () => {
           />
 
           {/* Highlights */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 {t({ mn: 'Онцлох', en: 'Highlights' })}
               </label>
               <button
                 type="button"
                 onClick={addHighlight}
-                className="flex items-center gap-1 text-xs font-black text-sdy-red hover:text-sdy-red/70 uppercase tracking-widest transition-colors"
+                className="flex items-center gap-1 text-xs font-semibold text-sdy-red hover:text-sdy-red/70 transition-colors"
               >
-                <Plus size={14} />
+                <Plus size={13} />
                 {t({ mn: 'Нэмэх', en: 'Add' })}
               </button>
             </div>
             {highlights.length === 0 && (
-              <p className="text-xs text-gray-300 font-bold">
+              <p className="text-xs text-gray-300">
                 {t({ mn: 'Онцлох зүйл нэмээгүй байна', en: 'No highlights added' })}
               </p>
             )}
-            {highlights.map((hl, index) => (
-              <div key={index} className="flex items-start gap-2">
-                <div className="flex-grow">
-                  <BilingualInput
-                    label={`#${index + 1}`}
-                    valueMn={hl.text_mn}
-                    valueEn={hl.text_en}
-                    onChangeMn={(v) => updateHighlight(index, 'text_mn', v)}
-                    onChangeEn={(v) => updateHighlight(index, 'text_en', v)}
-                  />
+            <div className="space-y-2">
+              {highlights.map((hl, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <div className="flex-grow">
+                    <BilingualInput
+                      label={`#${index + 1}`}
+                      valueMn={hl.text_mn}
+                      valueEn={hl.text_en}
+                      onChangeMn={(v) => updateHighlight(index, 'text_mn', v)}
+                      onChangeEn={(v) => updateHighlight(index, 'text_en', v)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeHighlight(index)}
+                    className="mt-7 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
+                  >
+                    <X size={14} />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => removeHighlight(index)}
-                  className="mt-7 p-2 bg-red-100 text-red-500 rounded-lg hover:bg-red-200 transition-all shrink-0"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </AdminModal>
       </div>

@@ -8,14 +8,21 @@ export function useLeaders() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from('leaders')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data: rows }) => {
+    const fetch = async () => {
+      try {
+        const { data: rows, error } = await supabase
+          .from('leaders')
+          .select('*')
+          .order('sort_order', { ascending: true });
+        if (error) console.error('[useLeaders]', error.message);
         setData((rows ?? []).map(mapLeader));
+      } catch (err) {
+        console.error('[useLeaders] fetch failed:', err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetch();
   }, []);
 
   return { data, loading };

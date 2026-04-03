@@ -165,7 +165,7 @@ export const NewsDetailPage = () => {
           <aside className="space-y-10">
 
             {/* Newsletter */}
-            <div className="bg-sdy-black p-8 rounded-[2rem] text-white relative overflow-hidden">
+            <div className="bg-sdy-black p-8 rounded-4xl text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-sdy-red/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none" />
               <div className="relative z-10">
                 <Mail className="w-10 h-10 text-sdy-red mb-5" />
@@ -179,9 +179,9 @@ export const NewsDetailPage = () => {
                   <input
                     type="email"
                     placeholder={t({ mn: 'Таны и-мэйл хаяг', en: 'Your email address' })}
-                    className="w-full px-4 py-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-sdy-red transition-all font-bold text-sm"
+                    className="input input-dark text-sm"
                   />
-                  <button className="w-full btn-primary py-3.5">
+                  <button className="btn-primary btn-full">
                     {t({ mn: 'Бүртгүүлэх', en: 'Subscribe' })}
                   </button>
                 </form>

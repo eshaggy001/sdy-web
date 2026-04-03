@@ -20,21 +20,19 @@ function parseStatValue(raw: string) {
 function AnimatedNumber({ value, inView }: { value: string; inView: boolean }) {
   const parsed = parseStatValue(value);
   const [display, setDisplay] = useState(0);
-  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!inView || hasAnimated.current) return;
-    hasAnimated.current = true;
+    if (!inView || parsed.numeric === 0) return;
 
+    setDisplay(0);
     const duration = 1400;
     const steps = 50;
     const increment = parsed.numeric / steps;
-    let current = 0;
     let step = 0;
 
     const timer = setInterval(() => {
       step++;
-      current = Math.min(Math.round(increment * step), parsed.numeric);
+      const current = Math.min(Math.round(increment * step), parsed.numeric);
       setDisplay(current);
       if (step >= steps) clearInterval(timer);
     }, duration / steps);
@@ -42,7 +40,6 @@ function AnimatedNumber({ value, inView }: { value: string; inView: boolean }) {
     return () => clearInterval(timer);
   }, [inView, parsed.numeric]);
 
-  // Format number with commas
   const formatted = display.toLocaleString();
 
   return (
@@ -72,7 +69,7 @@ export const ImpactBar = () => {
   const { t } = useI18n();
   const { data: stats, loading } = useStats();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { margin: '-80px' });
 
   // Duplicate for seamless loop
   const tickerItems = [...TICKER_ITEMS, ...TICKER_ITEMS];

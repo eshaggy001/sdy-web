@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Lock, LogIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../contexts/I18nContext';
@@ -15,7 +15,7 @@ export const AdminLoginPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   if (!isLoading && user) {
-    return <Navigate to={l('/admin/polls')} replace />;
+    return <Navigate to={l('/admin')} replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,7 +27,7 @@ export const AdminLoginPage = () => {
     if (err) {
       setError(err);
     } else {
-      navigate(l('/admin/polls'), { replace: true });
+      navigate(l('/admin'), { replace: true });
     }
   };
 
@@ -45,7 +45,7 @@ export const AdminLoginPage = () => {
           </h1>
         </div>
 
-        <div className="bg-white rounded-[3rem] p-10 card-shadow border-2 border-gray-50">
+        <div className="bg-white rounded-4xl p-10 card-shadow border-2 border-gray-50">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
@@ -55,7 +55,7 @@ export const AdminLoginPage = () => {
                 type="email"
                 required
                 autoComplete="email"
-                className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                className="input"
                 placeholder="admin@sdy.mn"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -70,7 +70,7 @@ export const AdminLoginPage = () => {
                 type="password"
                 required
                 autoComplete="current-password"
-                className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
+                className="input"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -83,10 +83,19 @@ export const AdminLoginPage = () => {
               </div>
             )}
 
+            <div className="text-right">
+              <Link
+                to={l('/admin/forgot-password')}
+                className="text-sm font-bold text-gray-400 hover:text-sdy-red transition-colors"
+              >
+                Нууц үг мартсан уу?
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={submitting}
-              className="btn-primary w-full py-5 text-lg flex items-center justify-center gap-3 disabled:opacity-60"
+              className="btn-primary btn-xl btn-full flex items-center gap-3 disabled:opacity-60"
             >
               {submitting ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

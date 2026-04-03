@@ -61,14 +61,14 @@ export const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-3 mb-12">
               <Link
                 to={l('/join')}
-                className="btn-primary text-[16px] px-8 py-4 flex items-center gap-2.5 w-fit"
+                className="btn-primary btn-lg flex items-center gap-2.5 w-fit"
               >
                 {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
                 <ArrowRight size={18} />
               </Link>
               <Link
                 to={l('/about')}
-                className="btn-secondary text-[16px] px-8 py-4 w-fit"
+                className="btn-secondary btn-lg w-fit"
               >
                 {t({ mn: 'Бидний түүх', en: 'Our Story' })}
               </Link>
@@ -110,7 +110,7 @@ export const Hero = () => {
             className="relative hidden lg:block py-8"
           >
             {/* Main image */}
-            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl">
+            <div className="relative z-10 rounded-4xl overflow-hidden shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=1200"
                 alt={t({ mn: 'SDY залуу удирдагчид', en: 'SDY Youth Leaders' })}

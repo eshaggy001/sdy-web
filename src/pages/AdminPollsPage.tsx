@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, Edit2, Trash2, Eye, EyeOff, BarChart3, Save, X, Calendar, Clock, CheckCircle2, AlertCircle, Users } from 'lucide-react';
-import { Poll, PollOption, PollStatus } from '../types';
+import { Plus, Edit2, Trash2, Eye, EyeOff, BarChart3, Save, X, Calendar, Users, Loader2 } from 'lucide-react';
+import { Poll, PollStatus } from '../types';
 import { useI18n } from '../contexts/I18nContext';
 import { pollService } from '../services/pollService';
 
 export const AdminPollsPage = () => {
-  const { t, l } = useI18n();
+  const { t } = useI18n();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentPoll, setCurrentPoll] = useState<Partial<Poll> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    loadPolls();
-  }, []);
+  useEffect(() => { loadPolls(); }, []);
 
   const loadPolls = async () => {
     setIsLoading(true);
@@ -42,7 +41,7 @@ export const AdminPollsPage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm(t({ mn: 'Та энэ санал асуулгыг устгахдаа итгэлтэй байна уу?', en: 'Are you sure you want to delete this poll?' }))) {
+    if (window.confirm(t({ mn: 'Устгах уу?', en: 'Delete this poll?' }))) {
       await pollService.deletePoll(id);
       loadPolls();
     }
@@ -50,6 +49,7 @@ export const AdminPollsPage = () => {
 
   const handleSave = async () => {
     if (!currentPoll) return;
+    setSaving(true);
 
     if (currentPoll.id) {
       await pollService.updatePoll(currentPoll.id, {
@@ -65,6 +65,7 @@ export const AdminPollsPage = () => {
       });
     }
 
+    setSaving(false);
     setIsEditing(false);
     setCurrentPoll(null);
     loadPolls();
@@ -78,62 +79,66 @@ export const AdminPollsPage = () => {
 
   return (
     <div className="p-6 md:p-10">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <div className="text-sdy-red font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-              <BarChart3 size={18} />
+            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
               {t({ mn: 'Санал асуулга', en: 'Polls' })}
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black text-sdy-black leading-tight tracking-tighter">
-              {t({ mn: 'Санал ', en: 'Manage ' })}
-              <span className="text-sdy-red">{t({ mn: 'асуулга.', en: 'Polls.' })}</span>
             </h1>
+            <p className="text-sm text-gray-400 mt-0.5">
+              {t({ mn: `Нийт ${polls.length} асуулга`, en: `${polls.length} polls total` })}
+            </p>
           </div>
-
-          <button
-            onClick={handleCreate}
-            className="btn-primary px-6 py-3 flex items-center gap-2"
-          >
-            <Plus size={20} />
-            {t({ mn: 'Шинэ санал асуулга', en: 'Create New Poll' })}
+          <button onClick={handleCreate} className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2">
+            <Plus size={15} />
+            {t({ mn: 'Нэмэх', en: 'Create' })}
           </button>
         </div>
 
-        {/* Polls Table */}
-        <div className="bg-white rounded-[3rem] overflow-hidden card-shadow border-2 border-gray-50">
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-50 border-b-2 border-gray-100">
-                  <th className="px-8 py-6 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Асуулт', en: 'Question' })}</th>
-                  <th className="px-8 py-6 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Төлөв', en: 'Status' })}</th>
-                  <th className="px-8 py-6 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Санал', en: 'Votes' })}</th>
-                  <th className="px-8 py-6 text-xs font-black text-sdy-black uppercase tracking-widest">{t({ mn: 'Дуусах', en: 'Expires' })}</th>
-                  <th className="px-8 py-6 text-xs font-black text-sdy-black uppercase tracking-widest text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Асуулт', en: 'Question' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Санал', en: 'Votes' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Дуусах', en: 'Expires' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y-2 divide-gray-50">
+              <tbody className="divide-y divide-gray-50">
                 {isLoading ? (
-                  [1, 2, 3].map(i => (
-                    <tr key={i} className="animate-pulse">
-                      <td colSpan={5} className="px-8 py-12 bg-white" />
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="px-5 py-4"><div className="w-48 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-8 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
-                ) : polls.length > 0 ? (
+                ) : polls.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-5 py-16 text-center">
+                      <BarChart3 size={24} className="text-gray-200 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400">{t({ mn: 'Санал асуулга байхгүй', en: 'No polls yet' })}</p>
+                    </td>
+                  </tr>
+                ) : (
                   polls.map((poll) => (
-                    <tr key={poll.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-8 py-6">
-                        <div className="font-black text-sdy-black mb-1 line-clamp-1 uppercase tracking-tight">{t(poll.question)}</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID: {poll.id}</div>
+                    <tr key={poll.id} className="hover:bg-gray-50/60 transition-colors">
+                      <td className="px-5 py-3.5">
+                        <div className="font-semibold text-sdy-black text-sm line-clamp-1">{t(poll.question)}</div>
+                        <div className="text-[10px] text-gray-400 mt-0.5">ID: {poll.id}</div>
                       </td>
-                      <td className="px-8 py-6">
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                          poll.status === 'published' ? 'bg-green-100 text-green-600' :
+                      <td className="px-5 py-3.5">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
+                          poll.status === 'published' ? 'bg-emerald-50 text-emerald-600' :
                           poll.status === 'expired' ? 'bg-gray-100 text-gray-400' :
-                          'bg-yellow-100 text-yellow-600'
+                          'bg-amber-50 text-amber-600'
                         }`}>
-                          {t({ 
+                          {t({
                             draft: { mn: 'Ноорог', en: 'Draft' },
                             published: { mn: 'Нийтлэгдсэн', en: 'Published' },
                             expired: { mn: 'Дууссан', en: 'Expired' },
@@ -141,50 +146,32 @@ export const AdminPollsPage = () => {
                           }[poll.status])}
                         </span>
                       </td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2 font-black text-sdy-black">
-                          <Users size={14} className="text-gray-400" />
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                          <Users size={13} className="text-gray-400" />
                           {poll.totalVotes}
                         </div>
                       </td>
-                      <td className="px-8 py-6">
-                        <div className="text-xs font-bold text-gray-500">
-                          {new Date(poll.expiresAt).toLocaleDateString()}
-                        </div>
+                      <td className="px-5 py-3.5">
+                        <div className="text-xs text-gray-400">{new Date(poll.expiresAt).toLocaleDateString()}</div>
                       </td>
-                      <td className="px-8 py-6 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <button 
+                      <td className="px-5 py-3.5 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
                             onClick={() => toggleStatus(poll)}
                             className={`p-2 rounded-lg transition-all ${
-                              poll.status === 'published' ? 'bg-gray-100 text-gray-400 hover:text-sdy-black' : 'bg-green-100 text-green-600 hover:bg-green-200'
+                              poll.status === 'published' ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-100' : 'text-emerald-500 hover:bg-emerald-50'
                             }`}
                             title={poll.status === 'published' ? 'Unpublish' : 'Publish'}
                           >
-                            {poll.status === 'published' ? <EyeOff size={18} /> : <Eye size={18} />}
+                            {poll.status === 'published' ? <EyeOff size={15} /> : <Eye size={15} />}
                           </button>
-                          <button 
-                            onClick={() => handleEdit(poll)}
-                            className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-all"
-                          >
-                            <Edit2 size={18} />
-                          </button>
-                          <button 
-                            onClick={() => handleDelete(poll.id)}
-                            className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          <button onClick={() => handleEdit(poll)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"><Edit2 size={15} /></button>
+                          <button onClick={() => handleDelete(poll.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={15} /></button>
                         </div>
                       </td>
                     </tr>
                   ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="px-8 py-24 text-center">
-                      <div className="text-gray-300 font-black uppercase tracking-widest">No polls found</div>
-                    </td>
-                  </tr>
                 )}
               </tbody>
             </table>
@@ -196,147 +183,116 @@ export const AdminPollsPage = () => {
       <AnimatePresence>
         {isEditing && currentPoll && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               onClick={() => setIsEditing(false)}
-              className="absolute inset-0 bg-sdy-black/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl overflow-hidden"
+              exit={{ opacity: 0, scale: 0.96, y: 8 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden"
             >
-              <div className="p-8 md:p-12">
-                <div className="flex justify-between items-center mb-10">
-                  <h2 className="text-3xl font-black text-sdy-black uppercase tracking-tight">
-                    {currentPoll.id ? t({ mn: 'Засварлах', en: 'Edit Poll' }) : t({ mn: 'Шинэ санал асуулга', en: 'New Poll' })}
-                  </h2>
-                  <button onClick={() => setIsEditing(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                    <X size={24} />
-                  </button>
+              {/* Header */}
+              <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
+                <h2 className="text-lg font-bold text-sdy-black">
+                  {currentPoll.id ? t({ mn: 'Засварлах', en: 'Edit Poll' }) : t({ mn: 'Шинэ санал асуулга', en: 'New Poll' })}
+                </h2>
+                <button onClick={() => setIsEditing(false)} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="px-7 py-6 space-y-5 max-h-[65vh] overflow-y-auto">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (MN)', en: 'Question (MN)' })}</label>
+                  <input type="text" className="input input-sm" value={currentPoll.question?.mn} onChange={(e) => setCurrentPoll({ ...currentPoll, question: { ...currentPoll.question!, mn: e.target.value } })} />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (EN)', en: 'Question (EN)' })}</label>
+                  <input type="text" className="input input-sm" value={currentPoll.question?.en} onChange={(e) => setCurrentPoll({ ...currentPoll, question: { ...currentPoll.question!, en: e.target.value } })} />
                 </div>
 
-                <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar">
-                  {/* Question MN */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Сонголтууд', en: 'Options' })}</label>
                   <div className="space-y-2">
-                    <label className="text-xs font-black text-sdy-black uppercase tracking-widest">Асуулт (MN)</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                      value={currentPoll.question?.mn}
-                      onChange={(e) => setCurrentPoll({
-                        ...currentPoll, 
-                        question: { ...currentPoll.question!, mn: e.target.value }
-                      })}
-                    />
-                  </div>
-                  {/* Question EN */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-sdy-black uppercase tracking-widest">Question (EN)</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                      value={currentPoll.question?.en}
-                      onChange={(e) => setCurrentPoll({
-                        ...currentPoll, 
-                        question: { ...currentPoll.question!, en: e.target.value }
-                      })}
-                    />
-                  </div>
-
-                  {/* Options */}
-                  <div className="space-y-4">
-                    <label className="text-xs font-black text-sdy-black uppercase tracking-widest">Options</label>
                     {currentPoll.options?.map((opt, idx) => (
-                      <div key={opt.id} className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-2xl border-2 border-gray-100">
-                        <input 
-                          type="text" 
+                      <div key={opt.id} className="grid grid-cols-2 gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                        <input
+                          type="text"
                           placeholder="MN"
-                          className="px-3 py-2 rounded-lg border border-gray-200 font-bold text-sm"
+                          className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-sdy-red outline-none transition-colors"
                           value={opt.text.mn}
                           onChange={(e) => {
                             const newOpts = [...currentPoll.options!];
-                            newOpts[idx].text.mn = e.target.value;
+                            newOpts[idx] = { ...newOpts[idx], text: { ...newOpts[idx].text, mn: e.target.value } };
                             setCurrentPoll({ ...currentPoll, options: newOpts });
                           }}
                         />
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           placeholder="EN"
-                          className="px-3 py-2 rounded-lg border border-gray-200 font-bold text-sm"
+                          className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-sdy-red outline-none transition-colors"
                           value={opt.text.en}
                           onChange={(e) => {
                             const newOpts = [...currentPoll.options!];
-                            newOpts[idx].text.en = e.target.value;
+                            newOpts[idx] = { ...newOpts[idx], text: { ...newOpts[idx].text, en: e.target.value } };
                             setCurrentPoll({ ...currentPoll, options: newOpts });
                           }}
                         />
                       </div>
                     ))}
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-2 gap-8">
-                    {/* Expiry */}
-                    <div className="space-y-2">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">Expires At</label>
-                      <div className="relative">
-                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                        <input 
-                          type="date" 
-                          className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold"
-                          value={currentPoll.expiresAt}
-                          onChange={(e) => setCurrentPoll({ ...currentPoll, expiresAt: e.target.value })}
-                        />
-                      </div>
-                    </div>
-                    {/* Status */}
-                    <div className="space-y-2">
-                      <label className="text-xs font-black text-sdy-black uppercase tracking-widest">Status</label>
-                      <select 
-                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold appearance-none bg-white"
-                        value={currentPoll.status}
-                        onChange={(e) => setCurrentPoll({ ...currentPoll, status: e.target.value as PollStatus })}
-                      >
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                        <option value="expired">Expired</option>
-                        <option value="archived">Archived</option>
-                      </select>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Дуусах огноо', en: 'Expires At' })}</label>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={15} />
+                      <input type="date" className="input input-sm pl-10" value={currentPoll.expiresAt} onChange={(e) => setCurrentPoll({ ...currentPoll, expiresAt: e.target.value })} />
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-3 p-4 bg-sdy-red/5 rounded-2xl border-2 border-sdy-red/10">
-                    <input 
-                      type="checkbox" 
-                      id="homepage"
-                      className="w-5 h-5 text-sdy-red rounded border-gray-300 focus:ring-sdy-red"
-                      checked={currentPoll.showOnHomepage}
-                      onChange={(e) => setCurrentPoll({ ...currentPoll, showOnHomepage: e.target.checked })}
-                    />
-                    <label htmlFor="homepage" className="text-sm font-black text-sdy-black uppercase tracking-tight cursor-pointer">
-                      Show on homepage
-                    </label>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Төлөв', en: 'Status' })}</label>
+                    <select className="input input-sm appearance-none bg-white" value={currentPoll.status} onChange={(e) => setCurrentPoll({ ...currentPoll, status: e.target.value as PollStatus })}>
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                      <option value="expired">Expired</option>
+                      <option value="archived">Archived</option>
+                    </select>
                   </div>
                 </div>
 
-                <div className="mt-12 flex gap-4">
-                  <button 
-                    onClick={handleSave}
-                    className="flex-grow btn-primary py-5 text-lg flex items-center justify-center gap-2"
-                  >
-                    <Save size={20} />
-                    {t({ mn: 'Хадгалах', en: 'Save Poll' })}
-                  </button>
-                  <button 
-                    onClick={() => setIsEditing(false)}
-                    className="px-8 py-5 bg-gray-100 text-gray-400 font-black uppercase tracking-widest text-sm rounded-2xl hover:bg-gray-200 transition-all"
-                  >
-                    {t({ mn: 'Цуцлах', en: 'Cancel' })}
-                  </button>
+                <div className="flex items-center gap-3 p-3 bg-sdy-red/5 rounded-xl border border-sdy-red/10">
+                  <input
+                    type="checkbox"
+                    id="homepage"
+                    className="w-4 h-4 text-sdy-red rounded border-gray-300 focus:ring-sdy-red"
+                    checked={currentPoll.showOnHomepage}
+                    onChange={(e) => setCurrentPoll({ ...currentPoll, showOnHomepage: e.target.checked })}
+                  />
+                  <label htmlFor="homepage" className="text-sm font-semibold text-sdy-black cursor-pointer">
+                    {t({ mn: 'Нүүр хуудсанд харуулах', en: 'Show on homepage' })}
+                  </label>
                 </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-7 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center gap-3">
+                <button onClick={handleSave} disabled={saving} className="flex-grow btn-primary py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                  {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={15} />}
+                  {t({ mn: 'Хадгалах', en: 'Save' })}
+                </button>
+                <button onClick={() => setIsEditing(false)} className="px-5 py-3 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
+                  {t({ mn: 'Цуцлах', en: 'Cancel' })}
+                </button>
               </div>
             </motion.div>
           </div>

@@ -92,7 +92,7 @@ export const Ideology = () => {
           </div>
 
           <div className="relative">
-            <div className="sticky top-32 bg-sdy-black text-white p-12 md:p-16 rounded-[3rem] overflow-hidden">
+            <div className="sticky top-32 bg-sdy-black text-white p-12 md:p-16 rounded-4xl overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-sdy-red)_1px,_transparent_1px)] bg-[length:40px_40px] opacity-10" />
               <div className="relative z-10">
                 <Info className="w-16 h-16 text-sdy-red mb-8" />
@@ -105,7 +105,7 @@ export const Ideology = () => {
                     en: 'In a rapidly changing world, social democratic values provide a roadmap for sustainable development. We focus on bridging the gap between urban and rural development, ensuring quality education for all, and protecting our natural environment for future generations.'
                   })}
                 </p>
-                <Link to={l('/join')} className="btn-primary px-10 py-4 inline-flex items-center gap-2">
+                <Link to={l('/join')} className="btn-primary btn-lg inline-flex items-center gap-2">
                   {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join the Movement' })} <ArrowRight size={20} />
                 </Link>
               </div>

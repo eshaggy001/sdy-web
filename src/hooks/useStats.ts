@@ -8,14 +8,21 @@ export function useStats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from('stats')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data: rows }) => {
+    const fetch = async () => {
+      try {
+        const { data: rows, error } = await supabase
+          .from('stats')
+          .select('*')
+          .order('sort_order', { ascending: true });
+        if (error) console.error('[useStats]', error.message);
         setData((rows ?? []).map(mapStat));
+      } catch (err) {
+        console.error('[useStats] fetch failed:', err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetch();
   }, []);
 
   return { data, loading };

@@ -11,6 +11,9 @@
   --color-sdy-gray: #FFFFFF;
   --color-sdy-gray-dark: #44403C;
 
+  /* Border-radius design tokens */
+  --radius-4xl: 2rem;
+
   --animate-fade-in-up: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-ticker: ticker 35s linear infinite;
   --animate-bounce-subtle: bounce-subtle 2s ease-in-out infinite;
@@ -67,15 +70,49 @@
 
   /* Buttons */
   .btn-primary {
-    @apply relative inline-flex items-center justify-center overflow-hidden rounded-full bg-sdy-red px-8 py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-sdy-red-dark focus:ring-4 focus:ring-sdy-red/20 active:scale-[0.97] shadow-lg shadow-sdy-red/20 hover:shadow-xl hover:shadow-sdy-red/30;
+    @apply relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-sdy-red px-8 py-4 text-base font-bold text-white transition-all duration-300 hover:bg-sdy-red-dark focus:ring-4 focus:ring-sdy-red/20 active:scale-[0.97] shadow-lg shadow-sdy-red/20 hover:shadow-xl hover:shadow-sdy-red/30;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-full border-2 border-sdy-black/10 bg-white px-8 py-3.5 text-base font-bold text-sdy-black transition-all duration-300 hover:bg-sdy-black hover:text-white hover:border-sdy-black active:scale-[0.97];
+    @apply inline-flex items-center justify-center rounded-xl border-2 border-sdy-black/10 bg-white px-8 py-4 text-base font-bold text-sdy-black transition-all duration-300 hover:bg-sdy-black hover:text-white hover:border-sdy-black active:scale-[0.97];
   }
 
   .btn-outline-white {
-    @apply inline-flex items-center justify-center rounded-full border-2 border-white/30 bg-transparent px-8 py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-white hover:text-sdy-black active:scale-[0.97] backdrop-blur-sm;
+    @apply inline-flex items-center justify-center rounded-xl border-2 border-white/30 bg-transparent px-8 py-4 text-base font-bold text-white transition-all duration-300 hover:bg-white hover:text-sdy-black active:scale-[0.97] backdrop-blur-sm;
+  }
+
+  /* Button size variants */
+  .btn-sm {
+    @apply px-5 py-2.5 text-[13px];
+  }
+  .btn-lg {
+    @apply px-10 py-4;
+  }
+  .btn-xl {
+    @apply px-10 py-5 text-lg;
+  }
+  .btn-full {
+    @apply w-full justify-center;
+  }
+  .btn-card {
+    @apply px-4 py-3 text-xs tracking-wider;
+  }
+  .btn-filter {
+    @apply px-6 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-all whitespace-nowrap;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold;
+  }
+  .input-icon {
+    @apply pl-12;
+  }
+  .input-sm {
+    @apply px-3 py-3 text-sm;
+  }
+  .input-dark {
+    @apply bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-transparent focus:ring-2 focus:ring-sdy-red;
   }
 
   /* Section labels */

@@ -91,7 +91,7 @@ export const Programs = () => {
 
                 <Link
                   to={l('/join')}
-                  className="btn-primary w-full py-3 flex items-center justify-center gap-2 text-[14px]"
+                  className="btn-primary btn-card btn-full flex items-center gap-2"
                 >
                   {t({ mn: 'Одоо бүртгүүлэх', en: 'Apply Now' })}
                   <ArrowRight size={15} />

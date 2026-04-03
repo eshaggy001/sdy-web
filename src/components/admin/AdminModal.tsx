@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Save } from 'lucide-react';
+import { X, Save, Loader2 } from 'lucide-react';
 import { useI18n } from '../../contexts/I18nContext';
 
 interface AdminModalProps {
@@ -23,47 +23,53 @@ export const AdminModal: React.FC<AdminModalProps> = ({ open, title, onClose, on
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             onClick={onClose}
-            className="absolute inset-0 bg-sdy-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.96, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl overflow-hidden"
+            exit={{ opacity: 0, scale: 0.96, y: 8 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden"
           >
-            <div className="p-8 md:p-10">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-black text-sdy-black uppercase tracking-tight">{title}</h2>
-                <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <X size={22} />
-                </button>
-              </div>
+            {/* Header */}
+            <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
+              <h2 className="text-lg font-bold text-sdy-black">{title}</h2>
+              <button
+                onClick={onClose}
+                className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
-              <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
-                {children}
-              </div>
+            {/* Content */}
+            <div className="px-7 py-6 space-y-5 max-h-[65vh] overflow-y-auto">
+              {children}
+            </div>
 
-              <div className="mt-8 flex gap-3">
-                <button
-                  onClick={onSave}
-                  disabled={saving}
-                  className="flex-grow btn-primary py-4 text-base flex items-center justify-center gap-2 disabled:opacity-60"
-                >
-                  {saving ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Save size={18} />
-                  )}
-                  {t({ mn: 'Хадгалах', en: 'Save' })}
-                </button>
-                <button
-                  onClick={onClose}
-                  className="px-6 py-4 bg-gray-100 text-gray-400 font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-gray-200 transition-all"
-                >
-                  {t({ mn: 'Цуцлах', en: 'Cancel' })}
-                </button>
-              </div>
+            {/* Footer */}
+            <div className="px-7 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center gap-3">
+              <button
+                onClick={onSave}
+                disabled={saving}
+                className="flex-grow btn-primary py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                {saving ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Save size={15} />
+                )}
+                {t({ mn: 'Хадгалах', en: 'Save' })}
+              </button>
+              <button
+                onClick={onClose}
+                className="px-5 py-3 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all"
+              >
+                {t({ mn: 'Цуцлах', en: 'Cancel' })}
+              </button>
             </div>
           </motion.div>
         </div>

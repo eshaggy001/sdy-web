@@ -132,7 +132,7 @@ export const About = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-sdy-black rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
+        <div className="bg-sdy-black rounded-4xl p-12 md:p-24 text-center relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-sdy-red)_1px,_transparent_1px)] bg-[length:40px_40px] opacity-10" />
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter">
@@ -144,7 +144,7 @@ export const About = () => {
                 en: 'Join Mongolia\'s largest youth movement and start your journey as a leader today.'
               })}
             </p>
-            <Link to={l('/join')} className="btn-primary px-12 py-5 text-xl inline-flex items-center gap-3">
+            <Link to={l('/join')} className="btn-primary btn-xl inline-flex items-center gap-3">
               {t({ mn: 'НАЗХ-д нэгдэх', en: 'Join SDY Now' })} <ArrowRight size={24} />
             </Link>
           </div>

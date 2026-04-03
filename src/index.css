@@ -41,7 +41,6 @@
 
   body {
     @apply bg-sdy-gray text-sdy-black font-sans antialiased overflow-x-hidden dark:bg-gray-950 dark:text-gray-100;
-    background-color: var(--color-sdy-gray);
   }
 
   h1, h2, h3, h4, h5, h6 {

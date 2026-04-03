@@ -39,7 +39,7 @@ function AppContent() {
   const isAdminLogin = /^\/[a-z]{2}\/admin\/(login|forgot-password|reset-password)$/.test(location.pathname);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       {(!isAdminRoute || isAdminLogin) && <Navbar />}
       <main className="flex-grow">
         <AnimatePresence mode="wait">

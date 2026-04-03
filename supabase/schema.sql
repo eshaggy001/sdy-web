@@ -459,15 +459,36 @@ create table if not exists member_applications (
 );
 
 alter table member_applications enable row level security;
-drop policy if exists "public insert member_applications"  on member_applications;
-drop policy if exists "public update member_applications"  on member_applications;
-drop policy if exists "public delete member_applications"  on member_applications;
-create policy "public insert member_applications"  on member_applications for insert with check (true);
-create policy "public update member_applications"  on member_applications for update using (true) with check (true);
-create policy "public delete member_applications"  on member_applications for delete using (true);
+drop policy if exists "public insert member_applications"        on member_applications;
+drop policy if exists "public update member_applications"        on member_applications;
+drop policy if exists "public delete member_applications"        on member_applications;
+drop policy if exists "authenticated read member_applications"   on member_applications;
+drop policy if exists "authenticated update member_applications" on member_applications;
+drop policy if exists "authenticated delete member_applications" on member_applications;
+create policy "public insert member_applications"        on member_applications for insert with check (true);
+create policy "authenticated read member_applications"   on member_applications for select using (auth.uid() is not null);
+create policy "authenticated update member_applications" on member_applications for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated delete member_applications" on member_applications for delete using (auth.uid() is not null);
 
 alter table contact_messages enable row level security;
-drop policy if exists "public insert contact_messages"  on contact_messages;
-drop policy if exists "public delete contact_messages"  on contact_messages;
-create policy "public insert contact_messages"  on contact_messages for insert with check (true);
-create policy "public delete contact_messages"  on contact_messages for delete using (true);
+drop policy if exists "public insert contact_messages"        on contact_messages;
+drop policy if exists "public delete contact_messages"        on contact_messages;
+drop policy if exists "authenticated read contact_messages"   on contact_messages;
+drop policy if exists "authenticated delete contact_messages" on contact_messages;
+create policy "public insert contact_messages"        on contact_messages for insert with check (true);
+create policy "authenticated read contact_messages"   on contact_messages for select using (auth.uid() is not null);
+create policy "authenticated delete contact_messages" on contact_messages for delete using (auth.uid() is not null);
+
+-- Voting: keep public update for polls + poll_options (vote increment)
+-- Admin write operations on polls require auth
+drop policy if exists "public update polls total_votes"    on polls;
+drop policy if exists "public update poll_options votes"   on poll_options;
+drop policy if exists "public vote polls total"            on polls;
+drop policy if exists "public vote poll_options"           on poll_options;
+drop policy if exists "authenticated insert polls"         on polls;
+drop policy if exists "authenticated update polls"         on polls;
+drop policy if exists "authenticated update poll_options"  on poll_options;
+create policy "public vote polls total"           on polls        for update using (true) with check (true);
+create policy "public vote poll_options"          on poll_options for update using (true) with check (true);
+create policy "authenticated insert polls"        on polls        for insert with check (auth.uid() is not null);
+create policy "authenticated update poll_options" on poll_options for update using (auth.uid() is not null);

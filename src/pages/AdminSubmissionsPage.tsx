@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Users, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Inbox } from 'lucide-react';
+import { Mail, Users, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Inbox, LogOut } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { supabase } from '../lib/supabase';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 interface ContactMessage {
   id: string;
@@ -27,6 +28,7 @@ interface MemberApplication {
 
 export const AdminSubmissionsPage = () => {
   const { t, l } = useI18n();
+  const { signOut } = useAuth();
   const [tab, setTab] = useState<'messages' | 'applications'>('applications');
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [applications, setApplications] = useState<MemberApplication[]>([]);
@@ -93,6 +95,13 @@ export const AdminSubmissionsPage = () => {
             >
               <RefreshCw size={14} />
               {t({ mn: 'Шинэчлэх', en: 'Refresh' })}
+            </button>
+            <button
+              onClick={() => signOut()}
+              className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
+            >
+              <LogOut size={14} />
+              {t({ mn: 'Гарах', en: 'Logout' })}
             </button>
           </div>
         </div>

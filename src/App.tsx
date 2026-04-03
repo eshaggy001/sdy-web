@@ -14,13 +14,17 @@ import { ContactPage } from './pages/ContactPage';
 import { PollsPage } from './pages/PollsPage';
 import { AdminPollsPage } from './pages/AdminPollsPage';
 import { AdminSubmissionsPage } from './pages/AdminSubmissionsPage';
+import { AdminLoginPage } from './pages/AdminLoginPage';
 import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 export default function App() {
   return (
     <Router>
       <I18nProvider>
+      <AuthProvider>
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-grow">
@@ -41,14 +45,16 @@ export default function App() {
                   <Route path="join" element={<JoinPage />} />
                   <Route path="contact" element={<ContactPage />} />
                   <Route path="polls" element={<PollsPage />} />
-                  <Route path="admin/polls" element={<AdminPollsPage />} />
-                  <Route path="admin/submissions" element={<AdminSubmissionsPage />} />
+                  <Route path="admin/login" element={<AdminLoginPage />} />
+                  <Route path="admin/polls" element={<ProtectedRoute><AdminPollsPage /></ProtectedRoute>} />
+                  <Route path="admin/submissions" element={<ProtectedRoute><AdminSubmissionsPage /></ProtectedRoute>} />
                 </Route>
               </Routes>
             </AnimatePresence>
           </main>
           <Footer />
         </div>
+      </AuthProvider>
       </I18nProvider>
     </Router>
   );

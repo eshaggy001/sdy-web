@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, Edit2, Trash2, Eye, EyeOff, BarChart3, Save, X, Calendar, Clock, CheckCircle2, AlertCircle, Users, Inbox } from 'lucide-react';
+import { Plus, Edit2, Trash2, Eye, EyeOff, BarChart3, Save, X, Calendar, Clock, CheckCircle2, AlertCircle, Users, Inbox, LogOut } from 'lucide-react';
 import { Poll, PollOption, PollStatus } from '../types';
 import { useI18n } from '../contexts/I18nContext';
 import { pollService } from '../services/pollService';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export const AdminPollsPage = () => {
   const { t, l } = useI18n();
+  const { signOut } = useAuth();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentPoll, setCurrentPoll] = useState<Partial<Poll> | null>(null);
@@ -100,6 +102,13 @@ export const AdminPollsPage = () => {
               <Inbox size={16} />
               {t({ mn: 'Хүсэлтүүд', en: 'Submissions' })}
             </Link>
+            <button
+              onClick={() => signOut()}
+              className="flex items-center gap-2 text-sm font-black text-gray-400 hover:text-sdy-red transition-colors uppercase tracking-widest"
+            >
+              <LogOut size={14} />
+              {t({ mn: 'Гарах', en: 'Logout' })}
+            </button>
           <button
             onClick={handleCreate}
             className="btn-primary px-8 py-4 flex items-center gap-2 text-lg"

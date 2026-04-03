@@ -48,10 +48,10 @@ export const AdminRegistrationsPage = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+            <h1 className="text-2xl font-bold text-sdy-black dark:text-white tracking-tight">
               {t({ mn: 'Бүртгэлүүд', en: 'Registrations' })}
             </h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
               {t({ mn: 'Хөтөлбөрийн бүртгэлүүд', en: 'Program registrations' })}
             </p>
           </div>
@@ -72,24 +72,24 @@ export const AdminRegistrationsPage = () => {
             { icon: CheckCircle2, value: approvedCount,   label: t({ mn: 'Зөвшөөрсөн', en: 'Approved' }),   iconBg: 'bg-emerald-50', iconColor: 'text-emerald-500' },
             { icon: XCircle,      value: rejectedCount,   label: t({ mn: 'Татгалзсан', en: 'Rejected' }),   iconBg: 'bg-red-50', iconColor: 'text-red-500' },
           ].map(({ icon: Icon, value, label, iconBg, iconColor }) => (
-            <div key={label} className="bg-white rounded-xl px-5 py-4 border border-gray-100 flex items-center gap-3">
+            <div key={label} className="bg-white dark:bg-gray-900 rounded-xl px-5 py-4 border border-gray-100 dark:border-gray-800 flex items-center gap-3">
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${iconBg}`}>
                 <Icon size={16} className={iconColor} />
               </div>
               <div>
-                <div className="text-xl font-black text-sdy-black tabular-nums leading-none">{value}</div>
-                <div className="text-[10px] font-medium text-gray-400 mt-0.5">{label}</div>
+                <div className="text-xl font-black text-sdy-black dark:text-white tabular-nums leading-none">{value}</div>
+                <div className="text-[10px] font-medium text-gray-400 dark:text-gray-500 mt-0.5">{label}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Program filter */}
-        <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-xl overflow-x-auto">
+        <div className="flex gap-1 mb-6 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl overflow-x-auto">
           <button
             onClick={() => setFilterProgram('all')}
             className={`px-5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
-              filterProgram === 'all' ? 'bg-white text-sdy-black shadow-sm' : 'text-gray-400 hover:text-gray-600'
+              filterProgram === 'all' ? 'bg-white dark:bg-gray-900 text-sdy-black dark:text-white shadow-sm' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
             {t({ mn: `Бүгд (${items.length})`, en: `All (${items.length})` })}
@@ -99,7 +99,7 @@ export const AdminRegistrationsPage = () => {
               key={id}
               onClick={() => setFilterProgram(id)}
               className={`px-5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
-                filterProgram === id ? 'bg-white text-sdy-black shadow-sm' : 'text-gray-400 hover:text-gray-600'
+                filterProgram === id ? 'bg-white dark:bg-gray-900 text-sdy-black dark:text-white shadow-sm' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
               }`}
             >
               {title ? t(title) : id}
@@ -108,7 +108,7 @@ export const AdminRegistrationsPage = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
           {loading ? (
             <div className="p-16 text-center">
               <div className="animate-spin w-6 h-6 border-2 border-sdy-red border-t-transparent rounded-full mx-auto" />
@@ -117,28 +117,28 @@ export const AdminRegistrationsPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Нэр', en: 'Name' })}</th>
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Холбоо барих', en: 'Contact' })}</th>
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Хөтөлбөр', en: 'Program' })}</th>
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Огноо', en: 'Date' })}</th>
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
-                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Action' })}</th>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Нэр', en: 'Name' })}</th>
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Холбоо барих', en: 'Contact' })}</th>
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Хөтөлбөр', en: 'Program' })}</th>
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Огноо', en: 'Date' })}</th>
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
+                    <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Action' })}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                   {filtered.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="px-5 py-16 text-center">
-                        <ClipboardCheck size={24} className="text-gray-200 mx-auto mb-3" />
-                        <p className="text-sm font-medium text-gray-400">{t({ mn: 'Бүртгэл байхгүй байна', en: 'No registrations yet' })}</p>
+                        <ClipboardCheck size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                        <p className="text-sm font-medium text-gray-400 dark:text-gray-500">{t({ mn: 'Бүртгэл байхгүй байна', en: 'No registrations yet' })}</p>
                       </td>
                     </tr>
                   ) : filtered.map((reg) => (
-                    <motion.tr key={reg.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 transition-colors">
+                    <motion.tr key={reg.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors">
                       <td className="px-5 py-3.5">
-                        <div className="font-semibold text-sdy-black text-sm">{reg.name}</div>
-                        <div className="text-xs text-gray-400">
+                        <div className="font-semibold text-sdy-black dark:text-white text-sm">{reg.name}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">
                           {reg.age ? `${reg.age} ${t({ mn: 'нас', en: 'yrs' })}` : ''}
                           {reg.isSdyMember && (
                             <span className="ml-1 px-1.5 py-0.5 bg-sdy-red/8 text-sdy-red rounded text-[9px] font-semibold uppercase tracking-wider">SDY</span>
@@ -146,16 +146,16 @@ export const AdminRegistrationsPage = () => {
                         </div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-sm text-gray-600">{reg.email}</div>
-                        <div className="text-xs text-gray-400">{reg.phone}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{reg.email}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">{reg.phone}</div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500 max-w-[160px] truncate inline-block">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 max-w-[160px] truncate inline-block">
                           {reg.programTitle ? t(reg.programTitle) : reg.programId.slice(0, 8)}
                         </span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-xs text-gray-400 whitespace-nowrap">{new Date(reg.createdAt).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">{new Date(reg.createdAt).toLocaleDateString()}</div>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
@@ -178,7 +178,7 @@ export const AdminRegistrationsPage = () => {
                           {reg.status !== 'rejected' && (
                             <button onClick={() => updateStatus(reg.id, 'rejected')} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Reject"><XCircle size={15} /></button>
                           )}
-                          <button onClick={() => handleDelete(reg.id)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all" title="Delete"><Trash2 size={15} /></button>
+                          <button onClick={() => handleDelete(reg.id)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all" title="Delete"><Trash2 size={15} /></button>
                         </div>
                       </td>
                     </motion.tr>

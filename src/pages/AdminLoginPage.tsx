@@ -40,15 +40,15 @@ export const AdminLoginPage = () => {
             <Lock size={14} />
             Admin
           </div>
-          <h1 className="text-5xl font-black text-sdy-black tracking-tighter">
+          <h1 className="text-5xl font-black text-sdy-black dark:text-white tracking-tighter">
             Нэвтрэх <span className="text-sdy-red">хэсэг.</span>
           </h1>
         </div>
 
-        <div className="bg-white rounded-4xl p-10 card-shadow border-2 border-gray-50">
+        <div className="bg-white dark:bg-gray-900 rounded-4xl p-10 card-shadow border-2 border-gray-50 dark:border-gray-800">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+              <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                 И-мэйл
               </label>
               <input
@@ -63,7 +63,7 @@ export const AdminLoginPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+              <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                 Нууц үг
               </label>
               <input
@@ -86,7 +86,7 @@ export const AdminLoginPage = () => {
             <div className="text-right">
               <Link
                 to={l('/admin/forgot-password')}
-                className="text-sm font-bold text-gray-400 hover:text-sdy-red transition-colors"
+                className="text-sm font-bold text-gray-400 dark:text-gray-500 hover:text-sdy-red transition-colors"
               >
                 Нууц үг мартсан уу?
               </Link>

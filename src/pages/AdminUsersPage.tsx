@@ -94,10 +94,10 @@ export const AdminUsersPage = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+            <h1 className="text-2xl font-bold text-sdy-black dark:text-white tracking-tight">
               {t({ mn: 'Хэрэглэгчид', en: 'Users' })}
             </h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
               {t({ mn: `Нийт ${users.length} хэрэглэгч`, en: `${users.length} users total` })}
             </p>
           </div>
@@ -120,51 +120,51 @@ export const AdminUsersPage = () => {
         </div>
 
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-600 text-sm font-medium px-5 py-3.5 rounded-xl">
+          <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 text-sm font-medium px-5 py-3.5 rounded-xl">
             {error}
           </div>
         )}
 
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Имэйл', en: 'Email' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Эрх', en: 'Role' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Бүртгүүлсэн', en: 'Created' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Сүүлд нэвтэрсэн', en: 'Last Login' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100 dark:border-gray-800">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Имэйл', en: 'Email' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Эрх', en: 'Role' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Бүртгүүлсэн', en: 'Created' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Сүүлд нэвтэрсэн', en: 'Last Login' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <tr key={i}>
-                      <td className="px-5 py-4"><div className="flex items-center gap-3"><div className="w-8 h-8 bg-gray-100 rounded-lg animate-pulse" /><div className="w-32 h-4 bg-gray-100 rounded animate-pulse" /></div></td>
-                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="flex items-center gap-3"><div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" /><div className="w-32 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></div></td>
+                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 dark:bg-gray-800 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : users.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-5 py-16 text-center">
-                      <UserCog size={24} className="text-gray-200 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-gray-400">{t({ mn: 'Хэрэглэгч олдсонгүй', en: 'No users found' })}</p>
+                      <UserCog size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400 dark:text-gray-500">{t({ mn: 'Хэрэглэгч олдсонгүй', en: 'No users found' })}</p>
                     </td>
                   </tr>
                 ) : (
                   users.map((u) => (
-                    <motion.tr key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 transition-colors">
+                    <motion.tr key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors">
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-xs font-bold text-gray-400 uppercase">
+                          <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">
                             {u.email?.[0]}
                           </div>
                           <div>
-                            <div className="font-semibold text-sdy-black text-sm">{u.email}</div>
+                            <div className="font-semibold text-sdy-black dark:text-white text-sm">{u.email}</div>
                             {u.id === currentUser?.id && (
                               <span className="text-[9px] font-bold text-sdy-red uppercase tracking-wider">
                                 {t({ mn: 'Та', en: 'You' })}
@@ -182,10 +182,10 @@ export const AdminUsersPage = () => {
                         </span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-xs text-gray-400">{new Date(u.created_at).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">{new Date(u.created_at).toLocaleDateString()}</div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-xs text-gray-400">{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString() : '—'}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString() : '—'}</div>
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1.5">
@@ -223,7 +223,7 @@ export const AdminUsersPage = () => {
                   className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold transition-all border ${
                     inviteRole === r
                       ? r === 'admin' ? 'border-sdy-red bg-sdy-red/8 text-sdy-red' : 'border-blue-400 bg-blue-50 text-blue-500'
-                      : 'border-gray-100 text-gray-400 hover:border-gray-200'
+                      : 'border-gray-100 dark:border-gray-800 text-gray-400 dark:text-gray-500 hover:border-gray-200 dark:hover:border-gray-700'
                   }`}
                 >
                   {r === 'admin' && <Shield size={12} className="inline mr-1" />}
@@ -239,13 +239,13 @@ export const AdminUsersPage = () => {
           {editingUser && (
             <>
               <div className="text-center mb-4">
-                <div className="w-11 h-11 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-base font-bold text-gray-400 uppercase">
+                <div className="w-11 h-11 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center mx-auto mb-3 text-base font-bold text-gray-400 dark:text-gray-500 uppercase">
                   {editingUser.email?.[0]}
                 </div>
-                <div className="font-semibold text-sdy-black">{editingUser.email}</div>
+                <div className="font-semibold text-sdy-black dark:text-white">{editingUser.email}</div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Шинэ эрх', en: 'New Role' })}</label>
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Шинэ эрх', en: 'New Role' })}</label>
                 <div className="flex gap-2">
                   {(['editor', 'admin'] as const).map((r) => (
                     <button
@@ -255,7 +255,7 @@ export const AdminUsersPage = () => {
                       className={`flex-1 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all border ${
                         editRole === r
                           ? r === 'admin' ? 'border-sdy-red bg-sdy-red/8 text-sdy-red' : 'border-blue-400 bg-blue-50 text-blue-500'
-                          : 'border-gray-100 text-gray-400 hover:border-gray-200'
+                          : 'border-gray-100 dark:border-gray-800 text-gray-400 dark:text-gray-500 hover:border-gray-200 dark:hover:border-gray-700'
                       }`}
                     >
                       {r === 'admin' && <Shield size={13} className="inline mr-1" />}
@@ -263,7 +263,7 @@ export const AdminUsersPage = () => {
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-gray-400 mt-2">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">
                   {editRole === 'admin'
                     ? t({ mn: 'Бүх эрхтэй: контент, хэрэглэгч, хүсэлтүүд', en: 'Full access: content, users, submissions' })
                     : t({ mn: 'Зөвхөн контент засах эрхтэй', en: 'Content editing only' })

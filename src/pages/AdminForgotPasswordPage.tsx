@@ -35,20 +35,20 @@ export const AdminForgotPasswordPage = () => {
             <Lock size={14} />
             Admin
           </div>
-          <h1 className="text-5xl font-black text-sdy-black tracking-tighter">
+          <h1 className="text-5xl font-black text-sdy-black dark:text-white tracking-tighter">
             Нууц үг <span className="text-sdy-red">сэргээх.</span>
           </h1>
         </div>
 
-        <div className="bg-white rounded-4xl p-10 card-shadow border-2 border-gray-50">
+        <div className="bg-white dark:bg-gray-900 rounded-4xl p-10 card-shadow border-2 border-gray-50 dark:border-gray-800">
           {sent ? (
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
                 <Mail size={28} className="text-green-600" />
               </div>
-              <h2 className="text-xl font-black text-sdy-black">И-мэйлээ шалгана уу</h2>
-              <p className="text-gray-500 font-medium">
-                <span className="font-bold text-sdy-black">{email}</span> хаяг руу нууц үг сэргээх линк илгээлээ.
+              <h2 className="text-xl font-black text-sdy-black dark:text-white">И-мэйлээ шалгана уу</h2>
+              <p className="text-gray-500 dark:text-gray-400 font-medium">
+                <span className="font-bold text-sdy-black dark:text-white">{email}</span> хаяг руу нууц үг сэргээх линк илгээлээ.
               </p>
               <Link
                 to={l('/admin/login')}
@@ -60,12 +60,12 @@ export const AdminForgotPasswordPage = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <p className="text-gray-500 font-medium text-sm">
+              <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">
                 Бүртгэлтэй и-мэйл хаягаа оруулна уу. Нууц үг сэргээх линк илгээх болно.
               </p>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+                <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                   И-мэйл
                 </label>
                 <input
@@ -102,7 +102,7 @@ export const AdminForgotPasswordPage = () => {
               <div className="text-center">
                 <Link
                   to={l('/admin/login')}
-                  className="inline-flex items-center gap-2 text-gray-400 font-bold hover:text-sdy-red transition-colors text-sm"
+                  className="inline-flex items-center gap-2 text-gray-400 dark:text-gray-500 font-bold hover:text-sdy-red transition-colors text-sm"
                 >
                   <ArrowLeft size={14} />
                   Нэвтрэх хуудас руу буцах

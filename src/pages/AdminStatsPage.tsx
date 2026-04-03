@@ -61,10 +61,10 @@ export const AdminStatsPage = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+            <h1 className="text-2xl font-bold text-sdy-black dark:text-white tracking-tight">
               {t({ mn: 'Статистик', en: 'Statistics' })}
             </h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
               {t({ mn: `Нийт ${items.length} статистик`, en: `${items.length} stats total` })}
             </p>
           </div>
@@ -74,48 +74,48 @@ export const AdminStatsPage = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Нэр', en: 'Label' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Утга', en: 'Value' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Айкон', en: 'Icon' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Эрэмбэ', en: 'Sort' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100 dark:border-gray-800">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Нэр', en: 'Label' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Утга', en: 'Value' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Айкон', en: 'Icon' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Эрэмбэ', en: 'Sort' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <tr key={i}>
-                      <td className="px-5 py-4"><div className="w-28 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-6 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-28 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-6 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 dark:bg-gray-800 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : items.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-5 py-16 text-center">
-                      <BarChart3 size={24} className="text-gray-200 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-gray-400">{t({ mn: 'Статистик байхгүй байна', en: 'No statistics yet' })}</p>
+                      <BarChart3 size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400 dark:text-gray-500">{t({ mn: 'Статистик байхгүй байна', en: 'No statistics yet' })}</p>
                     </td>
                   </tr>
                 ) : (
                   items.map((row) => (
-                    <motion.tr key={row.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 transition-colors">
+                    <motion.tr key={row.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors">
                       <td className="px-5 py-3.5">
-                        <div className="font-semibold text-sdy-black text-sm">{row.label_mn}</div>
-                        <div className="text-xs text-gray-400">{row.label_en}</div>
+                        <div className="font-semibold text-sdy-black dark:text-white text-sm">{row.label_mn}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">{row.label_en}</div>
                       </td>
-                      <td className="px-5 py-3.5"><div className="text-sm text-gray-600">{row.value}</div></td>
+                      <td className="px-5 py-3.5"><div className="text-sm text-gray-600 dark:text-gray-300">{row.value}</div></td>
                       <td className="px-5 py-3.5">
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500">{row.icon_name}</span>
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">{row.icon_name}</span>
                       </td>
-                      <td className="px-5 py-3.5"><div className="text-sm text-gray-400 tabular-nums">{row.sort_order}</div></td>
+                      <td className="px-5 py-3.5"><div className="text-sm text-gray-400 dark:text-gray-500 tabular-nums">{row.sort_order}</div></td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1.5">
                           <button onClick={() => openEdit(row)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit"><Pencil size={15} /></button>

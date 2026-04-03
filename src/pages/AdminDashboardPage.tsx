@@ -86,12 +86,12 @@ export const AdminDashboardPage = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <p className="text-sm font-medium text-gray-400 mb-1">
+          <p className="text-sm font-medium text-gray-400 dark:text-gray-500 mb-1">
             {getGreeting(language as 'mn' | 'en')}
           </p>
-          <h1 className="text-2xl md:text-3xl font-black text-sdy-black tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-black text-sdy-black dark:text-white tracking-tight">
             {userName}
-            <span className="text-gray-300 font-medium text-lg md:text-xl ml-2">
+            <span className="text-gray-300 dark:text-gray-600 font-medium text-lg md:text-xl ml-2">
               / {role === 'admin' ? 'Admin' : 'Editor'}
             </span>
           </h1>
@@ -106,20 +106,20 @@ export const AdminDashboardPage = () => {
             <Link
               key={path + label}
               to={l(path)}
-              className="group bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gray-200"
+              className="group bg-white dark:bg-gray-900 rounded-2xl p-5 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all duration-200 border border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${iconBg}`}>
                   <Icon size={17} className={iconColor} />
                 </div>
-                <ArrowUpRight size={14} className="text-gray-200 group-hover:text-gray-400 transition-colors mt-1" />
+                <ArrowUpRight size={14} className="text-gray-200 dark:text-gray-700 group-hover:text-gray-400 transition-colors mt-1" />
               </div>
-              <div className="text-2xl font-black text-sdy-black tabular-nums leading-none mb-1">
+              <div className="text-2xl font-black text-sdy-black dark:text-white tabular-nums leading-none mb-1">
                 {loading ? (
-                  <div className="w-8 h-6 bg-gray-100 rounded-md animate-pulse" />
+                  <div className="w-8 h-6 bg-gray-100 dark:bg-gray-800 rounded-md animate-pulse" />
                 ) : count}
               </div>
-              <div className="text-xs font-medium text-gray-400">{label}</div>
+              <div className="text-xs font-medium text-gray-400 dark:text-gray-500">{label}</div>
             </Link>
           ))}
         </div>
@@ -131,20 +131,20 @@ export const AdminDashboardPage = () => {
               <Link
                 key={path + label}
                 to={l(path)}
-                className="group bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gray-200"
+                className="group bg-white dark:bg-gray-900 rounded-2xl p-5 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all duration-200 border border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${iconBg}`}>
                     <Icon size={17} className={iconColor} />
                   </div>
-                  <ArrowUpRight size={14} className="text-gray-200 group-hover:text-gray-400 transition-colors mt-1" />
+                  <ArrowUpRight size={14} className="text-gray-200 dark:text-gray-700 group-hover:text-gray-400 transition-colors mt-1" />
                 </div>
-                <div className="text-2xl font-black text-sdy-black tabular-nums leading-none mb-1">
+                <div className="text-2xl font-black text-sdy-black dark:text-white tabular-nums leading-none mb-1">
                   {loading ? (
-                    <div className="w-8 h-6 bg-gray-100 rounded-md animate-pulse" />
+                    <div className="w-8 h-6 bg-gray-100 dark:bg-gray-800 rounded-md animate-pulse" />
                   ) : count}
                 </div>
-                <div className="text-xs font-medium text-gray-400">{label}</div>
+                <div className="text-xs font-medium text-gray-400 dark:text-gray-500">{label}</div>
               </Link>
             ))}
           </div>

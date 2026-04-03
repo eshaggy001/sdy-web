@@ -212,17 +212,17 @@ export const AdminProgramsPage = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+            <h1 className="text-2xl font-bold text-sdy-black dark:text-white tracking-tight">
               {t({ mn: 'Хөтөлбөрүүд', en: 'Programs' })}
             </h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
               {t({ mn: `Нийт ${items.length} хөтөлбөр`, en: `${items.length} programs total` })}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={load}
-              className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-white rounded-lg transition-all"
+              className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-white dark:hover:bg-gray-800 rounded-lg transition-all"
               title={t({ mn: 'Шинэчлэх', en: 'Refresh' })}
             >
               <RefreshCw size={15} />
@@ -238,36 +238,36 @@ export const AdminProgramsPage = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Зураг', en: 'Image' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Гарчиг', en: 'Title' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Багана', en: 'Pillar' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Бүртгэл', en: 'Reg.' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100 dark:border-gray-800">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Зураг', en: 'Image' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Гарчиг', en: 'Title' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Багана', en: 'Pillar' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Бүртгэл', en: 'Reg.' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <tr key={i}>
-                      <td className="px-5 py-4"><div className="w-14 h-9 bg-gray-100 rounded-lg animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-32 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-12 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-14 h-9 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-32 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-14 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-12 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-6 bg-gray-100 dark:bg-gray-800 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : items.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-5 py-16 text-center">
-                      <BookOpen size={24} className="text-gray-200 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-gray-400">
+                      <BookOpen size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400 dark:text-gray-500">
                         {t({ mn: 'Хөтөлбөр байхгүй байна', en: 'No programs yet' })}
                       </p>
                     </td>
@@ -278,22 +278,22 @@ export const AdminProgramsPage = () => {
                       key={item.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="hover:bg-gray-50/60 transition-colors"
+                      className="hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
                     >
                       <td className="px-5 py-3.5">
                         {item.image ? (
-                          <img src={item.image} alt="" className="w-14 h-9 rounded-lg object-cover border border-gray-100" />
+                          <img src={item.image} alt="" className="w-14 h-9 rounded-lg object-cover border border-gray-100 dark:border-gray-800" />
                         ) : (
-                          <div className="w-14 h-9 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100">
-                            <BookOpen size={13} className="text-gray-300" />
+                          <div className="w-14 h-9 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center border border-gray-100 dark:border-gray-700">
+                            <BookOpen size={13} className="text-gray-300 dark:text-gray-600" />
                           </div>
                         )}
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="font-semibold text-sdy-black text-sm max-w-[220px] truncate">{item.title_mn}</div>
+                        <div className="font-semibold text-sdy-black dark:text-white text-sm max-w-[220px] truncate">{item.title_mn}</div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                           {item.pillar_mn}
                         </span>
                       </td>
@@ -308,7 +308,7 @@ export const AdminProgramsPage = () => {
                             {regCounts[item.id] ?? 0}{item.max_participants ? ` / ${item.max_participants}` : ''}
                           </span>
                         ) : (
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-50 text-gray-400">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500">
                             {t({ mn: 'Хаалттай', en: 'Closed' })}
                           </span>
                         )}
@@ -442,7 +442,7 @@ export const AdminProgramsPage = () => {
                 className={`w-full px-4 py-3 rounded-xl text-sm font-semibold transition-all border ${
                   form.registration_open
                     ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                    : 'bg-gray-50 text-gray-400 border-gray-100'
+                    : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border-gray-100 dark:border-gray-700'
                 }`}
               >
                 {form.registration_open
@@ -474,7 +474,7 @@ export const AdminProgramsPage = () => {
               </button>
             </div>
             {highlights.length === 0 && (
-              <p className="text-xs text-gray-300">
+              <p className="text-xs text-gray-300 dark:text-gray-600">
                 {t({ mn: 'Онцлох зүйл нэмээгүй байна', en: 'No highlights added' })}
               </p>
             )}

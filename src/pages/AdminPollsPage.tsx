@@ -82,10 +82,10 @@ export const AdminPollsPage = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-sdy-black tracking-tight">
+            <h1 className="text-2xl font-bold text-sdy-black dark:text-white tracking-tight">
               {t({ mn: 'Санал асуулга', en: 'Polls' })}
             </h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
               {t({ mn: `Нийт ${polls.length} асуулга`, en: `${polls.length} polls total` })}
             </p>
           </div>
@@ -95,42 +95,42 @@ export const AdminPollsPage = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Асуулт', en: 'Question' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Санал', en: 'Votes' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t({ mn: 'Дуусах', en: 'Expires' })}</th>
-                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
+                <tr className="border-b border-gray-100 dark:border-gray-800">
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Асуулт', en: 'Question' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Төлөв', en: 'Status' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Санал', en: 'Votes' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t({ mn: 'Дуусах', en: 'Expires' })}</th>
+                  <th className="px-5 py-3.5 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">{t({ mn: 'Үйлдэл', en: 'Actions' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                 {isLoading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <tr key={i}>
-                      <td className="px-5 py-4"><div className="w-48 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 rounded-full animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-8 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 rounded animate-pulse" /></td>
-                      <td className="px-5 py-4"><div className="w-20 h-6 bg-gray-100 rounded ml-auto animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-48 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-16 h-5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-8 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></td>
+                      <td className="px-5 py-4"><div className="w-20 h-6 bg-gray-100 dark:bg-gray-800 rounded ml-auto animate-pulse" /></td>
                     </tr>
                   ))
                 ) : polls.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-5 py-16 text-center">
-                      <BarChart3 size={24} className="text-gray-200 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-gray-400">{t({ mn: 'Санал асуулга байхгүй', en: 'No polls yet' })}</p>
+                      <BarChart3 size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-400 dark:text-gray-500">{t({ mn: 'Санал асуулга байхгүй', en: 'No polls yet' })}</p>
                     </td>
                   </tr>
                 ) : (
                   polls.map((poll) => (
-                    <tr key={poll.id} className="hover:bg-gray-50/60 transition-colors">
+                    <tr key={poll.id} className="hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors">
                       <td className="px-5 py-3.5">
-                        <div className="font-semibold text-sdy-black text-sm line-clamp-1">{t(poll.question)}</div>
-                        <div className="text-[10px] text-gray-400 mt-0.5">ID: {poll.id}</div>
+                        <div className="font-semibold text-sdy-black dark:text-white text-sm line-clamp-1">{t(poll.question)}</div>
+                        <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">ID: {poll.id}</div>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
@@ -147,13 +147,13 @@ export const AdminPollsPage = () => {
                         </span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                          <Users size={13} className="text-gray-400" />
+                        <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                          <Users size={13} className="text-gray-400 dark:text-gray-500" />
                           {poll.totalVotes}
                         </div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-xs text-gray-400">{new Date(poll.expiresAt).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500">{new Date(poll.expiresAt).toLocaleDateString()}</div>
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
@@ -196,14 +196,14 @@ export const AdminPollsPage = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 8 }}
               transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden"
+              className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
-                <h2 className="text-lg font-bold text-sdy-black">
+              <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100 dark:border-gray-800">
+                <h2 className="text-lg font-bold text-sdy-black dark:text-white">
                   {currentPoll.id ? t({ mn: 'Засварлах', en: 'Edit Poll' }) : t({ mn: 'Шинэ санал асуулга', en: 'New Poll' })}
                 </h2>
-                <button onClick={() => setIsEditing(false)} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
+                <button onClick={() => setIsEditing(false)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                   <X size={18} />
                 </button>
               </div>
@@ -211,23 +211,23 @@ export const AdminPollsPage = () => {
               {/* Content */}
               <div className="px-7 py-6 space-y-5 max-h-[65vh] overflow-y-auto">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (MN)', en: 'Question (MN)' })}</label>
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (MN)', en: 'Question (MN)' })}</label>
                   <input type="text" className="input input-sm" value={currentPoll.question?.mn} onChange={(e) => setCurrentPoll({ ...currentPoll, question: { ...currentPoll.question!, mn: e.target.value } })} />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (EN)', en: 'Question (EN)' })}</label>
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Асуулт (EN)', en: 'Question (EN)' })}</label>
                   <input type="text" className="input input-sm" value={currentPoll.question?.en} onChange={(e) => setCurrentPoll({ ...currentPoll, question: { ...currentPoll.question!, en: e.target.value } })} />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Сонголтууд', en: 'Options' })}</label>
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Сонголтууд', en: 'Options' })}</label>
                   <div className="space-y-2">
                     {currentPoll.options?.map((opt, idx) => (
-                      <div key={opt.id} className="grid grid-cols-2 gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                      <div key={opt.id} className="grid grid-cols-2 gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
                         <input
                           type="text"
                           placeholder="MN"
-                          className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-sdy-red outline-none transition-colors"
+                          className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white text-sm focus:border-sdy-red outline-none transition-colors"
                           value={opt.text.mn}
                           onChange={(e) => {
                             const newOpts = [...currentPoll.options!];
@@ -238,7 +238,7 @@ export const AdminPollsPage = () => {
                         <input
                           type="text"
                           placeholder="EN"
-                          className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-sdy-red outline-none transition-colors"
+                          className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white text-sm focus:border-sdy-red outline-none transition-colors"
                           value={opt.text.en}
                           onChange={(e) => {
                             const newOpts = [...currentPoll.options!];
@@ -253,15 +253,15 @@ export const AdminPollsPage = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Дуусах огноо', en: 'Expires At' })}</label>
+                    <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Дуусах огноо', en: 'Expires At' })}</label>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={15} />
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 dark:text-gray-600" size={15} />
                       <input type="date" className="input input-sm pl-10" value={currentPoll.expiresAt} onChange={(e) => setCurrentPoll({ ...currentPoll, expiresAt: e.target.value })} />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Төлөв', en: 'Status' })}</label>
-                    <select className="input input-sm appearance-none bg-white" value={currentPoll.status} onChange={(e) => setCurrentPoll({ ...currentPoll, status: e.target.value as PollStatus })}>
+                    <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t({ mn: 'Төлөв', en: 'Status' })}</label>
+                    <select className="input input-sm appearance-none bg-white dark:bg-gray-900" value={currentPoll.status} onChange={(e) => setCurrentPoll({ ...currentPoll, status: e.target.value as PollStatus })}>
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
                       <option value="expired">Expired</option>
@@ -278,19 +278,19 @@ export const AdminPollsPage = () => {
                     checked={currentPoll.showOnHomepage}
                     onChange={(e) => setCurrentPoll({ ...currentPoll, showOnHomepage: e.target.checked })}
                   />
-                  <label htmlFor="homepage" className="text-sm font-semibold text-sdy-black cursor-pointer">
+                  <label htmlFor="homepage" className="text-sm font-semibold text-sdy-black dark:text-white cursor-pointer">
                     {t({ mn: 'Нүүр хуудсанд харуулах', en: 'Show on homepage' })}
                   </label>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="px-7 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center gap-3">
+              <div className="px-7 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30 flex items-center gap-3">
                 <button onClick={handleSave} disabled={saving} className="flex-grow btn-primary py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-60">
                   {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={15} />}
                   {t({ mn: 'Хадгалах', en: 'Save' })}
                 </button>
-                <button onClick={() => setIsEditing(false)} className="px-5 py-3 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
+                <button onClick={() => setIsEditing(false)} className="px-5 py-3 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all">
                   {t({ mn: 'Цуцлах', en: 'Cancel' })}
                 </button>
               </div>

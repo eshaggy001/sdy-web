@@ -22,10 +22,10 @@ export const AdminResetPasswordPage = () => {
             <Lock size={14} />
             Admin
           </div>
-          <h1 className="text-3xl font-black text-sdy-black tracking-tighter">
+          <h1 className="text-3xl font-black text-sdy-black dark:text-white tracking-tighter">
             Линк хүчингүй болсон байна
           </h1>
-          <p className="text-gray-500 font-medium">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">
             Нууц үг сэргээх линк хугацаа дууссан эсвэл буруу байна.
           </p>
           <Link
@@ -72,15 +72,15 @@ export const AdminResetPasswordPage = () => {
             <Lock size={14} />
             Admin
           </div>
-          <h1 className="text-5xl font-black text-sdy-black tracking-tighter">
+          <h1 className="text-5xl font-black text-sdy-black dark:text-white tracking-tighter">
             Шинэ <span className="text-sdy-red">нууц үг.</span>
           </h1>
         </div>
 
-        <div className="bg-white rounded-4xl p-10 card-shadow border-2 border-gray-50">
+        <div className="bg-white dark:bg-gray-900 rounded-4xl p-10 card-shadow border-2 border-gray-50 dark:border-gray-800">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+              <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                 Шинэ нууц үг
               </label>
               <input
@@ -95,7 +95,7 @@ export const AdminResetPasswordPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-black text-sdy-black uppercase tracking-widest">
+              <label className="text-xs font-black text-sdy-black dark:text-white uppercase tracking-widest">
                 Нууц үг давтах
               </label>
               <input
@@ -132,7 +132,7 @@ export const AdminResetPasswordPage = () => {
             <div className="text-center">
               <Link
                 to={l('/admin/login')}
-                className="inline-flex items-center gap-2 text-gray-400 font-bold hover:text-sdy-red transition-colors text-sm"
+                className="inline-flex items-center gap-2 text-gray-400 dark:text-gray-500 font-bold hover:text-sdy-red transition-colors text-sm"
               >
                 <ArrowLeft size={14} />
                 Нэвтрэх хуудас руу буцах

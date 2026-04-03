@@ -110,9 +110,12 @@ export const ProgramsPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-8 pt-0">
-                <Link to={l('/join')} className="w-full btn-primary py-4 flex items-center justify-center gap-2">
-                  {t({ mn: 'Одоо бүртгүүлэх', en: 'Apply Now' })} <ArrowRight size={18} />
+              <div className="p-8 pt-0 flex gap-3">
+                <Link to={l(`/programs/${program.id}`)} className="flex-1 btn-secondary py-4 flex items-center justify-center gap-2 border-2 border-sdy-black text-sdy-black font-black rounded-xl hover:bg-sdy-black hover:text-white transition-all text-sm uppercase tracking-widest">
+                  {t({ mn: 'Дэлгэрэнгүй', en: 'Learn More' })}
+                </Link>
+                <Link to={l('/join')} className="flex-1 btn-primary py-4 flex items-center justify-center gap-2">
+                  {t({ mn: 'Бүртгүүлэх', en: 'Apply' })} <ArrowRight size={16} />
                 </Link>
               </div>
             </motion.div>

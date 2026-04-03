@@ -34,6 +34,10 @@ export interface Program {
   image: string;
   date?: LocalizedString;
   location?: LocalizedString;
+  content?: LocalizedString;
+  highlights?: LocalizedString[];
+  capacity?: LocalizedString;
+  deadline?: LocalizedString;
 }
 
 export interface NewsItem {

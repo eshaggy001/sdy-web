@@ -78,6 +78,20 @@ export const PROGRAMS: Program[] = [
     image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800',
     date: { mn: '4-р сарын 15 - 6-р сарын 20', en: 'April 15 - June 20' },
     location: { mn: 'Улаанбаатар, Монгол', en: 'Ulaanbaatar, Mongolia' },
+    capacity: { mn: '80 оролцогч', en: '80 participants' },
+    deadline: { mn: '4-р сарын 10', en: 'April 10' },
+    content: {
+      mn: `SDY Академи бол Нийгмийн Ардчилсан Залуучуудын Холбооны тэргүүлэх манлайллын хөтөлбөр юм. 2019 оноос хойш жил бүр зохион байгуулагдаж буй энэхүү хөтөлбөрт Монголын 21 аймгаас 18-30 насны залуу мэргэжилтнүүд, оюутнууд хамрагддаг.\n\nХөтөлбөрийн хүрээнд оролцогчид улс төрийн шинжлэл ухаан, нийгмийн ардчиллын онол, олон нийттэй харилцах ур чадвар, эдийн засгийн бодлого зэрэг чиглэлүүдэд суурилсан сургалтанд хамрагдана. Мөн туршлагатай улс төрч, судлаачид, иргэний нийгмийн удирдагчидтай шууд уулзалт хийх боломж бүрдэнэ.\n\n2025 оны хөтөлбөрт 21 аймгаас 200 гаруй оролцогч хамрагдсан бөгөөд тэдгээрийн 60 гаруй хувь нь орон нутгийн засаг захиргааны нэгжүүдэд идэвхтэй ажиллаж байна. Энэ жилийн 2026 оны хөтөлбөрт хамрагдах хүсэлтэй залуучуудаас өргөдөл хүлээн авч байна.\n\nАкадемийн төгсөгчид SDY-ийн сүлжээнд багтаж, менторшип, карьерын дэмжлэг, олон улсын солилцооны хөтөлбөрт тэргүүн ээлжинд хамрагдах эрхтэй болдог.`,
+      en: `SDY Academy is the flagship leadership program of the Social Democratic Youth of Mongolia. Held annually since 2019, the program brings together young professionals and students aged 18–30 from all 21 aimags of Mongolia.\n\nParticipants receive intensive training in political science, social democratic theory, public communications, and economic policy — alongside direct meetings with seasoned politicians, researchers, and civil society leaders.\n\nThe 2025 cohort included over 200 participants from across the country, with more than 60 percent now actively engaged in local governance units. Applications are now open for the 2026 program.\n\nAcademy graduates become part of the SDY network, gaining access to mentorship, career support, and priority consideration for international exchange programs.`
+    },
+    highlights: [
+      { mn: '10 hafta эрчимжүүлсэн сургалт', en: '10-week intensive training' },
+      { mn: 'Манлайллын онол ба практик', en: 'Leadership theory & practice' },
+      { mn: 'Улс төрийн дискурсын семинар', en: 'Political discourse seminars' },
+      { mn: 'Олон улсын зочин илтгэгчид', en: 'International guest speakers' },
+      { mn: 'Менторшип хөтөлбөр', en: 'Mentorship program' },
+      { mn: 'Төгсөлтийн гэрчилгээ', en: 'Graduation certificate' },
+    ],
   },
   {
     id: 'edu-scholarship',
@@ -91,6 +105,19 @@ export const PROGRAMS: Program[] = [
     image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800',
     date: { mn: 'Эцсийн хугацаа: 5-р сарын 1', en: 'Deadline: May 1' },
     location: { mn: 'Улс даяар', en: 'National' },
+    capacity: { mn: '30 тэтгэлэгт суудал', en: '30 scholarship slots' },
+    deadline: { mn: '5-р сарын 1', en: 'May 1' },
+    content: {
+      mn: `SDY EDU Тэтгэлэг нь орон нутгийн шилдэг оюутнуудад дээд боловсрол эзэмшихэд нь санхүүгийн дэмжлэг үзүүлэх, менторшип олгох зорилготой хөтөлбөр юм. 2022 онд байгуулагдсан энэхүү тэтгэлэг нь боловсролын тэгш бус байдлыг арилгах, орон нутгийн оюунлаг залуусыг дэмжих SDY-ийн үндсэн зорилтын нэг хэсэг юм.\n\nТэтгэлэгт дараах дэмжлэгүүд багтана: жилийн сургалтын төлбөрийн 80 хүртэлх хувь, амьжиргааны мөнгэн тусламж, туршлагатай мэргэжилтэнтэй менторшип, карьерын зөвлөгөө. Тэтгэлэгтнүүд SDY-ийн хөтөлбөр, арга хэмжээнүүдэд идэвхтэй оролцох шаардлагатай.\n\nӨргөдөл гаргагчид дараах шалгуурыг хангасан байх шаардлагатай: Монголын иргэн байх, орон нутаг (Улаанбаатар хотоос бусад аймаг)-аас ирсэн байх, ЭЕШ-ийн оноо 700-аас дээш, санхүүгийн хэрэгцээтэй гэр бүлийн гишүүн байх.\n\nӨнгөрсөн жилүүдэд нийт 120 гаруй оюутан энэхүү тэтгэлэгт хамрагдсан бөгөөд тэдгээрийн дийлэнх нь өнөөдөр улс төр, нийгмийн салбарт идэвхтэй ажиллаж байна.`,
+      en: `The SDY EDU Scholarship is a program designed to provide financial support and mentorship for outstanding students from rural aimags pursuing higher education. Established in 2022, this scholarship is part of SDY's core mission to address educational inequality and support talented young people from across the country.\n\nThe scholarship package includes: up to 80% of annual tuition fees, monthly living allowance, mentorship from experienced professionals, and career guidance. Recipients are required to actively participate in SDY programs and events.\n\nApplicants must meet the following criteria: Mongolian citizen, from a rural aimag (outside Ulaanbaatar), national exam score above 700, and from a financially disadvantaged family.\n\nOver the past years, more than 120 students have received this scholarship, the majority of whom are now actively working in politics and the social sector.`
+    },
+    highlights: [
+      { mn: 'Сургалтын төлбөрийн 80% хүртэл', en: 'Up to 80% of tuition covered' },
+      { mn: 'Сарын амьжиргааны тэтгэмж', en: 'Monthly living stipend' },
+      { mn: 'Менторшип болон карьерын дэмжлэг', en: 'Mentorship & career support' },
+      { mn: 'SDY сүлжээнд нэгдэх эрх', en: 'Access to SDY network' },
+      { mn: 'Олон улсын хөтөлбөрт хамрагдах боломж', en: 'International program eligibility' },
+    ],
   },
   {
     id: 'youth-forum',
@@ -104,6 +131,20 @@ export const PROGRAMS: Program[] = [
     image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800',
     date: { mn: '8-р сарын 12-14', en: 'August 12-14' },
     location: { mn: 'Улаанбаатар', en: 'Ulaanbaatar' },
+    capacity: { mn: '200+ оролцогч, 15+ улс', en: '200+ participants, 15+ countries' },
+    deadline: { mn: '7-р сарын 15', en: 'July 15' },
+    content: {
+      mn: `Олон улсын залуучуудын форум нь Ази тивийн залуу удирдагчдыг нэгтгэн тогтвортой хөгжил, бүс нутгийн хамтын ажиллагаа, ардчилал ба засаглалын асуудлаар хэлэлцэх гурван өдрийн дипломат чуулган юм. Энэхүү форумыг IUSY (Олон улсын залуу нийгмийн ардчилагчдын холбоо)-тай хамтран зохион байгуулдаг.\n\nФорумын хэлэлцүүлгийн үндсэн сэдвүүд: уур амьсгалын өөрчлөлт ба ногоон эдийн засаг, цахим засаглал ба хэвлэл мэдээллийн чөлөө, залуусын улс төрийн оролцоо, хүний эрх ба нийгмийн шударга ёс.\n\nОролцогчид олон улсын залуу удирдагчидтай сүлжээ тогтоох, туршлага солилцох, хамтарсан санал болон тунхаглал боловсруулах боломж авна. Форумын дараа оролцогчдод IUSY-ийн солилцооны хөтөлбөрт нэр дэвшүүлэх тэргүүний эрх олгогдоно.\n\n2024 оны форумд 15 улсаас 230 гаруй төлөөлөгч оролцсон бөгөөд "Улаанбаатарын Тунхаглал"-ыг хамтран баталсан юм. Энэ жилийн форум 8-р сарын 12-14-нд болох бөгөөд бүртгэлийг 7-р сарын 15 хүртэл авна.`,
+      en: `The International Youth Forum is a three-day diplomatic gathering bringing together young leaders from across Asia to discuss sustainable development, regional cooperation, democracy, and governance. The forum is co-organized with IUSY (International Union of Socialist Youth).\n\nKey discussion themes include: climate change and green economy, digital governance and press freedom, youth political participation, and human rights and social justice.\n\nParticipants gain opportunities to network with international young leaders, exchange experiences, and co-develop joint proposals and declarations. After the forum, participants are given priority consideration for IUSY exchange programs.\n\nThe 2024 forum brought together over 230 delegates from 15 countries who jointly adopted the "Ulaanbaatar Declaration." This year's forum will be held August 12–14, with registration open until July 15.`
+    },
+    highlights: [
+      { mn: '3 өдрийн дипломат чуулган', en: '3-day diplomatic gathering' },
+      { mn: '15+ улсын төлөөлөгчид', en: 'Delegates from 15+ countries' },
+      { mn: 'IUSY хамтын ажиллагаа', en: 'IUSY collaboration' },
+      { mn: 'Панел хэлэлцүүлэг ба воркшоп', en: 'Panel discussions & workshops' },
+      { mn: 'Хамтарсан тунхаглал батлах', en: 'Joint declaration adoption' },
+      { mn: 'Солилцооны хөтөлбөрт нэр дэвших', en: 'Exchange program nominations' },
+    ],
   },
 ];
 

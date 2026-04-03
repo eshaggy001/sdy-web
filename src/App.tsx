@@ -6,6 +6,7 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Ideology } from './pages/Ideology';
 import { ProgramsPage } from './pages/ProgramsPage';
+import { ProgramDetailPage } from './pages/ProgramDetailPage';
 import { NewsPage } from './pages/NewsPage';
 import { NewsDetailPage } from './pages/NewsDetailPage';
 import { JoinPage } from './pages/JoinPage';
@@ -33,6 +34,7 @@ export default function App() {
                   <Route path="about" element={<About />} />
                   <Route path="ideology" element={<Ideology />} />
                   <Route path="programs" element={<ProgramsPage />} />
+                  <Route path="programs/:id" element={<ProgramDetailPage />} />
                   <Route path="news" element={<NewsPage />} />
                   <Route path="news/:id" element={<NewsDetailPage />} />
                   <Route path="join" element={<JoinPage />} />

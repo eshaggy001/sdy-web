@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Calendar, ArrowLeft, ArrowRight, Mail, Tag } from 'lucide-react';
 import { useNews, useNewsItem } from '../hooks/useNews';
 import { useI18n } from '../contexts/I18nContext';
+import { SEOMeta } from '../components/SEOMeta';
 
 export const NewsDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,12 @@ export const NewsDetailPage = () => {
       exit={{ opacity: 0 }}
       className="pt-28 pb-24"
     >
+      <SEOMeta
+        title={t(article.title)}
+        description={t(article.excerpt)}
+        image={article.image}
+        path={`/mn/news/${article.id}`}
+      />
       {/* Hero image with title overlay */}
       <div className="relative w-full aspect-[21/9] max-h-[560px] overflow-hidden">
         <img

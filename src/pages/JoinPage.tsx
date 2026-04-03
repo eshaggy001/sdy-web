@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, User, Mail, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -61,12 +62,18 @@ export const JoinPage = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-32 pb-24"
-    >
+    <>
+      <SEOMeta
+        title={t({ mn: 'Гишүүн болох', en: 'Join SDY' })}
+        description={t({ mn: 'Монголын залуучуудын улс төрийн хамгийн том байгууллагад нэгдэж, хамтдаа илүү хүчирхэг ирээдүйг цогцлооё.', en: "Join Mongolia's largest youth political organization and build a stronger, more equitable future together." })}
+        path="/mn/join"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="pt-32 pb-24"
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
           {/* Left Side: Info */}
@@ -279,5 +286,6 @@ export const JoinPage = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

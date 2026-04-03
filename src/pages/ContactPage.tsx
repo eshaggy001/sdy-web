@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Send, CheckCircle2 } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
@@ -19,12 +20,18 @@ export const ContactPage = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-32 pb-24"
-    >
+    <>
+      <SEOMeta
+        title={t({ mn: 'Холбоо барих', en: 'Contact Us' })}
+        description={t({ mn: 'Манай хөтөлбөрүүдийн талаар асуух зүйл байна уу? Манай баг танд туслахад бэлэн байна.', en: 'Have questions about our programs or want to collaborate? Our team is here to help.' })}
+        path="/mn/contact"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="pt-32 pb-24"
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-4xl mb-24">
@@ -195,5 +202,6 @@ export const ContactPage = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

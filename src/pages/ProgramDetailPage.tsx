@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Calendar, MapPin, ArrowLeft, ArrowRight, Users, Clock, CheckCircle2 } from 'lucide-react';
 import { usePrograms, useProgram } from '../hooks/usePrograms';
 import { useI18n } from '../contexts/I18nContext';
+import { SEOMeta } from '../components/SEOMeta';
 
 export const ProgramDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,12 @@ export const ProgramDetailPage = () => {
       exit={{ opacity: 0 }}
       className="pt-28 pb-24"
     >
+      <SEOMeta
+        title={t(program.title)}
+        description={t(program.description)}
+        image={program.image}
+        path={`/mn/programs/${program.id}`}
+      />
       {/* Hero */}
       <div className="relative w-full aspect-[21/9] max-h-[520px] overflow-hidden">
         <img

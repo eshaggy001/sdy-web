@@ -1,4 +1,5 @@
 import React from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { Info, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -39,6 +40,12 @@ export const Ideology = () => {
   ];
 
   return (
+    <>
+    <SEOMeta
+      title={t({ mn: 'Үзэл баримтлал', en: 'Ideology' })}
+      description={t({ mn: 'Нийгмийн ардчиллын үнэт зүйлс — нийгмийн шударга ёс, тогтвортой байдал, иргэний эрх чөлөө, ардчиллыг хамгаалах.', en: 'Social democratic values — social justice, sustainability, civil liberties, and democracy for Mongolia\'s future.' })}
+      path="/mn/ideology"
+    />
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -133,5 +140,6 @@ export const Ideology = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

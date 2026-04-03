@@ -1,4 +1,5 @@
 import React from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { usePrograms } from '../hooks/usePrograms';
 import { Calendar, MapPin, ArrowRight, Search } from 'lucide-react';
@@ -18,6 +19,12 @@ export const ProgramsPage = () => {
   ];
 
   return (
+    <>
+    <SEOMeta
+      title={t({ mn: 'Хөтөлбөрүүд', en: 'Programs' })}
+      description={t({ mn: 'SDY-ийн манлайллын академи, тэтгэлэг, олон улсын форум зэрэг хөтөлбөрүүдтэй танилцана уу.', en: 'Explore SDY\'s leadership academy, scholarships, international forums and community programs.' })}
+      path="/mn/programs"
+    />
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -124,5 +131,6 @@ export const ProgramsPage = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

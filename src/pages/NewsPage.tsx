@@ -1,4 +1,5 @@
 import React from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { useNews } from '../hooks/useNews';
 import { Calendar, ArrowRight, Search, Mail } from 'lucide-react';
@@ -8,6 +9,7 @@ import { useI18n } from '../contexts/I18nContext';
 export const NewsPage = () => {
   const { t, l } = useI18n();
   const { data: news } = useNews();
+
 
   const categories = [
     { id: 'All', label: { mn: 'Бүх мэдээ', en: 'All News' } },
@@ -19,12 +21,18 @@ export const NewsPage = () => {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-32 pb-24"
-    >
+    <>
+      <SEOMeta
+        title={t({ mn: 'Мэдээ ба шинэчлэлтүүд', en: 'News & Updates' })}
+        description={t({ mn: 'Манай сүүлийн үеийн үйл ажиллагаа, бодлогын байр суурь, нийгэмд үзүүлж буй нөлөөллийн мэдээллийг авна уу.', en: 'Stay informed about our latest activities, policy positions, and community impact across Mongolia.' })}
+        path="/mn/news"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="pt-32 pb-24"
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-4xl mb-24">
@@ -144,5 +152,6 @@ export const NewsPage = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

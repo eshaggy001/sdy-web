@@ -19,9 +19,11 @@ import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { HelmetProvider } from 'react-helmet-async';
 
 export default function App() {
   return (
+    <HelmetProvider>
     <Router>
       <I18nProvider>
       <AuthProvider>
@@ -57,5 +59,6 @@ export default function App() {
       </AuthProvider>
       </I18nProvider>
     </Router>
+    </HelmetProvider>
   );
 }

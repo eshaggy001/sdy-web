@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion, AnimatePresence } from 'motion/react';
 import { BarChart3, Search, RefreshCw, Users, TrendingUp } from 'lucide-react';
 import { Poll } from '../types';
@@ -33,12 +34,18 @@ export const PollsPage = () => {
   const activeCount = polls.filter(p => new Date(p.expiresAt) > new Date()).length;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-32 pb-24 min-h-screen bg-sdy-gray/30"
-    >
+    <>
+      <SEOMeta
+        title={t({ mn: 'Санал асуулга', en: 'Polls' })}
+        description={t({ mn: 'Нийгэм, улс төрийн чухал асуудлуудаар саналаа өгч, залуучуудын байр суурийг илэрхийлээрэй.', en: 'Vote on important social and political issues and express the youth perspective.' })}
+        path="/mn/polls"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="pt-32 pb-24 min-h-screen bg-sdy-gray/30"
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -166,5 +173,6 @@ export const PollsPage = () => {
         </AnimatePresence>
       </div>
     </motion.div>
+    </>
   );
 };

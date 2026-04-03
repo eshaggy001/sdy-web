@@ -1,4 +1,5 @@
 import React from 'react';
+import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { useLeaders } from '../hooks/useLeaders';
 import { Shield, Target, Users, ArrowRight } from 'lucide-react';
@@ -10,6 +11,12 @@ export const About = () => {
   const { data: leaders, loading: leadersLoading } = useLeaders();
 
   return (
+    <>
+    <SEOMeta
+      title={t({ mn: 'Бидний тухай', en: 'About Us' })}
+      description={t({ mn: '1997 онд байгуулагдсан НАЗХ нь Монголын залуучуудын хамгийн том байгууллага. 60,000+ гишүүн, 21 аймгийн сүлжээ.', en: 'Founded in 1997, SDY is Mongolia\'s largest youth organization with 60,000+ members across 21 aimags.' })}
+      path="/mn/about"
+    />
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -144,5 +151,6 @@ export const About = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };

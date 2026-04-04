@@ -5,8 +5,7 @@ import { CalendarDays, Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
 import { useEventRegistrationCounts } from '../hooks/useRegistrations';
 import { useI18n } from '../contexts/I18nContext';
 import { eventService } from '../services/eventService';
-
-type EventStatus = 'draft' | 'published' | 'ongoing' | 'completed' | 'cancelled';
+import type { EventStatus } from '../types';
 
 interface EventRow {
   id: string;

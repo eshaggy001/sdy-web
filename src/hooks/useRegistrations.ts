@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { registrationService } from '../services/registrationService';
-import type { ProgramRegistration } from '../types';
+import type { ProgramRegistration, EventRegistration } from '../types';
 
 export function useRegistrationCounts() {
   const [counts, setCounts] = useState<Record<string, number>>({});
@@ -61,4 +61,25 @@ export function useEventRegistrationCounts() {
   useEffect(() => { refresh(); }, []);
 
   return { counts, loading, refresh };
+}
+
+export function useEventRegistrations(eventId: string | undefined) {
+  const [data, setData] = useState<EventRegistration[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = async () => {
+    if (!eventId) { setLoading(false); return; }
+    try {
+      const rows = await registrationService.getByEvent(eventId);
+      setData(rows);
+    } catch (err) {
+      console.error('[useEventRegistrations]', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { refresh(); }, [eventId]);
+
+  return { data, loading, refresh };
 }

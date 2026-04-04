@@ -4,7 +4,7 @@ import { useI18n } from '../../contexts/I18nContext';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, FileText, Newspaper, Users2, Columns3, BarChart3,
-  ClipboardList, ClipboardCheck, Inbox, UserCog, LogOut, Menu, X, ChevronLeft, Shield, CalendarDays
+  ClipboardList, Inbox, UserCog, LogOut, Menu, X, ChevronLeft, Shield, CalendarDays
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -16,7 +16,6 @@ const NAV_ITEMS = [
   { icon: Columns3,        path: '/admin/pillars',      labelMn: 'Тулгуур чиглэл',   labelEn: 'Pillars',         adminOnly: false },
   { icon: BarChart3,       path: '/admin/stats',        labelMn: 'Статистик',         labelEn: 'Stats',           adminOnly: false },
   { icon: ClipboardList,   path: '/admin/polls',        labelMn: 'Санал асуулга',     labelEn: 'Polls',           adminOnly: false },
-  { icon: ClipboardCheck,  path: '/admin/registrations', labelMn: 'Бүртгэлүүд',       labelEn: 'Registrations',   adminOnly: true },
   { icon: Inbox,           path: '/admin/submissions',  labelMn: 'Хүсэлтүүд',        labelEn: 'Submissions',     adminOnly: true  },
   { icon: UserCog,         path: '/admin/users',        labelMn: 'Хэрэглэгчид',      labelEn: 'Users',           adminOnly: true  },
 ];

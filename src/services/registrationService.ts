@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { ProgramRegistration } from '../types';
+import type { ProgramRegistration, EventRegistration } from '../types';
 
 interface RegisterData {
   program_id: string;
@@ -120,6 +120,44 @@ export const registrationService = {
     }
     return counts;
   },
+
+  getByEvent: async (eventId: string): Promise<EventRegistration[]> => {
+    const { data, error } = await supabase
+      .from('event_registrations')
+      .select('*')
+      .eq('event_id', eventId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('registrationService.getByEvent:', error);
+      return [];
+    }
+    return (data ?? []).map(mapEventRegistration);
+  },
+
+  updateEventStatus: async (id: string, status: string): Promise<boolean> => {
+    const { error } = await supabase
+      .from('event_registrations')
+      .update({ status })
+      .eq('id', id);
+    if (error) {
+      console.error('registrationService.updateEventStatus:', error);
+      return false;
+    }
+    return true;
+  },
+
+  deleteEventRegistration: async (id: string): Promise<boolean> => {
+    const { error } = await supabase
+      .from('event_registrations')
+      .delete()
+      .eq('id', id);
+    if (error) {
+      console.error('registrationService.deleteEventRegistration:', error);
+      return false;
+    }
+    return true;
+  },
 };
 
 function mapRegistration(row: Record<string, unknown>): ProgramRegistration {
@@ -132,6 +170,19 @@ function mapRegistration(row: Record<string, unknown>): ProgramRegistration {
     age: row.age as number | undefined,
     isSdyMember: row.is_sdy_member as boolean | undefined,
     status: row.status as ProgramRegistration['status'],
+    createdAt: row.created_at as string,
+  };
+}
+
+function mapEventRegistration(row: Record<string, unknown>): EventRegistration {
+  return {
+    id: row.id as string,
+    eventId: row.event_id as string,
+    name: row.name as string,
+    email: row.email as string,
+    phone: row.phone as string | undefined,
+    message: row.message as string | undefined,
+    status: row.status as EventRegistration['status'],
     createdAt: row.created_at as string,
   };
 }

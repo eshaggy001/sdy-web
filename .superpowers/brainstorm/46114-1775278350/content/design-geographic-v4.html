@@ -1,0 +1,227 @@
+<h2>Section 3 (v4): Geographic — Accurate Mongolia Outline</h2>
+<p class="subtitle">SVG path traced from reference map, filled with dot pattern + radial hotspots</p>
+
+<div class="mockup">
+  <div class="mockup-header">Dashboard — Geographic Row</div>
+  <div class="mockup-body" style="background: #f3f4f6; padding: 32px;">
+
+    <div style="background: white; border-radius: 16px; border: 1px solid #f3f4f6; overflow: hidden;">
+
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid #f3f4f6;">
+        <h3 style="font-size: 15px; font-weight: 700; color: #030712; margin: 0;">Бүсийн тархалт</h3>
+        <span style="font-size: 11px; color: #9ca3af; padding: 4px 10px; border: 1px solid #e5e7eb; border-radius: 8px;">21 аймаг + УБ</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 3fr 2fr;">
+
+        <div style="padding: 24px; position: relative; min-height: 340px; border-right: 1px solid #f3f4f6;">
+          <svg viewBox="0 0 600 340" style="width: 100%; height: 100%;" fill="none">
+            <defs>
+              <!-- Dot pattern -->
+              <pattern id="dotGrid" x="0" y="0" width="9" height="9" patternUnits="userSpaceOnUse">
+                <circle cx="4.5" cy="4.5" r="2" fill="#d4d4d8"/>
+              </pattern>
+              <!-- Mongolia outline as clip path - traced from reference -->
+              <clipPath id="mongoliaClip">
+                <path d="
+                  M 88,62
+                  L 82,56 L 76,48 L 72,40 L 78,32 L 86,28 L 94,30 L 100,36
+                  L 106,40 L 108,46 L 104,52 L 98,56 L 92,58 L 88,62 Z
+
+                  M 108,58
+                  L 116,50 L 124,46 L 134,48 L 140,52
+                  L 148,48 L 156,42 L 160,36 L 166,30
+                  L 174,26 L 184,22 L 194,18 L 204,14
+                  L 214,10 L 224,8 L 234,10 L 240,16
+                  L 236,24 L 230,30 L 226,38
+                  L 232,42 L 240,38 L 248,34 L 256,30
+                  L 264,26 L 272,24 L 280,28 L 286,34
+                  L 294,36 L 302,32 L 310,28 L 318,26
+                  L 326,28 L 330,34 L 334,40
+                  L 342,38 L 350,34 L 358,32 L 366,34
+                  L 374,38 L 378,44 L 382,50
+                  L 390,48 L 398,44 L 406,42 L 414,44
+                  L 420,48 L 424,54 L 430,58
+                  L 438,56 L 446,54 L 454,56 L 460,60
+                  L 466,66 L 470,72 L 476,78
+                  L 482,82 L 490,84 L 498,80 L 506,76
+                  L 514,78 L 520,84 L 524,92
+                  L 528,100 L 530,108 L 528,116
+                  L 522,122 L 516,126 L 510,132
+                  L 504,136 L 498,138 L 492,134
+                  L 486,128 L 480,124 L 474,122
+                  L 468,126 L 462,132 L 456,138
+                  L 450,142 L 444,144 L 438,140
+                  L 432,136 L 426,134 L 420,136
+                  L 414,140 L 408,146 L 402,152
+                  L 396,156 L 390,158 L 384,156
+                  L 378,152 L 372,150 L 366,152
+                  L 360,156 L 354,162 L 348,168
+                  L 342,174 L 336,178 L 328,180
+                  L 320,182 L 312,184 L 304,186
+                  L 296,188 L 288,190 L 280,192
+                  L 272,194 L 264,196 L 256,198
+                  L 248,200 L 240,198 L 232,194
+                  L 224,190 L 218,186 L 212,182
+                  L 206,178 L 200,174 L 194,172
+                  L 188,174 L 182,178 L 176,180
+                  L 170,178 L 164,174 L 158,170
+                  L 152,166 L 146,164 L 140,166
+                  L 134,170 L 128,172 L 122,170
+                  L 118,164 L 116,158 L 114,152
+                  L 112,146 L 110,140 L 108,134
+                  L 106,128 L 104,122 L 102,116
+                  L 100,110 L 100,104 L 102,98
+                  L 106,92 L 110,86 L 112,80
+                  L 112,74 L 110,68 L 108,62 L 108,58 Z
+                "/>
+              </clipPath>
+            </defs>
+
+            <!-- Dot-filled Mongolia -->
+            <rect x="0" y="0" width="600" height="340" fill="url(#dotGrid)" clip-path="url(#mongoliaClip)"/>
+
+            <!-- Radial hotspots -->
+            <!-- Ulaanbaatar -->
+            <circle cx="340" cy="100" r="32" fill="#ED1B24" opacity="0.06"/>
+            <circle cx="340" cy="100" r="20" fill="#ED1B24" opacity="0.12"/>
+            <circle cx="340" cy="100" r="10" fill="#ED1B24" opacity="0.25"/>
+            <circle cx="340" cy="100" r="5" fill="#ED1B24" opacity="0.65"/>
+
+            <!-- Darkhan -->
+            <circle cx="310" cy="50" r="20" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="310" cy="50" r="12" fill="#ED1B24" opacity="0.1"/>
+            <circle cx="310" cy="50" r="5" fill="#ED1B24" opacity="0.4"/>
+            <circle cx="310" cy="50" r="2.5" fill="#ED1B24" opacity="0.7"/>
+
+            <!-- Erdenet -->
+            <circle cx="270" cy="55" r="18" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="270" cy="55" r="10" fill="#ED1B24" opacity="0.1"/>
+            <circle cx="270" cy="55" r="4" fill="#ED1B24" opacity="0.35"/>
+            <circle cx="270" cy="55" r="2" fill="#ED1B24" opacity="0.7"/>
+
+            <!-- Khuvsgul -->
+            <circle cx="220" cy="30" r="14" fill="#ED1B24" opacity="0.04"/>
+            <circle cx="220" cy="30" r="7" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="220" cy="30" r="3" fill="#ED1B24" opacity="0.3"/>
+
+            <!-- Khovd -->
+            <circle cx="120" cy="100" r="14" fill="#ED1B24" opacity="0.04"/>
+            <circle cx="120" cy="100" r="7" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="120" cy="100" r="3" fill="#ED1B24" opacity="0.3"/>
+
+            <!-- Bayan-Olgii -->
+            <circle cx="84" cy="42" r="10" fill="#ED1B24" opacity="0.04"/>
+            <circle cx="84" cy="42" r="5" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="84" cy="42" r="2" fill="#ED1B24" opacity="0.3"/>
+
+            <!-- Dornod/Choibalsan -->
+            <circle cx="500" cy="108" r="14" fill="#ED1B24" opacity="0.04"/>
+            <circle cx="500" cy="108" r="7" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="500" cy="108" r="3" fill="#ED1B24" opacity="0.25"/>
+
+            <!-- Khentii -->
+            <circle cx="430" cy="90" r="12" fill="#ED1B24" opacity="0.04"/>
+            <circle cx="430" cy="90" r="6" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="430" cy="90" r="2.5" fill="#ED1B24" opacity="0.25"/>
+
+            <!-- Umnugovi -->
+            <circle cx="300" cy="175" r="12" fill="#ED1B24" opacity="0.03"/>
+            <circle cx="300" cy="175" r="6" fill="#ED1B24" opacity="0.06"/>
+            <circle cx="300" cy="175" r="2.5" fill="#ED1B24" opacity="0.2"/>
+
+            <!-- Arkhangai -->
+            <circle cx="230" cy="110" r="10" fill="#ED1B24" opacity="0.03"/>
+            <circle cx="230" cy="110" r="5" fill="#ED1B24" opacity="0.06"/>
+            <circle cx="230" cy="110" r="2" fill="#ED1B24" opacity="0.2"/>
+          </svg>
+
+          <!-- Legend -->
+          <div style="position: absolute; bottom: 14px; left: 22px; display: flex; align-items: center; gap: 14px; background: white; padding: 5px 12px; border-radius: 8px; border: 1px solid #f3f4f6;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 6px; height: 6px; background: #ED1B24; border-radius: 50%; opacity: 0.25;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">1-50</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 8px; height: 8px; background: #ED1B24; border-radius: 50%; opacity: 0.45;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">51-150</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 10px; height: 10px; background: #ED1B24; border-radius: 50%; opacity: 0.7;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">150+</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right panel -->
+        <div style="padding: 28px 24px; display: flex; flex-direction: column;">
+          <div style="margin-bottom: 4px;">
+            <span style="font-size: 42px; font-weight: 900; color: #030712; letter-spacing: -2px; line-height: 1;">1,247</span>
+          </div>
+          <p style="font-size: 13px; color: #9ca3af; margin: 0 0 24px 0;">Бүртгэлтэй гишүүд</p>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Улаанбаатар</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">39%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 90%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Дархан-Уул</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">13%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 32%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Орхон</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">11%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 28%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Сэлэнгэ</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">7%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 18%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Төв</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">6%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 16%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 20px; padding: 16px; background: #1a1a2e; border-radius: 12px; color: #ccc; font-size: 13px;">
+  <strong style="color: white;">What changed:</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 18px; line-height: 1.8;">
+    <li>Used SVG <strong>clipPath</strong> with a traced Mongolia outline from the reference image</li>
+    <li>Dot grid pattern fills only within the clipped shape — much more accurate border</li>
+    <li>Bayan-Ölgii shown as separate NW peninsula, Khövsgöl protrusion north, Dornod extension east, Gobi taper south</li>
+    <li>In implementation, we can use an actual Mongolia GeoJSON for pixel-perfect accuracy</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top: 16px;">The shape is now traced from the reference. In the actual implementation we'll use a proper Mongolia GeoJSON/TopoJSON for pixel-perfect borders. Does this look good enough for the design? Ready for the bottom row next.</p>

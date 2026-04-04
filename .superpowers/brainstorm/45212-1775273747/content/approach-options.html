@@ -1,0 +1,54 @@
+<h2>Dashboard Layout Approaches</h2>
+<p class="subtitle">Three structural approaches for the SDY analytics dashboard. Each handles the same sections differently.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Grid Mosaic</h3>
+      <p>A CSS grid layout where sections tile together like a mosaic. KPI cards span the top row, then the middle row has funnel (1/3), growth chart (1/3), and map (1/3) side by side. Bottom row tiles events, polls, and news equally. Every section is a white card on a gray background. Clean geometric feel.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8f8f8; border-radius: 8px; font-family: monospace; font-size: 11px; line-height: 1.6; color: #666;">
+        ┌──KPI──┬──KPI──┬──KPI──┬──KPI──┐<br>
+        ├─Funnel─┬─Growth─┬──Map───┤<br>
+        ├Events──┬─Polls──┬──News──┤<br>
+        └────────┴────────┴────────┘
+      </div>
+      <p style="margin-top: 8px; font-size: 13px; color: #888;"><strong>Tradeoff:</strong> Equal sizing can feel rigid — map and funnel may need different widths to work well.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Weighted Columns</h3>
+      <p>KPIs across the top, then a 2/3 + 1/3 split below. The wider left column holds the growth chart and events timeline (tall, data-heavy sections). The narrower right column stacks the membership funnel, map, active polls, and top news (compact summary widgets). Prioritizes the growth story.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8f8f8; border-radius: 8px; font-family: monospace; font-size: 11px; line-height: 1.6; color: #666;">
+        ┌──KPI──┬──KPI──┬──KPI──┬──KPI──┐<br>
+        ├─────Growth Chart────┬─Funnel──┤<br>
+        │                     ├───Map───┤<br>
+        ├─────Events──────────┼──Polls──┤<br>
+        │                     ├──News───┤<br>
+        └─────────────────────┴─────────┘
+      </div>
+      <p style="margin-top: 8px; font-size: 13px; color: #888;"><strong>Tradeoff:</strong> Right column can feel cramped if too many widgets stack. Works best if right-side items stay compact.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Sectioned Rows (Recommended)</h3>
+      <p>Full-width rows that flow naturally. KPIs on top. Then a row with funnel (40%) + growth chart (60%). Then map full-width with a regional breakdown. Then a 3-column row for events, polls, and news. Each row is visually distinct with clear section hierarchy. Feels like reading a well-structured report that gets more detailed as you scroll.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8f8f8; border-radius: 8px; font-family: monospace; font-size: 11px; line-height: 1.6; color: #666;">
+        ┌──KPI──┬──KPI──┬──KPI──┬──KPI──┐<br>
+        ├──Funnel (40%)──┬─Growth (60%)──┤<br>
+        ├────────── Map + Regional ──────┤<br>
+        ├─Events──┬──Polls──┬───News────┤<br>
+        └─────────┴─────────┴───────────┘
+      </div>
+      <p style="margin-top: 8px; font-size: 13px; color: #888;"><strong>Tradeoff:</strong> Slightly more vertical scroll than the mosaic, but each section gets the space it deserves. Best balance of density and readability.</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top: 24px;">I recommend <strong>C (Sectioned Rows)</strong> — it gives the funnel and map the space they need, reads naturally top-to-bottom, and fits the "control center" feel without forcing everything into a rigid grid.</p>

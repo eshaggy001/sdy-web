@@ -1,20 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { BookOpen, Plus, Pencil, Trash2, RefreshCw, X } from 'lucide-react';
+import { BookOpen, Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
 import { useRegistrationCounts } from '../hooks/useRegistrations';
 import { useI18n } from '../contexts/I18nContext';
 import { programService } from '../services/programService';
-import { storageService } from '../services/storageService';
-import { AdminModal } from '../components/admin/AdminModal';
-import { BilingualInput } from '../components/admin/BilingualInput';
-import { BilingualTextarea } from '../components/admin/BilingualTextarea';
-import { ImageUpload } from '../components/admin/ImageUpload';
-
-interface HighlightRow {
-  text_mn: string;
-  text_en: string;
-  sort_order: number;
-}
 
 interface ProgramRow {
   id: string;
@@ -27,58 +17,16 @@ interface ProgramRow {
   description_mn: string;
   description_en: string;
   image: string | null;
-  date_mn: string;
-  date_en: string;
-  location_mn: string;
-  location_en: string;
-  capacity_mn: string;
-  capacity_en: string;
-  deadline_mn: string;
-  deadline_en: string;
-  content_mn: string;
-  content_en: string;
   max_participants: number | null;
   registration_open: boolean;
-  program_highlights: HighlightRow[];
 }
 
-const EMPTY_FORM = {
-  title_mn: '',
-  title_en: '',
-  pillar_mn: '',
-  pillar_en: '',
-  status_mn: '',
-  status_en: '',
-  description_mn: '',
-  description_en: '',
-  image: null as string | null,
-  date_mn: '',
-  date_en: '',
-  location_mn: '',
-  location_en: '',
-  capacity_mn: '',
-  capacity_en: '',
-  deadline_mn: '',
-  deadline_en: '',
-  content_mn: '',
-  content_en: '',
-  max_participants: '',
-  registration_open: false,
-};
-
-const EMPTY_HIGHLIGHT: HighlightRow = { text_mn: '', text_en: '', sort_order: 0 };
-
 export const AdminProgramsPage = () => {
-  const { t } = useI18n();
+  const { t, language: lang } = useI18n();
+  const navigate = useNavigate();
   const { counts: regCounts } = useRegistrationCounts();
   const [items, setItems] = useState<ProgramRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [highlights, setHighlights] = useState<HighlightRow[]>([]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -88,116 +36,6 @@ export const AdminProgramsPage = () => {
   };
 
   useEffect(() => { load(); }, []);
-
-  const openCreate = () => {
-    setEditingId(null);
-    setForm(EMPTY_FORM);
-    setHighlights([]);
-    setImageFile(null);
-    setModalOpen(true);
-  };
-
-  const openEdit = (item: ProgramRow) => {
-    setEditingId(item.id);
-    setForm({
-      title_mn: item.title_mn,
-      title_en: item.title_en,
-      pillar_mn: item.pillar_mn ?? '',
-      pillar_en: item.pillar_en ?? '',
-      status_mn: item.status_mn ?? '',
-      status_en: item.status_en ?? '',
-      description_mn: item.description_mn ?? '',
-      description_en: item.description_en ?? '',
-      image: item.image,
-      date_mn: item.date_mn ?? '',
-      date_en: item.date_en ?? '',
-      location_mn: item.location_mn ?? '',
-      location_en: item.location_en ?? '',
-      capacity_mn: item.capacity_mn ?? '',
-      capacity_en: item.capacity_en ?? '',
-      deadline_mn: item.deadline_mn ?? '',
-      deadline_en: item.deadline_en ?? '',
-      content_mn: item.content_mn ?? '',
-      content_en: item.content_en ?? '',
-      max_participants: item.max_participants != null ? String(item.max_participants) : '',
-      registration_open: item.registration_open ?? false,
-    });
-    setHighlights(
-      (item.program_highlights ?? [])
-        .sort((a, b) => a.sort_order - b.sort_order)
-        .map((h) => ({ text_mn: h.text_mn, text_en: h.text_en, sort_order: h.sort_order }))
-    );
-    setImageFile(null);
-    setModalOpen(true);
-  };
-
-  const addHighlight = () => {
-    setHighlights((prev) => [...prev, { ...EMPTY_HIGHLIGHT, sort_order: prev.length }]);
-  };
-
-  const removeHighlight = (index: number) => {
-    setHighlights((prev) =>
-      prev.filter((_, i) => i !== index).map((h, i) => ({ ...h, sort_order: i }))
-    );
-  };
-
-  const updateHighlight = (index: number, field: 'text_mn' | 'text_en', value: string) => {
-    setHighlights((prev) => prev.map((h, i) => (i === index ? { ...h, [field]: value } : h)));
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-
-    const id = editingId ?? crypto.randomUUID();
-    let imageUrl = form.image;
-
-    if (imageFile) {
-      const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      const uploaded = await storageService.upload('images', imageFile, 'programs/' + id + '.' + ext);
-      if (uploaded) imageUrl = uploaded;
-    }
-
-    const payload = {
-      title_mn: form.title_mn,
-      title_en: form.title_en,
-      pillar_mn: form.pillar_mn,
-      pillar_en: form.pillar_en,
-      status_mn: form.status_mn,
-      status_en: form.status_en,
-      description_mn: form.description_mn,
-      description_en: form.description_en,
-      image: imageUrl,
-      date_mn: form.date_mn,
-      date_en: form.date_en,
-      location_mn: form.location_mn,
-      location_en: form.location_en,
-      capacity_mn: form.capacity_mn,
-      capacity_en: form.capacity_en,
-      deadline_mn: form.deadline_mn,
-      deadline_en: form.deadline_en,
-      content_mn: form.content_mn,
-      content_en: form.content_en,
-      max_participants: form.max_participants ? parseInt(form.max_participants) : null,
-      registration_open: form.registration_open,
-    };
-
-    const highlightPayload = highlights.map((h, i) => ({
-      text_mn: h.text_mn,
-      text_en: h.text_en,
-      sort_order: i,
-    }));
-
-    const success = editingId
-      ? await programService.update(editingId, payload, highlightPayload)
-      : await programService.create({ id, ...payload }, highlightPayload);
-
-    if (success) {
-      setModalOpen(false);
-      await load();
-    }
-
-    setSaving(false);
-  };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm(t({ mn: 'Устгах уу?', en: 'Delete this program?' }))) return;
@@ -228,7 +66,7 @@ export const AdminProgramsPage = () => {
               <RefreshCw size={15} />
             </button>
             <button
-              onClick={openCreate}
+              onClick={() => navigate(`/${lang}/admin/programs/new`)}
               className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
             >
               <Plus size={15} />
@@ -316,7 +154,7 @@ export const AdminProgramsPage = () => {
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => openEdit(item)}
+                            onClick={() => navigate(`/${lang}/admin/programs/${item.id}`)}
                             className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                             title="Edit"
                           >
@@ -338,170 +176,6 @@ export const AdminProgramsPage = () => {
             </table>
           </div>
         </div>
-
-        {/* Modal */}
-        <AdminModal
-          open={modalOpen}
-          title={t({ mn: editingId ? 'Хөтөлбөр засах' : 'Хөтөлбөр нэмэх', en: editingId ? 'Edit Program' : 'Add Program' })}
-          onClose={() => setModalOpen(false)}
-          onSave={handleSave}
-          saving={saving}
-        >
-          <BilingualInput
-            label={t({ mn: 'Гарчиг', en: 'Title' })}
-            valueMn={form.title_mn}
-            valueEn={form.title_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, title_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, title_en: v }))}
-            required
-          />
-          <BilingualInput
-            label={t({ mn: 'Багана', en: 'Pillar' })}
-            valueMn={form.pillar_mn}
-            valueEn={form.pillar_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, pillar_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, pillar_en: v }))}
-            required
-          />
-          <BilingualInput
-            label={t({ mn: 'Төлөв', en: 'Status' })}
-            valueMn={form.status_mn}
-            valueEn={form.status_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, status_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, status_en: v }))}
-            required
-          />
-          <BilingualTextarea
-            label={t({ mn: 'Тайлбар', en: 'Description' })}
-            valueMn={form.description_mn}
-            valueEn={form.description_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, description_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, description_en: v }))}
-            rows={3}
-          />
-          <BilingualInput
-            label={t({ mn: 'Огноо', en: 'Date' })}
-            valueMn={form.date_mn}
-            valueEn={form.date_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, date_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, date_en: v }))}
-            placeholderMn="2025.11.15"
-            placeholderEn="Nov 15, 2025"
-          />
-          <BilingualInput
-            label={t({ mn: 'Байршил', en: 'Location' })}
-            valueMn={form.location_mn}
-            valueEn={form.location_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, location_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, location_en: v }))}
-          />
-          <BilingualInput
-            label={t({ mn: 'Багтаамж', en: 'Capacity' })}
-            valueMn={form.capacity_mn}
-            valueEn={form.capacity_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, capacity_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, capacity_en: v }))}
-          />
-          <BilingualInput
-            label={t({ mn: 'Эцсийн хугацаа', en: 'Deadline' })}
-            valueMn={form.deadline_mn}
-            valueEn={form.deadline_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, deadline_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, deadline_en: v }))}
-          />
-          <BilingualTextarea
-            label={t({ mn: 'Агуулга', en: 'Content' })}
-            valueMn={form.content_mn}
-            valueEn={form.content_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, content_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, content_en: v }))}
-            rows={8}
-          />
-          {/* Registration settings */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                {t({ mn: 'Дээд оролцогчид', en: 'Max Participants' })}
-              </label>
-              <input
-                type="number"
-                min={0}
-                value={form.max_participants}
-                onChange={(e) => setForm((f) => ({ ...f, max_participants: e.target.value }))}
-                placeholder={t({ mn: 'Хязгааргүй', en: 'Unlimited' })}
-                className="input input-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                {t({ mn: 'Бүртгэл нээлттэй', en: 'Registration Open' })}
-              </label>
-              <button
-                type="button"
-                onClick={() => setForm((f) => ({ ...f, registration_open: !f.registration_open }))}
-                className={`w-full px-4 py-3 rounded-xl text-sm font-semibold transition-all border ${
-                  form.registration_open
-                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                    : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border-gray-100 dark:border-gray-700'
-                }`}
-              >
-                {form.registration_open
-                  ? t({ mn: 'Нээлттэй', en: 'Open' })
-                  : t({ mn: 'Хаалттай', en: 'Closed' })}
-              </button>
-            </div>
-          </div>
-
-          <ImageUpload
-            label={t({ mn: 'Зураг', en: 'Image' })}
-            value={form.image}
-            onChange={(file) => setImageFile(file)}
-          />
-
-          {/* Highlights */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                {t({ mn: 'Онцлох', en: 'Highlights' })}
-              </label>
-              <button
-                type="button"
-                onClick={addHighlight}
-                className="flex items-center gap-1 text-xs font-semibold text-sdy-red hover:text-sdy-red/70 transition-colors"
-              >
-                <Plus size={13} />
-                {t({ mn: 'Нэмэх', en: 'Add' })}
-              </button>
-            </div>
-            {highlights.length === 0 && (
-              <p className="text-xs text-gray-300 dark:text-gray-600">
-                {t({ mn: 'Онцлох зүйл нэмээгүй байна', en: 'No highlights added' })}
-              </p>
-            )}
-            <div className="space-y-2">
-              {highlights.map((hl, index) => (
-                <div key={index} className="flex items-start gap-2">
-                  <div className="flex-grow">
-                    <BilingualInput
-                      label={`#${index + 1}`}
-                      valueMn={hl.text_mn}
-                      valueEn={hl.text_en}
-                      onChangeMn={(v) => updateHighlight(index, 'text_mn', v)}
-                      onChangeEn={(v) => updateHighlight(index, 'text_en', v)}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeHighlight(index)}
-                    className="mt-7 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </AdminModal>
       </div>
     </div>
   );

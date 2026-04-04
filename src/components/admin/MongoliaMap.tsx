@@ -1,93 +1,115 @@
 // src/components/admin/MongoliaMap.tsx
 import { MONGOLIA_SVG_PATH, DASHBOARD_REGIONS, type RegionData } from '@/src/constants/dashboardMock';
 
-const PULSE_CONFIG: Record<RegionData['density'], { rings: number[]; centerR: number; centerOpacity: number; ringOpacity: number[]; strokeWidth: number[] }> = {
-  highest: {
-    rings: [44, 34],
-    centerR: 4,
-    centerOpacity: 0.9,
-    ringOpacity: [0.12, 0.16],
-    strokeWidth: [1.5, 1.8],
-  },
-  high: {
-    rings: [30, 22],
-    centerR: 3.5,
-    centerOpacity: 0.8,
-    ringOpacity: [0.1, 0.14],
-    strokeWidth: [1.2, 1.5],
-  },
-  medium: {
-    rings: [20, 14],
-    centerR: 2.5,
-    centerOpacity: 0.7,
-    ringOpacity: [0.08, 0.08],
-    strokeWidth: [0.8, 0.6],
-  },
-  low: {
-    rings: [10],
-    centerR: 2,
-    centerOpacity: 0.5,
-    ringOpacity: [0.06],
-    strokeWidth: [0.5],
-  },
+/* ── Size tokens per density tier ── */
+const DOT_R: Record<RegionData['density'], number> = {
+  highest: 5,
+  high: 4,
+  medium: 3,
+  low: 2,
 };
 
-const RED_DOT_RADIUS: Record<RegionData['density'], number> = {
-  highest: 42,
-  high: 28,
-  medium: 20,
-  low: 14,
+const GLOW_R: Record<RegionData['density'], number> = {
+  highest: 28,
+  high: 20,
+  medium: 14,
+  low: 8,
 };
 
-const FILL_LAYERS: Record<RegionData['density'], { r: number; opacity: number }[]> = {
-  highest: [{ r: 24, opacity: 0.1 }, { r: 16, opacity: 0.18 }, { r: 8, opacity: 0.35 }],
-  high: [{ r: 14, opacity: 0.1 }, { r: 7, opacity: 0.22 }],
-  medium: [{ r: 12, opacity: 0.08 }, { r: 5, opacity: 0.18 }],
-  low: [{ r: 5, opacity: 0.08 }],
+const GLOW_OPACITY: Record<RegionData['density'], number> = {
+  highest: 0.25,
+  high: 0.18,
+  medium: 0.12,
+  low: 0.06,
 };
 
 export const MongoliaMap = () => {
   return (
-    <svg viewBox="20 0 970 470" className="w-full h-auto max-h-[300px]">
+    <svg viewBox="50 15 920 325" preserveAspectRatio="xMidYMid meet" className="w-full h-auto block">
       <defs>
+        {/* Mongolia silhouette clip */}
         <clipPath id="mnClip">
           <path d={MONGOLIA_SVG_PATH} />
         </clipPath>
-        <pattern id="baseDots" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
-          <circle cx="7" cy="7" r="2" fill="#d4d4d8" />
+
+        {/* Tighter dot grid for better shape definition */}
+        <pattern id="baseDots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="5" cy="5" r="1.2" fill="#d4d4d8" />
         </pattern>
-        <pattern id="redDots" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
-          <circle cx="7" cy="7" r="2" fill="#ED1B24" />
-        </pattern>
+
+        {/* Radial glow for hotspots */}
+        {DASHBOARD_REGIONS.map((r) => (
+          <radialGradient key={`grad-${r.name.en}`} id={`glow-${r.name.en}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 1.8} />
+            <stop offset="60%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 0.5} />
+            <stop offset="100%" stopColor="#ED1B24" stopOpacity="0" />
+          </radialGradient>
+        ))}
+
+        {/* Pulse animations per density tier */}
+        <style>{`
+          @keyframes pulseHighest {
+            0% { r: 6; opacity: 0.35; }
+            70% { opacity: 0.06; }
+            100% { r: 18; opacity: 0; }
+          }
+          @keyframes pulseHigh {
+            0% { r: 5; opacity: 0.3; }
+            70% { opacity: 0.06; }
+            100% { r: 12; opacity: 0; }
+          }
+          .pulse-highest {
+            animation: pulseHighest 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+          .pulse-high {
+            animation: pulseHigh 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+        `}</style>
       </defs>
 
       <g clipPath="url(#mnClip)">
-        {/* Base gray dot grid */}
-        <rect x="0" y="0" width="1000" height="481" fill="url(#baseDots)" />
+        {/* Base dot grid — denser for cleaner silhouette */}
+        <rect x="50" y="15" width="920" height="325" fill="url(#baseDots)" />
 
-        {/* Red activated dots per region */}
+        {/* Soft radial glow per region */}
         {DASHBOARD_REGIONS.map((r) => (
-          <circle key={r.name.en} cx={r.cx} cy={r.cy} r={RED_DOT_RADIUS[r.density]} fill="url(#redDots)" />
+          <circle
+            key={`glow-${r.name.en}`}
+            cx={r.cx}
+            cy={r.cy}
+            r={GLOW_R[r.density]}
+            fill={`url(#glow-${r.name.en})`}
+          />
         ))}
 
-        {/* Pulse hotspots */}
+        {/* Animated pulse ring for high-density areas */}
         {DASHBOARD_REGIONS.map((r) => {
-          const cfg = PULSE_CONFIG[r.density];
+          if (r.density !== 'highest' && r.density !== 'high') return null;
           return (
-            <g key={`pulse-${r.name.en}`}>
-              {/* Ring strokes */}
-              {cfg.rings.map((ring, i) => (
-                <circle key={`ring-${i}`} cx={r.cx} cy={r.cy} r={ring} fill="none" stroke="#ED1B24" strokeWidth={cfg.strokeWidth[i]} opacity={cfg.ringOpacity[i]} />
-              ))}
-              {/* Fill layers */}
-              {FILL_LAYERS[r.density].map((layer, i) => (
-                <circle key={`fill-${i}`} cx={r.cx} cy={r.cy} r={layer.r} fill="#ED1B24" opacity={layer.opacity} />
-              ))}
-              {/* Center dot */}
-              <circle cx={r.cx} cy={r.cy} r={cfg.centerR} fill="#ED1B24" opacity={cfg.centerOpacity} />
-            </g>
+            <circle
+              key={`pulse-${r.name.en}`}
+              cx={r.cx}
+              cy={r.cy}
+              r={6}
+              fill="none"
+              stroke="#ED1B24"
+              strokeWidth={1}
+              className={r.density === 'highest' ? 'pulse-highest' : 'pulse-high'}
+            />
           );
         })}
+
+        {/* Solid center dots */}
+        {DASHBOARD_REGIONS.map((r) => (
+          <circle
+            key={`dot-${r.name.en}`}
+            cx={r.cx}
+            cy={r.cy}
+            r={DOT_R[r.density]}
+            fill="#ED1B24"
+            opacity={r.density === 'low' ? 0.55 : 0.85}
+          />
+        ))}
       </g>
     </svg>
   );

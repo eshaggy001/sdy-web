@@ -23,7 +23,6 @@ import { AdminNewsPage } from './pages/AdminNewsPage';
 import { AdminLeadersPage } from './pages/AdminLeadersPage';
 import { AdminPillarsPage } from './pages/AdminPillarsPage';
 import { AdminStatsPage } from './pages/AdminStatsPage';
-import { AdminRegistrationsPage } from './pages/AdminRegistrationsPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
 import { AdminProgramEditPage } from './pages/AdminProgramEditPage';
 import { AdminNewsEditPage } from './pages/AdminNewsEditPage';
@@ -35,7 +34,6 @@ import { AdminEventsPage } from './pages/AdminEventsPage';
 import { AdminEventEditPage } from './pages/AdminEventEditPage';
 import { EventDetailPage } from './pages/EventDetailPage';
 import { AdminLayout } from './components/admin/AdminLayout';
-import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -51,9 +49,7 @@ function AppContent() {
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       {(!isAdminRoute || isAdminLogin) && <Navbar />}
       <main className="flex-grow">
-        <AnimatePresence mode="wait">
-          <div key={location.pathname}>
-          <Routes location={location}>
+        <Routes location={location}>
             <Route path="/" element={<Navigate to="/mn" replace />} />
 
             <Route path="/:lang">
@@ -91,13 +87,10 @@ function AppContent() {
               <Route path="admin/stats/:id" element={<ProtectedRoute><AdminLayout><AdminStatEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/polls" element={<ProtectedRoute><AdminLayout><AdminPollsPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/polls/:id" element={<ProtectedRoute><AdminLayout><AdminPollEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/registrations" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminRegistrationsPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/submissions" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminSubmissionsPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/users" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminUsersPage /></AdminLayout></ProtectedRoute>} />
             </Route>
           </Routes>
-          </div>
-        </AnimatePresence>
       </main>
       {(!isAdminRoute || isAdminLogin) && <Footer />}
     </div>

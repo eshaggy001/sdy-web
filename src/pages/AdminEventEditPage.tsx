@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { MapPin, CalendarDays } from 'lucide-react';
+import { MapPin, CalendarDays, ClipboardList } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { eventService } from '../services/eventService';
+import { registrationService } from '../services/registrationService';
 import { storageService } from '../services/storageService';
+import { useEventRegistrations } from '../hooks/useRegistrations';
 import { ImageUpload } from '../components/admin/ImageUpload';
+import { RegistrationsPanel } from '../components/admin/RegistrationsPanel';
 import {
   AdminEditLayout, SectionCard, LangDivider, FieldLabel,
   fieldClass, textareaClass,
@@ -50,6 +53,8 @@ export const AdminEventEditPage = () => {
   const [dirty, setDirty] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState<'details' | 'registrations'>('details');
+  const { data: registrations, loading: regsLoading, refresh: refreshRegs } = useEventRegistrations(isNew ? undefined : id);
 
   const set = useCallback(<K extends keyof typeof EMPTY_FORM>(key: K, val: (typeof EMPTY_FORM)[K]) => {
     setForm((f) => ({ ...f, [key]: val }));
@@ -82,6 +87,16 @@ export const AdminEventEditPage = () => {
       })();
     }
   }, [id, isNew]);
+
+  const handleRegStatusUpdate = async (regId: string, status: 'approved' | 'rejected') => {
+    const ok = await registrationService.updateEventStatus(regId, status);
+    if (ok) refreshRegs();
+  };
+
+  const handleRegDelete = async (regId: string) => {
+    const ok = await registrationService.deleteEventRegistration(regId);
+    if (ok) refreshRegs();
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -253,77 +268,119 @@ export const AdminEventEditPage = () => {
         </>
       }
     >
-      {/* ─── Mongolian Content ─── */}
-      <SectionCard>
-        <LangDivider lang="mn" />
-        <div>
-          <FieldLabel required>{t({ mn: 'Гарчиг', en: 'Title' })}</FieldLabel>
-          <input
-            className={fieldClass}
-            value={form.title_mn}
-            onChange={(e) => set('title_mn', e.target.value)}
-            placeholder={t({ mn: 'Арга хэмжээний нэр', en: 'Event name' })}
-            required
-          />
+      {/* Tab Navigation */}
+      {!isNew && (
+        <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6">
+          <button
+            onClick={() => setActiveTab('details')}
+            className={`px-5 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === 'details'
+                ? 'bg-white dark:bg-gray-900 text-sdy-black dark:text-white shadow-sm'
+                : 'text-gray-400 dark:text-gray-500 hover:text-gray-600'
+            }`}
+          >
+            {t({ mn: 'Мэдээлэл', en: 'Details' })}
+          </button>
+          <button
+            onClick={() => setActiveTab('registrations')}
+            className={`px-5 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+              activeTab === 'registrations'
+                ? 'bg-white dark:bg-gray-900 text-sdy-black dark:text-white shadow-sm'
+                : 'text-gray-400 dark:text-gray-500 hover:text-gray-600'
+            }`}
+          >
+            <ClipboardList size={13} />
+            {t({ mn: 'Бүртгэлүүд', en: 'Registrations' })}
+            {registrations.length > 0 && (
+              <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-sdy-red/10 text-sdy-red">{registrations.length}</span>
+            )}
+          </button>
         </div>
-        <div>
-          <FieldLabel required>{t({ mn: 'Тайлбар', en: 'Description' })}</FieldLabel>
-          <textarea
-            className={textareaClass}
-            rows={3}
-            value={form.description_mn}
-            onChange={(e) => set('description_mn', e.target.value)}
-            placeholder={t({ mn: 'Товч тайлбар...', en: 'Short description...' })}
-          />
-        </div>
-        <div>
-          <FieldLabel>{t({ mn: 'Агуулга', en: 'Content' })}</FieldLabel>
-          <textarea
-            className={textareaClass}
-            rows={10}
-            style={{ minHeight: 220 }}
-            value={form.content_mn}
-            onChange={(e) => set('content_mn', e.target.value)}
-            placeholder={t({ mn: 'Дэлгэрэнгүй агуулга бичнэ үү...', en: 'Write detailed content...' })}
-          />
-        </div>
-      </SectionCard>
+      )}
 
-      {/* ─── English Content ─── */}
-      <SectionCard>
-        <LangDivider lang="en" />
-        <div>
-          <FieldLabel required>Title</FieldLabel>
-          <input
-            className={fieldClass}
-            value={form.title_en}
-            onChange={(e) => set('title_en', e.target.value)}
-            placeholder="Event name"
-            required
-          />
-        </div>
-        <div>
-          <FieldLabel required>Description</FieldLabel>
-          <textarea
-            className={textareaClass}
-            rows={3}
-            value={form.description_en}
-            onChange={(e) => set('description_en', e.target.value)}
-            placeholder="Short description..."
-          />
-        </div>
-        <div>
-          <FieldLabel>Content</FieldLabel>
-          <textarea
-            className={textareaClass}
-            rows={10}
-            style={{ minHeight: 220 }}
-            value={form.content_en}
-            onChange={(e) => set('content_en', e.target.value)}
-            placeholder="Write detailed content..."
-          />
-        </div>
-      </SectionCard>
+      {activeTab === 'details' || isNew ? (
+        <>
+          {/* ─── Mongolian Content ─── */}
+          <SectionCard>
+            <LangDivider lang="mn" />
+            <div>
+              <FieldLabel required>{t({ mn: 'Гарчиг', en: 'Title' })}</FieldLabel>
+              <input
+                className={fieldClass}
+                value={form.title_mn}
+                onChange={(e) => set('title_mn', e.target.value)}
+                placeholder={t({ mn: 'Арга хэмжээний нэр', en: 'Event name' })}
+                required
+              />
+            </div>
+            <div>
+              <FieldLabel required>{t({ mn: 'Тайлбар', en: 'Description' })}</FieldLabel>
+              <textarea
+                className={textareaClass}
+                rows={3}
+                value={form.description_mn}
+                onChange={(e) => set('description_mn', e.target.value)}
+                placeholder={t({ mn: 'Товч тайлбар...', en: 'Short description...' })}
+              />
+            </div>
+            <div>
+              <FieldLabel>{t({ mn: 'Агуулга', en: 'Content' })}</FieldLabel>
+              <textarea
+                className={textareaClass}
+                rows={10}
+                style={{ minHeight: 220 }}
+                value={form.content_mn}
+                onChange={(e) => set('content_mn', e.target.value)}
+                placeholder={t({ mn: 'Дэлгэрэнгүй агуулга бичнэ үү...', en: 'Write detailed content...' })}
+              />
+            </div>
+          </SectionCard>
+
+          {/* ─── English Content ─── */}
+          <SectionCard>
+            <LangDivider lang="en" />
+            <div>
+              <FieldLabel required>Title</FieldLabel>
+              <input
+                className={fieldClass}
+                value={form.title_en}
+                onChange={(e) => set('title_en', e.target.value)}
+                placeholder="Event name"
+                required
+              />
+            </div>
+            <div>
+              <FieldLabel required>Description</FieldLabel>
+              <textarea
+                className={textareaClass}
+                rows={3}
+                value={form.description_en}
+                onChange={(e) => set('description_en', e.target.value)}
+                placeholder="Short description..."
+              />
+            </div>
+            <div>
+              <FieldLabel>Content</FieldLabel>
+              <textarea
+                className={textareaClass}
+                rows={10}
+                style={{ minHeight: 220 }}
+                value={form.content_en}
+                onChange={(e) => set('content_en', e.target.value)}
+                placeholder="Write detailed content..."
+              />
+            </div>
+          </SectionCard>
+        </>
+      ) : (
+        <RegistrationsPanel
+          items={registrations}
+          loading={regsLoading}
+          onRefresh={refreshRegs}
+          onUpdateStatus={handleRegStatusUpdate}
+          onDelete={handleRegDelete}
+        />
+      )}
     </AdminEditLayout>
   );
 };

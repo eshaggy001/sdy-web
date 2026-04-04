@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { BarChart3, Plus, Pencil, Trash2 } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { statService } from '../services/statService';
-import { AdminModal } from '../components/admin/AdminModal';
-import { BilingualInput } from '../components/admin/BilingualInput';
 
 interface StatRow {
   id: number;
@@ -15,16 +14,11 @@ interface StatRow {
   sort_order: number;
 }
 
-const EMPTY_FORM = { label_mn: '', label_en: '', value: '', icon_name: '', sort_order: 0 };
-
 export const AdminStatsPage = () => {
-  const { t } = useI18n();
+  const { t, language: lang } = useI18n();
+  const navigate = useNavigate();
   const [items, setItems] = useState<StatRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [editId, setEditId] = useState<number | null>(null);
-  const [form, setForm] = useState(EMPTY_FORM);
 
   const load = async () => {
     setLoading(true);
@@ -34,21 +28,6 @@ export const AdminStatsPage = () => {
   };
 
   useEffect(() => { load(); }, []);
-
-  const openCreate = () => { setEditId(null); setForm(EMPTY_FORM); setModalOpen(true); };
-  const openEdit = (row: StatRow) => {
-    setEditId(row.id);
-    setForm({ label_mn: row.label_mn, label_en: row.label_en, value: row.value, icon_name: row.icon_name, sort_order: row.sort_order });
-    setModalOpen(true);
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-    const payload = { label_mn: form.label_mn, label_en: form.label_en, value: form.value, icon_name: form.icon_name, sort_order: form.sort_order };
-    const ok = editId !== null ? await statService.update(editId, payload) : await statService.create(payload);
-    if (ok) { setModalOpen(false); await load(); }
-    setSaving(false);
-  };
 
   const handleDelete = async (id: number) => {
     if (!window.confirm(t({ mn: 'Устгах уу?', en: 'Delete this item?' }))) return;
@@ -68,7 +47,7 @@ export const AdminStatsPage = () => {
               {t({ mn: `Нийт ${items.length} статистик`, en: `${items.length} stats total` })}
             </p>
           </div>
-          <button onClick={openCreate} className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2">
+          <button onClick={() => navigate(`/${lang}/admin/stats/new`)} className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2">
             <Plus size={15} />
             {t({ mn: 'Нэмэх', en: 'Add' })}
           </button>
@@ -118,7 +97,7 @@ export const AdminStatsPage = () => {
                       <td className="px-5 py-3.5"><div className="text-sm text-gray-400 dark:text-gray-500 tabular-nums">{row.sort_order}</div></td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1.5">
-                          <button onClick={() => openEdit(row)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit"><Pencil size={15} /></button>
+                          <button onClick={() => navigate(`/${lang}/admin/stats/${row.id}`)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit"><Pencil size={15} /></button>
                           <button onClick={() => handleDelete(row.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete"><Trash2 size={15} /></button>
                         </div>
                       </td>
@@ -129,30 +108,6 @@ export const AdminStatsPage = () => {
             </table>
           </div>
         </div>
-
-        <AdminModal
-          open={modalOpen}
-          title={t({ mn: editId !== null ? 'Статистик засах' : 'Статистик нэмэх', en: editId !== null ? 'Edit Stat' : 'Add Stat' })}
-          onClose={() => setModalOpen(false)}
-          onSave={handleSave}
-          saving={saving}
-        >
-          <BilingualInput label={t({ mn: 'Нэр', en: 'Label' })} valueMn={form.label_mn} valueEn={form.label_en} onChangeMn={(v) => setForm((f) => ({ ...f, label_mn: v }))} onChangeEn={(v) => setForm((f) => ({ ...f, label_en: v }))} required />
-          <div>
-            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Утга', en: 'Value' })}</label>
-            <input type="text" className="input input-sm" value={form.value} onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))} placeholder="e.g. 1,200+" required />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Айкон нэр', en: 'Icon Name' })}</label>
-              <input type="text" className="input input-sm" value={form.icon_name} onChange={(e) => setForm((f) => ({ ...f, icon_name: e.target.value }))} placeholder="e.g. Users, Globe" />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t({ mn: 'Эрэмбэ', en: 'Sort Order' })}</label>
-              <input type="number" className="input input-sm" value={form.sort_order} onChange={(e) => setForm((f) => ({ ...f, sort_order: Number(e.target.value) }))} />
-            </div>
-          </div>
-        </AdminModal>
       </div>
     </div>
   );

@@ -1,0 +1,262 @@
+<h2>Section 2 (Revised v3): Funnel + Growth Chart</h2>
+<p class="subtitle">Growth chart redesigned with rounded stacked bars per reference — dark solid for actual, light striped for target/capacity</p>
+
+<div class="mockup">
+  <div class="mockup-header">Dashboard — Middle Row</div>
+  <div class="mockup-body" style="background: #f3f4f6; padding: 32px;">
+
+    <div style="display: grid; grid-template-columns: 2fr 3fr; gap: 12px;">
+
+      <!-- Membership Funnel (horizontal pills — kept from v2) -->
+      <div style="background: white; border-radius: 16px; padding: 24px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #030712; margin: 0;">Гишүүнчлэлийн шүүлтүүр</h3>
+          <span style="font-size: 11px; color: #9ca3af;">Энэ сар</span>
+        </div>
+
+        <div style="display: flex; margin-bottom: 8px; padding: 0 4px;">
+          <div style="flex: 3; font-size: 11px; font-weight: 600; color: #6b7280;">Өргөдөл</div>
+          <div style="flex: 2.4; font-size: 11px; font-weight: 600; color: #6b7280; padding-left: 8px;">Зөвшөөрсөн</div>
+          <div style="flex: 1.8; font-size: 11px; font-weight: 600; color: #6b7280; padding-left: 8px;">Идэвхтэй</div>
+        </div>
+
+        <div style="position: relative; height: 48px; margin-bottom: 20px;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 48px; background: #fef2f2; border-radius: 99px; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px;">
+            <span style="font-size: 14px; font-weight: 800; color: #030712;">57%</span>
+          </div>
+          <div style="position: absolute; top: 0; left: 0; width: 72%; height: 48px; background: #f87171; border-radius: 99px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 14px; font-weight: 800; color: white;">79%</span>
+          </div>
+          <div style="position: absolute; top: 0; left: 0; width: 42%; height: 48px; background: #ED1B24; border-radius: 99px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 14px; font-weight: 800; color: white;">312</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <div style="flex: 1; background: #fafafa; border-radius: 10px; padding: 12px; text-align: center;">
+            <div style="font-size: 20px; font-weight: 900; color: #030712;">312</div>
+            <div style="font-size: 10px; color: #9ca3af; margin-top: 2px;">Өргөдөл</div>
+          </div>
+          <div style="flex: 1; background: #fafafa; border-radius: 10px; padding: 12px; text-align: center;">
+            <div style="font-size: 20px; font-weight: 900; color: #030712;">247</div>
+            <div style="font-size: 10px; color: #9ca3af; margin-top: 2px;">Зөвшөөрсөн</div>
+          </div>
+          <div style="flex: 1; background: #fafafa; border-radius: 10px; padding: 12px; text-align: center;">
+            <div style="font-size: 20px; font-weight: 900; color: #030712;">178</div>
+            <div style="font-size: 10px; color: #9ca3af; margin-top: 2px;">Идэвхтэй</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Chart (rounded stacked bars) -->
+      <div style="background: white; border-radius: 16px; padding: 24px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #030712; margin: 0;">Гишүүдийн өсөлт</h3>
+          <div style="display: flex; gap: 4px;">
+            <span style="font-size: 11px; color: #9ca3af; padding: 3px 10px; border-radius: 6px; cursor: pointer;">6 сар</span>
+            <span style="font-size: 11px; color: white; background: #030712; padding: 3px 10px; border-radius: 6px; cursor: pointer;">12 сар</span>
+          </div>
+        </div>
+
+        <!-- SVG pattern for diagonal stripes -->
+        <svg style="position: absolute; width: 0; height: 0;">
+          <defs>
+            <pattern id="stripes" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="#d1d5db" stroke-width="2"/>
+            </pattern>
+          </defs>
+        </svg>
+
+        <div style="position: relative; height: 220px; display: flex; align-items: flex-end; gap: 12px; padding-bottom: 28px; padding-left: 36px;">
+
+          <!-- Y-axis labels -->
+          <div style="position: absolute; left: 0; top: 0; bottom: 28px; display: flex; flex-direction: column; justify-content: space-between; width: 32px;">
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">50</span>
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">40</span>
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">30</span>
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">20</span>
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">10</span>
+            <span style="font-size: 9px; color: #9ca3af; text-align: right;">0</span>
+          </div>
+
+          <!-- Grid lines -->
+          <div style="position: absolute; left: 36px; right: 0; top: 0; bottom: 28px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;">
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+            <div style="border-top: 1px solid #f3f4f6;"></div>
+          </div>
+
+          <!-- Bar: Apr (target: 90%, actual: 52%) -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 90%;">
+              <!-- Target background (striped) -->
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <!-- Actual (solid dark) -->
+              <div style="position: absolute; bottom: 0; width: 100%; height: 58%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">18</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">4-р</span>
+          </div>
+
+          <!-- Bar: May -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 76%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 63%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">15</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">5-р</span>
+          </div>
+
+          <!-- Bar: Jun -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 70%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 50%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">11</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">6-р</span>
+          </div>
+
+          <!-- Bar: Jul -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 84%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 55%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">14</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">7-р</span>
+          </div>
+
+          <!-- Bar: Aug -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 78%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 60%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">15</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">8-р</span>
+          </div>
+
+          <!-- Bar: Sep -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 86%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 62%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">17</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">9-р</span>
+          </div>
+
+          <!-- Bar: Oct -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 80%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 65%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">17</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">10-р</span>
+          </div>
+
+          <!-- Bar: Nov -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 88%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 68%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">19</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">11-р</span>
+          </div>
+
+          <!-- Bar: Dec -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 82%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 70%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">18</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">12-р</span>
+          </div>
+
+          <!-- Bar: Jan -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 92%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 72%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">22</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">1-р</span>
+          </div>
+
+          <!-- Bar: Feb -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 96%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 75%; background: #030712; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">24</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #9ca3af; font-weight: 500;">2-р</span>
+          </div>
+
+          <!-- Bar: Mar (current — highlighted with SDY red) -->
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 1;">
+            <div style="width: 100%; position: relative; height: 100%;">
+              <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #fecaca, #fecaca 2px, #fef2f2 2px, #fef2f2 6px); border-radius: 12px;"></div>
+              <div style="position: absolute; bottom: 0; width: 100%; height: 80%; background: #ED1B24; border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: white;">34</span>
+              </div>
+            </div>
+            <span style="font-size: 10px; color: #030712; font-weight: 700;">3-р</span>
+          </div>
+
+        </div>
+
+        <!-- Legend -->
+        <div style="display: flex; justify-content: space-between; margin-top: 12px; padding-left: 36px;">
+          <div>
+            <span style="font-size: 22px; font-weight: 900; color: #030712;">+224</span>
+            <span style="font-size: 12px; color: #9ca3af; margin-left: 6px;">шинэ гишүүн (12 сар)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="width: 14px; height: 14px; background: #030712; border-radius: 4px;"></div>
+              <span style="font-size: 10px; color: #9ca3af;">Бодит</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="width: 14px; height: 14px; background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 4px); border-radius: 4px;"></div>
+              <span style="font-size: 10px; color: #9ca3af;">Зорилт</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 20px; padding: 16px; background: #1a1a2e; border-radius: 12px; color: #ccc; font-size: 13px;">
+  <strong style="color: white;">What changed:</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 18px; line-height: 1.8;">
+    <li>Growth bars now use <strong>rounded stacked style</strong> — solid dark (#030712) for actual members, diagonal striped background for target/goal</li>
+    <li>Current month (3-р сар) highlighted in <strong>SDY red</strong> with red-tinted stripes</li>
+    <li>Actual count displayed inside each solid bar</li>
+    <li>Legend: "Бодит" (Actual) vs "Зорилт" (Target)</li>
+    <li>Y-axis labels on the left for scale</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top: 16px;">Does this match the reference style? Ready to move to the geographic/regional section next.</p>

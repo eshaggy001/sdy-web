@@ -34,11 +34,10 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled
           ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)] py-3 dark:bg-gray-950/95 dark:border-gray-800 dark:shadow-[0_1px_12px_rgba(0,0,0,0.3)]'
           : 'bg-white/0 py-5'
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -60,11 +59,10 @@ export const Navbar = () => {
                 <Link
                   key={String(item.href)}
                   to={l(item.href)}
-                  className={`relative px-3 py-2 text-[13px] font-bold rounded-lg transition-all duration-200 ${
-                    active
+                  className={`relative px-3 py-2 text-[13px] font-bold rounded-lg transition-all duration-200 ${active
                       ? 'text-sdy-red'
                       : 'text-sdy-black/70 hover:text-sdy-black hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'
-                  }`}
+                    }`}
                 >
                   {t(item.label)}
                   {active && (
@@ -95,7 +93,7 @@ export const Navbar = () => {
 
             {/* Join CTA */}
             <Link to={l('/join')} className="btn-primary btn-sm">
-              {t({ mn: 'Элсэх', en: 'Join SDY' })}
+              {t({ mn: 'Нэгдэх', en: 'Join SDY' })}
             </Link>
           </div>
 
@@ -142,11 +140,10 @@ export const Navbar = () => {
                   >
                     <Link
                       to={l(item.href)}
-                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-base transition-colors ${
-                        active
+                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-base transition-colors ${active
                           ? 'bg-sdy-red/8 text-sdy-red'
                           : 'text-sdy-black hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800'
-                      }`}
+                        }`}
                     >
                       {t(item.label)}
                       {active && <span className="w-1.5 h-1.5 rounded-full bg-sdy-red" />}

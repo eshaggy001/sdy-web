@@ -1,0 +1,90 @@
+<h2>Section 1: Header + KPI Cards</h2>
+<p class="subtitle">Top of the dashboard — greeting, date, and four key metrics at a glance</p>
+
+<div class="mockup">
+  <div class="mockup-header">Dashboard — Top Row</div>
+  <div class="mockup-body" style="background: #f3f4f6; padding: 32px;">
+
+    <!-- Header -->
+    <div style="margin-bottom: 24px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between;">
+        <div>
+          <p style="font-size: 13px; color: #9ca3af; margin: 0 0 4px 0; font-weight: 500;">Өглөөний мэнд</p>
+          <h1 style="font-size: 26px; font-weight: 900; color: #030712; margin: 0; letter-spacing: -0.5px;">
+            admin
+            <span style="color: #d1d5db; font-weight: 500; font-size: 18px; margin-left: 8px;">/ Admin</span>
+          </h1>
+        </div>
+        <div style="text-align: right;">
+          <p style="font-size: 12px; color: #9ca3af; margin: 0;">2026 оны 4-р сар 4</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+
+      <!-- Total Members -->
+      <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="width: 36px; height: 36px; background: #fef2f2; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <span style="color: #ED1B24; font-size: 16px;">👥</span>
+          </div>
+          <span style="font-size: 11px; color: #16a34a; font-weight: 600; background: #f0fdf4; padding: 2px 8px; border-radius: 99px;">+12%</span>
+        </div>
+        <div style="font-size: 32px; font-weight: 900; color: #030712; line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums;">1,247</div>
+        <div style="font-size: 12px; color: #9ca3af; font-weight: 500;">Нийт гишүүд</div>
+      </div>
+
+      <!-- Membership Requests -->
+      <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="width: 36px; height: 36px; background: #fef3c7; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 16px;">📋</span>
+          </div>
+          <span style="font-size: 11px; color: #d97706; font-weight: 600; background: #fffbeb; padding: 2px 8px; border-radius: 99px;">23 шинэ</span>
+        </div>
+        <div style="font-size: 32px; font-weight: 900; color: #030712; line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums;">89</div>
+        <div style="font-size: 12px; color: #9ca3af; font-weight: 500;">Хүлээгдэж буй өргөдөл</div>
+      </div>
+
+      <!-- Joined This Month -->
+      <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="width: 36px; height: 36px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 16px;">✅</span>
+          </div>
+          <span style="font-size: 11px; color: #16a34a; font-weight: 600; background: #f0fdf4; padding: 2px 8px; border-radius: 99px;">+8%</span>
+        </div>
+        <div style="font-size: 32px; font-weight: 900; color: #030712; line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums;">34</div>
+        <div style="font-size: 12px; color: #9ca3af; font-weight: 500;">Энэ сар элссэн</div>
+      </div>
+
+      <!-- Active Rate -->
+      <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="width: 36px; height: 36px; background: #ede9fe; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 16px;">📊</span>
+          </div>
+          <span style="font-size: 11px; color: #7c3aed; font-weight: 600; background: #f5f3ff; padding: 2px 8px; border-radius: 99px;">▲ 3%</span>
+        </div>
+        <div style="font-size: 32px; font-weight: 900; color: #030712; line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums;">72%</div>
+        <div style="font-size: 12px; color: #9ca3af; font-weight: 500;">Идэвхтэй гишүүд</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 20px; padding: 16px; background: #1a1a2e; border-radius: 12px; color: #ccc; font-size: 13px;">
+  <strong style="color: white;">Design notes:</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 18px; line-height: 1.8;">
+    <li>4 KPI cards with <strong style="color: #ED1B24;">SDY red</strong> accent on the primary metric (total members)</li>
+    <li>Each card: icon badge → value → label, with a trend/status pill in the corner</li>
+    <li>Font weight 900 for numbers — bold, authoritative feel</li>
+    <li>Growth indicators are contextual: green for positive, amber for pending items, purple for rates</li>
+    <li>All text bilingual via t() — shown in Mongolian here as the primary language</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top: 16px;">Does this top row feel right? I'll move to the middle sections (funnel + growth chart) next.</p>

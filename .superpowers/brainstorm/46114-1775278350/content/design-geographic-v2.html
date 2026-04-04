@@ -1,0 +1,207 @@
+<h2>Section 3 (Revised): Geographic / Regional Analytics</h2>
+<p class="subtitle">Dotted map style with radial hotspots + large total count + ranked regions with percentage bars</p>
+
+<div class="mockup">
+  <div class="mockup-header">Dashboard — Geographic Row</div>
+  <div class="mockup-body" style="background: #f3f4f6; padding: 32px;">
+
+    <div style="background: white; border-radius: 16px; border: 1px solid #f3f4f6; overflow: hidden;">
+
+      <!-- Header bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid #f3f4f6;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: #030712; margin: 0;">Бүсийн тархалт</h3>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 11px; color: #9ca3af; padding: 4px 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;">⚙</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 3fr 2fr;">
+
+        <!-- Dotted Map -->
+        <div style="padding: 24px; position: relative; min-height: 320px; border-right: 1px solid #f3f4f6;">
+
+          <!-- Mongolia dot map -->
+          <svg viewBox="0 0 520 300" style="width: 100%; height: 100%;" fill="none">
+            <!-- Dot grid forming Mongolia shape -->
+            <!-- Row 1 - top edge -->
+            <g fill="#e5e7eb">
+              <!-- Northern border dots -->
+              <circle cx="140" cy="35" r="2"/><circle cx="148" cy="35" r="2"/><circle cx="156" cy="35" r="2"/><circle cx="164" cy="35" r="2"/><circle cx="172" cy="35" r="2"/><circle cx="180" cy="35" r="2"/><circle cx="188" cy="35" r="2"/><circle cx="196" cy="35" r="2"/><circle cx="204" cy="35" r="2"/><circle cx="212" cy="35" r="2"/><circle cx="220" cy="35" r="2"/><circle cx="228" cy="35" r="2"/><circle cx="236" cy="35" r="2"/><circle cx="244" cy="35" r="2"/><circle cx="252" cy="35" r="2"/><circle cx="260" cy="35" r="2"/>
+              <!-- Row 2 -->
+              <circle cx="120" cy="45" r="2"/><circle cx="128" cy="45" r="2"/><circle cx="136" cy="45" r="2"/><circle cx="144" cy="45" r="2"/><circle cx="152" cy="45" r="2"/><circle cx="160" cy="45" r="2"/><circle cx="168" cy="45" r="2"/><circle cx="176" cy="45" r="2"/><circle cx="184" cy="45" r="2"/><circle cx="192" cy="45" r="2"/><circle cx="200" cy="45" r="2"/><circle cx="208" cy="45" r="2"/><circle cx="216" cy="45" r="2"/><circle cx="224" cy="45" r="2"/><circle cx="232" cy="45" r="2"/><circle cx="240" cy="45" r="2"/><circle cx="248" cy="45" r="2"/><circle cx="256" cy="45" r="2"/><circle cx="264" cy="45" r="2"/><circle cx="272" cy="45" r="2"/><circle cx="280" cy="45" r="2"/><circle cx="288" cy="45" r="2"/><circle cx="296" cy="45" r="2"/><circle cx="304" cy="45" r="2"/><circle cx="312" cy="45" r="2"/><circle cx="320" cy="45" r="2"/>
+              <!-- Row 3 -->
+              <circle cx="90" cy="55" r="2"/><circle cx="98" cy="55" r="2"/><circle cx="106" cy="55" r="2"/><circle cx="114" cy="55" r="2"/><circle cx="122" cy="55" r="2"/><circle cx="130" cy="55" r="2"/><circle cx="138" cy="55" r="2"/><circle cx="146" cy="55" r="2"/><circle cx="154" cy="55" r="2"/><circle cx="162" cy="55" r="2"/><circle cx="170" cy="55" r="2"/><circle cx="178" cy="55" r="2"/><circle cx="186" cy="55" r="2"/><circle cx="194" cy="55" r="2"/><circle cx="202" cy="55" r="2"/><circle cx="210" cy="55" r="2"/><circle cx="218" cy="55" r="2"/><circle cx="226" cy="55" r="2"/><circle cx="234" cy="55" r="2"/><circle cx="242" cy="55" r="2"/><circle cx="250" cy="55" r="2"/><circle cx="258" cy="55" r="2"/><circle cx="266" cy="55" r="2"/><circle cx="274" cy="55" r="2"/><circle cx="282" cy="55" r="2"/><circle cx="290" cy="55" r="2"/><circle cx="298" cy="55" r="2"/><circle cx="306" cy="55" r="2"/><circle cx="314" cy="55" r="2"/><circle cx="322" cy="55" r="2"/><circle cx="330" cy="55" r="2"/><circle cx="338" cy="55" r="2"/><circle cx="346" cy="55" r="2"/><circle cx="354" cy="55" r="2"/>
+              <!-- Row 4 -->
+              <circle cx="70" cy="65" r="2"/><circle cx="78" cy="65" r="2"/><circle cx="86" cy="65" r="2"/><circle cx="94" cy="65" r="2"/><circle cx="102" cy="65" r="2"/><circle cx="110" cy="65" r="2"/><circle cx="118" cy="65" r="2"/><circle cx="126" cy="65" r="2"/><circle cx="134" cy="65" r="2"/><circle cx="142" cy="65" r="2"/><circle cx="150" cy="65" r="2"/><circle cx="158" cy="65" r="2"/><circle cx="166" cy="65" r="2"/><circle cx="174" cy="65" r="2"/><circle cx="182" cy="65" r="2"/><circle cx="190" cy="65" r="2"/><circle cx="198" cy="65" r="2"/><circle cx="206" cy="65" r="2"/><circle cx="214" cy="65" r="2"/><circle cx="222" cy="65" r="2"/><circle cx="230" cy="65" r="2"/><circle cx="238" cy="65" r="2"/><circle cx="246" cy="65" r="2"/><circle cx="254" cy="65" r="2"/><circle cx="262" cy="65" r="2"/><circle cx="270" cy="65" r="2"/><circle cx="278" cy="65" r="2"/><circle cx="286" cy="65" r="2"/><circle cx="294" cy="65" r="2"/><circle cx="302" cy="65" r="2"/><circle cx="310" cy="65" r="2"/><circle cx="318" cy="65" r="2"/><circle cx="326" cy="65" r="2"/><circle cx="334" cy="65" r="2"/><circle cx="342" cy="65" r="2"/><circle cx="350" cy="65" r="2"/><circle cx="358" cy="65" r="2"/><circle cx="366" cy="65" r="2"/><circle cx="374" cy="65" r="2"/><circle cx="382" cy="65" r="2"/><circle cx="390" cy="65" r="2"/>
+              <!-- Row 5 -->
+              <circle cx="60" cy="75" r="2"/><circle cx="68" cy="75" r="2"/><circle cx="76" cy="75" r="2"/><circle cx="84" cy="75" r="2"/><circle cx="92" cy="75" r="2"/><circle cx="100" cy="75" r="2"/><circle cx="108" cy="75" r="2"/><circle cx="116" cy="75" r="2"/><circle cx="124" cy="75" r="2"/><circle cx="132" cy="75" r="2"/><circle cx="140" cy="75" r="2"/><circle cx="148" cy="75" r="2"/><circle cx="156" cy="75" r="2"/><circle cx="164" cy="75" r="2"/><circle cx="172" cy="75" r="2"/><circle cx="180" cy="75" r="2"/><circle cx="188" cy="75" r="2"/><circle cx="196" cy="75" r="2"/><circle cx="204" cy="75" r="2"/><circle cx="212" cy="75" r="2"/><circle cx="220" cy="75" r="2"/><circle cx="228" cy="75" r="2"/><circle cx="236" cy="75" r="2"/><circle cx="244" cy="75" r="2"/><circle cx="252" cy="75" r="2"/><circle cx="260" cy="75" r="2"/><circle cx="268" cy="75" r="2"/><circle cx="276" cy="75" r="2"/><circle cx="284" cy="75" r="2"/><circle cx="292" cy="75" r="2"/><circle cx="300" cy="75" r="2"/><circle cx="308" cy="75" r="2"/><circle cx="316" cy="75" r="2"/><circle cx="324" cy="75" r="2"/><circle cx="332" cy="75" r="2"/><circle cx="340" cy="75" r="2"/><circle cx="348" cy="75" r="2"/><circle cx="356" cy="75" r="2"/><circle cx="364" cy="75" r="2"/><circle cx="372" cy="75" r="2"/><circle cx="380" cy="75" r="2"/><circle cx="388" cy="75" r="2"/><circle cx="396" cy="75" r="2"/><circle cx="404" cy="75" r="2"/>
+              <!-- Rows 6-12 (main body) -->
+              <circle cx="55" cy="85" r="2"/><circle cx="63" cy="85" r="2"/><circle cx="71" cy="85" r="2"/><circle cx="79" cy="85" r="2"/><circle cx="87" cy="85" r="2"/><circle cx="95" cy="85" r="2"/><circle cx="103" cy="85" r="2"/><circle cx="111" cy="85" r="2"/><circle cx="119" cy="85" r="2"/><circle cx="127" cy="85" r="2"/><circle cx="135" cy="85" r="2"/><circle cx="143" cy="85" r="2"/><circle cx="151" cy="85" r="2"/><circle cx="159" cy="85" r="2"/><circle cx="167" cy="85" r="2"/><circle cx="175" cy="85" r="2"/><circle cx="183" cy="85" r="2"/><circle cx="191" cy="85" r="2"/><circle cx="199" cy="85" r="2"/><circle cx="207" cy="85" r="2"/><circle cx="215" cy="85" r="2"/><circle cx="223" cy="85" r="2"/><circle cx="231" cy="85" r="2"/><circle cx="239" cy="85" r="2"/><circle cx="247" cy="85" r="2"/><circle cx="255" cy="85" r="2"/><circle cx="263" cy="85" r="2"/><circle cx="271" cy="85" r="2"/><circle cx="279" cy="85" r="2"/><circle cx="287" cy="85" r="2"/><circle cx="295" cy="85" r="2"/><circle cx="303" cy="85" r="2"/><circle cx="311" cy="85" r="2"/><circle cx="319" cy="85" r="2"/><circle cx="327" cy="85" r="2"/><circle cx="335" cy="85" r="2"/><circle cx="343" cy="85" r="2"/><circle cx="351" cy="85" r="2"/><circle cx="359" cy="85" r="2"/><circle cx="367" cy="85" r="2"/><circle cx="375" cy="85" r="2"/><circle cx="383" cy="85" r="2"/><circle cx="391" cy="85" r="2"/><circle cx="399" cy="85" r="2"/><circle cx="407" cy="85" r="2"/><circle cx="415" cy="85" r="2"/>
+              <!-- Row 7 -->
+              <circle cx="55" cy="95" r="2"/><circle cx="63" cy="95" r="2"/><circle cx="71" cy="95" r="2"/><circle cx="79" cy="95" r="2"/><circle cx="87" cy="95" r="2"/><circle cx="95" cy="95" r="2"/><circle cx="103" cy="95" r="2"/><circle cx="111" cy="95" r="2"/><circle cx="119" cy="95" r="2"/><circle cx="127" cy="95" r="2"/><circle cx="135" cy="95" r="2"/><circle cx="143" cy="95" r="2"/><circle cx="151" cy="95" r="2"/><circle cx="159" cy="95" r="2"/><circle cx="167" cy="95" r="2"/><circle cx="175" cy="95" r="2"/><circle cx="183" cy="95" r="2"/><circle cx="191" cy="95" r="2"/><circle cx="199" cy="95" r="2"/><circle cx="207" cy="95" r="2"/><circle cx="215" cy="95" r="2"/><circle cx="223" cy="95" r="2"/><circle cx="231" cy="95" r="2"/><circle cx="239" cy="95" r="2"/><circle cx="247" cy="95" r="2"/><circle cx="255" cy="95" r="2"/><circle cx="263" cy="95" r="2"/><circle cx="271" cy="95" r="2"/><circle cx="279" cy="95" r="2"/><circle cx="287" cy="95" r="2"/><circle cx="295" cy="95" r="2"/><circle cx="303" cy="95" r="2"/><circle cx="311" cy="95" r="2"/><circle cx="319" cy="95" r="2"/><circle cx="327" cy="95" r="2"/><circle cx="335" cy="95" r="2"/><circle cx="343" cy="95" r="2"/><circle cx="351" cy="95" r="2"/><circle cx="359" cy="95" r="2"/><circle cx="367" cy="95" r="2"/><circle cx="375" cy="95" r="2"/><circle cx="383" cy="95" r="2"/><circle cx="391" cy="95" r="2"/><circle cx="399" cy="95" r="2"/><circle cx="407" cy="95" r="2"/><circle cx="415" cy="95" r="2"/><circle cx="423" cy="95" r="2"/>
+              <!-- Row 8-11 body -->
+              <circle cx="60" cy="105" r="2"/><circle cx="68" cy="105" r="2"/><circle cx="76" cy="105" r="2"/><circle cx="84" cy="105" r="2"/><circle cx="92" cy="105" r="2"/><circle cx="100" cy="105" r="2"/><circle cx="108" cy="105" r="2"/><circle cx="116" cy="105" r="2"/><circle cx="124" cy="105" r="2"/><circle cx="132" cy="105" r="2"/><circle cx="140" cy="105" r="2"/><circle cx="148" cy="105" r="2"/><circle cx="156" cy="105" r="2"/><circle cx="164" cy="105" r="2"/><circle cx="172" cy="105" r="2"/><circle cx="180" cy="105" r="2"/><circle cx="188" cy="105" r="2"/><circle cx="196" cy="105" r="2"/><circle cx="204" cy="105" r="2"/><circle cx="212" cy="105" r="2"/><circle cx="220" cy="105" r="2"/><circle cx="228" cy="105" r="2"/><circle cx="236" cy="105" r="2"/><circle cx="244" cy="105" r="2"/><circle cx="252" cy="105" r="2"/><circle cx="260" cy="105" r="2"/><circle cx="268" cy="105" r="2"/><circle cx="276" cy="105" r="2"/><circle cx="284" cy="105" r="2"/><circle cx="292" cy="105" r="2"/><circle cx="300" cy="105" r="2"/><circle cx="308" cy="105" r="2"/><circle cx="316" cy="105" r="2"/><circle cx="324" cy="105" r="2"/><circle cx="332" cy="105" r="2"/><circle cx="340" cy="105" r="2"/><circle cx="348" cy="105" r="2"/><circle cx="356" cy="105" r="2"/><circle cx="364" cy="105" r="2"/><circle cx="372" cy="105" r="2"/><circle cx="380" cy="105" r="2"/><circle cx="388" cy="105" r="2"/><circle cx="396" cy="105" r="2"/><circle cx="404" cy="105" r="2"/><circle cx="412" cy="105" r="2"/><circle cx="420" cy="105" r="2"/>
+              <!-- Row 9 -->
+              <circle cx="68" cy="115" r="2"/><circle cx="76" cy="115" r="2"/><circle cx="84" cy="115" r="2"/><circle cx="92" cy="115" r="2"/><circle cx="100" cy="115" r="2"/><circle cx="108" cy="115" r="2"/><circle cx="116" cy="115" r="2"/><circle cx="124" cy="115" r="2"/><circle cx="132" cy="115" r="2"/><circle cx="140" cy="115" r="2"/><circle cx="148" cy="115" r="2"/><circle cx="156" cy="115" r="2"/><circle cx="164" cy="115" r="2"/><circle cx="172" cy="115" r="2"/><circle cx="180" cy="115" r="2"/><circle cx="188" cy="115" r="2"/><circle cx="196" cy="115" r="2"/><circle cx="204" cy="115" r="2"/><circle cx="212" cy="115" r="2"/><circle cx="220" cy="115" r="2"/><circle cx="228" cy="115" r="2"/><circle cx="236" cy="115" r="2"/><circle cx="244" cy="115" r="2"/><circle cx="252" cy="115" r="2"/><circle cx="260" cy="115" r="2"/><circle cx="268" cy="115" r="2"/><circle cx="276" cy="115" r="2"/><circle cx="284" cy="115" r="2"/><circle cx="292" cy="115" r="2"/><circle cx="300" cy="115" r="2"/><circle cx="308" cy="115" r="2"/><circle cx="316" cy="115" r="2"/><circle cx="324" cy="115" r="2"/><circle cx="332" cy="115" r="2"/><circle cx="340" cy="115" r="2"/><circle cx="348" cy="115" r="2"/><circle cx="356" cy="115" r="2"/><circle cx="364" cy="115" r="2"/><circle cx="372" cy="115" r="2"/><circle cx="380" cy="115" r="2"/><circle cx="388" cy="115" r="2"/><circle cx="396" cy="115" r="2"/><circle cx="404" cy="115" r="2"/><circle cx="412" cy="115" r="2"/>
+              <!-- Row 10 -->
+              <circle cx="76" cy="125" r="2"/><circle cx="84" cy="125" r="2"/><circle cx="92" cy="125" r="2"/><circle cx="100" cy="125" r="2"/><circle cx="108" cy="125" r="2"/><circle cx="116" cy="125" r="2"/><circle cx="124" cy="125" r="2"/><circle cx="132" cy="125" r="2"/><circle cx="140" cy="125" r="2"/><circle cx="148" cy="125" r="2"/><circle cx="156" cy="125" r="2"/><circle cx="164" cy="125" r="2"/><circle cx="172" cy="125" r="2"/><circle cx="180" cy="125" r="2"/><circle cx="188" cy="125" r="2"/><circle cx="196" cy="125" r="2"/><circle cx="204" cy="125" r="2"/><circle cx="212" cy="125" r="2"/><circle cx="220" cy="125" r="2"/><circle cx="228" cy="125" r="2"/><circle cx="236" cy="125" r="2"/><circle cx="244" cy="125" r="2"/><circle cx="252" cy="125" r="2"/><circle cx="260" cy="125" r="2"/><circle cx="268" cy="125" r="2"/><circle cx="276" cy="125" r="2"/><circle cx="284" cy="125" r="2"/><circle cx="292" cy="125" r="2"/><circle cx="300" cy="125" r="2"/><circle cx="308" cy="125" r="2"/><circle cx="316" cy="125" r="2"/><circle cx="324" cy="125" r="2"/><circle cx="332" cy="125" r="2"/><circle cx="340" cy="125" r="2"/><circle cx="348" cy="125" r="2"/><circle cx="356" cy="125" r="2"/><circle cx="364" cy="125" r="2"/><circle cx="372" cy="125" r="2"/><circle cx="380" cy="125" r="2"/><circle cx="388" cy="125" r="2"/><circle cx="396" cy="125" r="2"/><circle cx="404" cy="125" r="2"/>
+              <!-- Row 11 -->
+              <circle cx="100" cy="135" r="2"/><circle cx="108" cy="135" r="2"/><circle cx="116" cy="135" r="2"/><circle cx="124" cy="135" r="2"/><circle cx="132" cy="135" r="2"/><circle cx="140" cy="135" r="2"/><circle cx="148" cy="135" r="2"/><circle cx="156" cy="135" r="2"/><circle cx="164" cy="135" r="2"/><circle cx="172" cy="135" r="2"/><circle cx="180" cy="135" r="2"/><circle cx="188" cy="135" r="2"/><circle cx="196" cy="135" r="2"/><circle cx="204" cy="135" r="2"/><circle cx="212" cy="135" r="2"/><circle cx="220" cy="135" r="2"/><circle cx="228" cy="135" r="2"/><circle cx="236" cy="135" r="2"/><circle cx="244" cy="135" r="2"/><circle cx="252" cy="135" r="2"/><circle cx="260" cy="135" r="2"/><circle cx="268" cy="135" r="2"/><circle cx="276" cy="135" r="2"/><circle cx="284" cy="135" r="2"/><circle cx="292" cy="135" r="2"/><circle cx="300" cy="135" r="2"/><circle cx="308" cy="135" r="2"/><circle cx="316" cy="135" r="2"/><circle cx="324" cy="135" r="2"/><circle cx="332" cy="135" r="2"/><circle cx="340" cy="135" r="2"/><circle cx="348" cy="135" r="2"/><circle cx="356" cy="135" r="2"/><circle cx="364" cy="135" r="2"/><circle cx="372" cy="135" r="2"/><circle cx="380" cy="135" r="2"/><circle cx="388" cy="135" r="2"/><circle cx="396" cy="135" r="2"/>
+              <!-- Row 12 - narrowing south -->
+              <circle cx="120" cy="145" r="2"/><circle cx="128" cy="145" r="2"/><circle cx="136" cy="145" r="2"/><circle cx="144" cy="145" r="2"/><circle cx="152" cy="145" r="2"/><circle cx="160" cy="145" r="2"/><circle cx="168" cy="145" r="2"/><circle cx="176" cy="145" r="2"/><circle cx="184" cy="145" r="2"/><circle cx="192" cy="145" r="2"/><circle cx="200" cy="145" r="2"/><circle cx="208" cy="145" r="2"/><circle cx="216" cy="145" r="2"/><circle cx="224" cy="145" r="2"/><circle cx="232" cy="145" r="2"/><circle cx="240" cy="145" r="2"/><circle cx="248" cy="145" r="2"/><circle cx="256" cy="145" r="2"/><circle cx="264" cy="145" r="2"/><circle cx="272" cy="145" r="2"/><circle cx="280" cy="145" r="2"/><circle cx="288" cy="145" r="2"/><circle cx="296" cy="145" r="2"/><circle cx="304" cy="145" r="2"/><circle cx="312" cy="145" r="2"/><circle cx="320" cy="145" r="2"/><circle cx="328" cy="145" r="2"/><circle cx="336" cy="145" r="2"/><circle cx="344" cy="145" r="2"/><circle cx="352" cy="145" r="2"/><circle cx="360" cy="145" r="2"/><circle cx="368" cy="145" r="2"/><circle cx="376" cy="145" r="2"/><circle cx="384" cy="145" r="2"/>
+              <!-- Row 13 -->
+              <circle cx="140" cy="155" r="2"/><circle cx="148" cy="155" r="2"/><circle cx="156" cy="155" r="2"/><circle cx="164" cy="155" r="2"/><circle cx="172" cy="155" r="2"/><circle cx="180" cy="155" r="2"/><circle cx="188" cy="155" r="2"/><circle cx="196" cy="155" r="2"/><circle cx="204" cy="155" r="2"/><circle cx="212" cy="155" r="2"/><circle cx="220" cy="155" r="2"/><circle cx="228" cy="155" r="2"/><circle cx="236" cy="155" r="2"/><circle cx="244" cy="155" r="2"/><circle cx="252" cy="155" r="2"/><circle cx="260" cy="155" r="2"/><circle cx="268" cy="155" r="2"/><circle cx="276" cy="155" r="2"/><circle cx="284" cy="155" r="2"/><circle cx="292" cy="155" r="2"/><circle cx="300" cy="155" r="2"/><circle cx="308" cy="155" r="2"/><circle cx="316" cy="155" r="2"/><circle cx="324" cy="155" r="2"/><circle cx="332" cy="155" r="2"/><circle cx="340" cy="155" r="2"/><circle cx="348" cy="155" r="2"/><circle cx="356" cy="155" r="2"/><circle cx="364" cy="155" r="2"/><circle cx="372" cy="155" r="2"/>
+              <!-- Row 14 - southern -->
+              <circle cx="160" cy="165" r="2"/><circle cx="168" cy="165" r="2"/><circle cx="176" cy="165" r="2"/><circle cx="184" cy="165" r="2"/><circle cx="192" cy="165" r="2"/><circle cx="200" cy="165" r="2"/><circle cx="208" cy="165" r="2"/><circle cx="216" cy="165" r="2"/><circle cx="224" cy="165" r="2"/><circle cx="232" cy="165" r="2"/><circle cx="240" cy="165" r="2"/><circle cx="248" cy="165" r="2"/><circle cx="256" cy="165" r="2"/><circle cx="264" cy="165" r="2"/><circle cx="272" cy="165" r="2"/><circle cx="280" cy="165" r="2"/><circle cx="288" cy="165" r="2"/><circle cx="296" cy="165" r="2"/><circle cx="304" cy="165" r="2"/><circle cx="312" cy="165" r="2"/><circle cx="320" cy="165" r="2"/><circle cx="328" cy="165" r="2"/><circle cx="336" cy="165" r="2"/><circle cx="344" cy="165" r="2"/><circle cx="352" cy="165" r="2"/><circle cx="360" cy="165" r="2"/>
+              <!-- Row 15 -->
+              <circle cx="180" cy="175" r="2"/><circle cx="188" cy="175" r="2"/><circle cx="196" cy="175" r="2"/><circle cx="204" cy="175" r="2"/><circle cx="212" cy="175" r="2"/><circle cx="220" cy="175" r="2"/><circle cx="228" cy="175" r="2"/><circle cx="236" cy="175" r="2"/><circle cx="244" cy="175" r="2"/><circle cx="252" cy="175" r="2"/><circle cx="260" cy="175" r="2"/><circle cx="268" cy="175" r="2"/><circle cx="276" cy="175" r="2"/><circle cx="284" cy="175" r="2"/><circle cx="292" cy="175" r="2"/><circle cx="300" cy="175" r="2"/><circle cx="308" cy="175" r="2"/><circle cx="316" cy="175" r="2"/><circle cx="324" cy="175" r="2"/><circle cx="332" cy="175" r="2"/><circle cx="340" cy="175" r="2"/><circle cx="348" cy="175" r="2"/>
+              <!-- Row 16 - Gobi -->
+              <circle cx="200" cy="185" r="2"/><circle cx="208" cy="185" r="2"/><circle cx="216" cy="185" r="2"/><circle cx="224" cy="185" r="2"/><circle cx="232" cy="185" r="2"/><circle cx="240" cy="185" r="2"/><circle cx="248" cy="185" r="2"/><circle cx="256" cy="185" r="2"/><circle cx="264" cy="185" r="2"/><circle cx="272" cy="185" r="2"/><circle cx="280" cy="185" r="2"/><circle cx="288" cy="185" r="2"/><circle cx="296" cy="185" r="2"/><circle cx="304" cy="185" r="2"/><circle cx="312" cy="185" r="2"/><circle cx="320" cy="185" r="2"/><circle cx="328" cy="185" r="2"/><circle cx="336" cy="185" r="2"/>
+            </g>
+
+            <!-- Radial hotspots -->
+            <!-- UB - largest -->
+            <circle cx="310" cy="105" r="28" fill="#ED1B24" opacity="0.08"/>
+            <circle cx="310" cy="105" r="18" fill="#ED1B24" opacity="0.15"/>
+            <circle cx="310" cy="105" r="8" fill="#ED1B24" opacity="0.5"/>
+            <circle cx="310" cy="105" r="4" fill="#ED1B24" opacity="0.9"/>
+
+            <!-- Darkhan -->
+            <circle cx="275" cy="60" r="18" fill="#ED1B24" opacity="0.06"/>
+            <circle cx="275" cy="60" r="10" fill="#ED1B24" opacity="0.12"/>
+            <circle cx="275" cy="60" r="5" fill="#ED1B24" opacity="0.4"/>
+            <circle cx="275" cy="60" r="2.5" fill="#ED1B24" opacity="0.8"/>
+
+            <!-- Erdenet -->
+            <circle cx="230" cy="75" r="16" fill="#ED1B24" opacity="0.06"/>
+            <circle cx="230" cy="75" r="9" fill="#ED1B24" opacity="0.12"/>
+            <circle cx="230" cy="75" r="4.5" fill="#ED1B24" opacity="0.4"/>
+            <circle cx="230" cy="75" r="2" fill="#ED1B24" opacity="0.8"/>
+
+            <!-- Selenge -->
+            <circle cx="255" cy="48" r="12" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="255" cy="48" r="6" fill="#ED1B24" opacity="0.12"/>
+            <circle cx="255" cy="48" r="3" fill="#ED1B24" opacity="0.4"/>
+
+            <!-- Khentii -->
+            <circle cx="385" cy="95" r="12" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="385" cy="95" r="6" fill="#ED1B24" opacity="0.12"/>
+            <circle cx="385" cy="95" r="3" fill="#ED1B24" opacity="0.35"/>
+
+            <!-- Khovd -->
+            <circle cx="90" cy="85" r="10" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="90" cy="85" r="5" fill="#ED1B24" opacity="0.1"/>
+            <circle cx="90" cy="85" r="2.5" fill="#ED1B24" opacity="0.35"/>
+
+            <!-- Bayan-Olgii -->
+            <circle cx="68" cy="60" r="9" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="68" cy="60" r="4.5" fill="#ED1B24" opacity="0.1"/>
+            <circle cx="68" cy="60" r="2" fill="#ED1B24" opacity="0.3"/>
+
+            <!-- Umnugovi -->
+            <circle cx="270" cy="175" r="9" fill="#ED1B24" opacity="0.05"/>
+            <circle cx="270" cy="175" r="4.5" fill="#ED1B24" opacity="0.1"/>
+            <circle cx="270" cy="175" r="2" fill="#ED1B24" opacity="0.3"/>
+          </svg>
+
+          <!-- Legend -->
+          <div style="position: absolute; bottom: 16px; left: 20px; display: flex; align-items: center; gap: 16px; background: white; padding: 6px 12px; border-radius: 8px; border: 1px solid #f3f4f6;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 6px; height: 6px; background: #ED1B24; border-radius: 50%; opacity: 0.3;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">Баруун</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 6px; height: 6px; background: #ED1B24; border-radius: 50%; opacity: 0.5;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">Төв</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <div style="width: 6px; height: 6px; background: #ED1B24; border-radius: 50%; opacity: 0.8;"></div>
+              <span style="font-size: 9px; color: #9ca3af;">Зүүн</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right panel: total + ranking -->
+        <div style="padding: 28px 24px; display: flex; flex-direction: column;">
+
+          <!-- Big number -->
+          <div style="margin-bottom: 4px;">
+            <span style="font-size: 42px; font-weight: 900; color: #030712; letter-spacing: -2px; line-height: 1;">1,247</span>
+          </div>
+          <p style="font-size: 13px; color: #9ca3af; margin: 0 0 24px 0;">Бүртгэлтэй гишүүд</p>
+
+          <!-- Ranked regions -->
+          <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Улаанбаатар</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">39%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 90%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Дархан-Уул</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">13%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 32%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Орхон</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">11%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 28%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Сэлэнгэ</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">7%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 18%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700; color: #030712;">Төв</span>
+                <span style="font-size: 13px; font-weight: 800; color: #030712;">6%</span>
+              </div>
+              <div style="height: 6px; background: #f3f4f6; border-radius: 99px; overflow: hidden;">
+                <div style="height: 100%; width: 16%; background: #ED1B24; border-radius: 99px;"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 20px; padding: 16px; background: #1a1a2e; border-radius: 12px; color: #ccc; font-size: 13px;">
+  <strong style="color: white;">What changed:</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 18px; line-height: 1.8;">
+    <li><strong>Dot map:</strong> Mongolia formed from a dot grid with radial hotspots (concentric circles fading out) at key locations — matches the reference's dotted map + glow style</li>
+    <li><strong>Right panel:</strong> Large total number (1,247) at top, then ranked regions with percentage bars — matches the reference's demographics panel layout</li>
+    <li>Single unified card with header bar, map on left, stats on right — cleaner than two separate cards</li>
+    <li>All SDY red for hotspots and progress bars</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top: 16px;">Does this match the reference style? Next: bottom row (Events, Polls, News).</p>

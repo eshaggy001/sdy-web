@@ -487,11 +487,16 @@ drop policy if exists "public vote polls total"            on polls;
 drop policy if exists "public vote poll_options"           on poll_options;
 drop policy if exists "authenticated insert polls"         on polls;
 drop policy if exists "authenticated update polls"         on polls;
+drop policy if exists "authenticated insert poll_options"  on poll_options;
 drop policy if exists "authenticated update poll_options"  on poll_options;
+drop policy if exists "authenticated delete poll_options"  on poll_options;
 create policy "public vote polls total"           on polls        for update using (true) with check (true);
 create policy "public vote poll_options"          on poll_options for update using (true) with check (true);
 create policy "authenticated insert polls"        on polls        for insert with check (auth.uid() is not null);
+create policy "authenticated update polls"        on polls        for update using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy "authenticated insert poll_options" on poll_options for insert with check (auth.uid() is not null);
 create policy "authenticated update poll_options" on poll_options for update using (auth.uid() is not null);
+create policy "authenticated delete poll_options" on poll_options for delete using (auth.uid() is not null);
 
 -- =============================================================
 -- ADMIN: Content write policies (INSERT/UPDATE/DELETE for authenticated)

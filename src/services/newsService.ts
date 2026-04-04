@@ -30,7 +30,7 @@ export const newsService = {
 
   create: async (item: Record<string, unknown>) => {
     const id = crypto.randomUUID();
-    const { error } = await supabase.from('news_items').insert({ id, ...item });
+    const { error } = await supabase.from('news_items').insert({ id, view_count: 0, ...item });
     if (error) {
       console.error('newsService.create:', error);
       return false;

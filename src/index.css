@@ -86,12 +86,12 @@
 
   /* Cards */
   .glass-card {
-    @apply rounded-2xl border border-white/40 bg-white/60 backdrop-blur-lg shadow-[0_8px_30px_rgb(0, 0, 0, 0.04)] transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.08)] hover:-translate-y-1 dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_30px_rgb(0, 0, 0, 0.2)] dark:hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.3)];
+    @apply rounded-2xl border border-white/40 bg-white/60 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)];
   }
 
   /* ✅ FIXED: card-shadow was used but never defined */
   .card-shadow {
-    @apply bg-white rounded-2xl shadow-[0_2px_16px_rgba(0, 0, 0, 0.06)] border border-gray-100/80 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0, 0, 0, 0.1)] hover:-translate-y-1 dark:bg-gray-900 dark:border-gray-800 dark:shadow-[0_2px_16px_rgba(0, 0, 0, 0.3)] dark:hover:shadow-[0_8px_32px_rgba(0, 0, 0, 0.4)];
+    @apply bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-gray-100/80 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:-translate-y-1 dark:bg-gray-900 dark:border-gray-800 dark:shadow-[0_2px_16px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)];
   }
 
   /* Buttons */

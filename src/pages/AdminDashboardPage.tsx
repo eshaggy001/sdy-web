@@ -3,7 +3,7 @@ import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import {
-  Users2, ClipboardList, UserCheck, Activity,
+  Users2, ClipboardList, UserCheck, Activity, RefreshCw,
 } from 'lucide-react';
 import { MongoliaMap } from '../components/admin/MongoliaMap';
 import { useDashboardData } from '../hooks/useDashboardData';
@@ -51,7 +51,7 @@ const Skeleton = ({ className = '' }: { className?: string }) => (
 export const AdminDashboardPage = () => {
   const { t, l, language } = useI18n();
   const { user, role } = useAuth();
-  const { data, loading } = useDashboardData();
+  const { data, loading, refetch } = useDashboardData();
   const userName = user?.email?.split('@')[0] ?? 'Admin';
   const lang = language as 'mn' | 'en';
 
@@ -117,6 +117,14 @@ export const AdminDashboardPage = () => {
               </span>
             </h1>
           </div>
+          <button
+            onClick={refetch}
+            disabled={loading}
+            className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-white dark:hover:bg-gray-800 rounded-lg transition-all disabled:opacity-50"
+            title={t({ mn: 'Шинэчлэх', en: 'Refresh' })}
+          >
+            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+          </button>
         </div>
 
         {/* ── KPI Cards ── */}
@@ -258,15 +266,15 @@ export const AdminDashboardPage = () => {
         </div>
 
         {/* ── Geographic / Regional ── */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800">
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
             <h3 className="text-[15px] font-bold text-sdy-black dark:text-white">{t({ mn: 'Бүсийн тархалт', en: 'Regional Distribution' })}</h3>
             <span className="text-[11px] text-gray-400 px-2.5 py-1 border border-gray-200 dark:border-gray-700 rounded-lg">{t({ mn: '21 аймаг + УБ', en: '21 aimags + UB' })}</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-5">
-            <div className="lg:col-span-3 p-6 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800 flex items-center justify-center relative min-h-[280px]">
+            <div className="lg:col-span-3 p-6 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800 relative">
               <MongoliaMap />
-              <div className="absolute bottom-4 left-5 flex items-center gap-4 bg-white dark:bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-100 dark:border-gray-800">
+              <div className="absolute bottom-3 left-4 flex items-center gap-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-gray-100 dark:border-gray-800 z-10">
                 <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-gray-300 rounded-full" /><span className="text-[9px] text-gray-400">{t({ mn: 'Бага', en: 'Low' })}</span></div>
                 <div className="flex items-center gap-1"><div className="w-2 h-2 bg-sdy-red/40 rounded-full" /><span className="text-[9px] text-gray-400">{t({ mn: 'Дунд', en: 'Medium' })}</span></div>
                 <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-sdy-red/70 rounded-full" /><span className="text-[9px] text-gray-400">{t({ mn: 'Өндөр', en: 'High' })}</span></div>

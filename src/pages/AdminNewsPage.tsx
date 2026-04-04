@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Newspaper, Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { newsService } from '../services/newsService';
-import { storageService } from '../services/storageService';
-import { AdminModal } from '../components/admin/AdminModal';
-import { BilingualInput } from '../components/admin/BilingualInput';
-import { BilingualTextarea } from '../components/admin/BilingualTextarea';
-import { ImageUpload } from '../components/admin/ImageUpload';
 
 interface NewsRow {
   id: string;
@@ -18,35 +14,13 @@ interface NewsRow {
   date_mn: string;
   date_en: string;
   image: string | null;
-  excerpt_mn: string;
-  excerpt_en: string;
-  content_mn: string;
-  content_en: string;
 }
 
-const EMPTY_FORM = {
-  title_mn: '',
-  title_en: '',
-  category_mn: '',
-  category_en: '',
-  date_mn: '',
-  date_en: '',
-  image: null as string | null,
-  excerpt_mn: '',
-  excerpt_en: '',
-  content_mn: '',
-  content_en: '',
-};
-
 export const AdminNewsPage = () => {
-  const { t } = useI18n();
+  const { t, language: lang } = useI18n();
+  const navigate = useNavigate();
   const [items, setItems] = useState<NewsRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -56,70 +30,6 @@ export const AdminNewsPage = () => {
   };
 
   useEffect(() => { load(); }, []);
-
-  const openCreate = () => {
-    setEditingId(null);
-    setForm(EMPTY_FORM);
-    setImageFile(null);
-    setModalOpen(true);
-  };
-
-  const openEdit = (item: NewsRow) => {
-    setEditingId(item.id);
-    setForm({
-      title_mn: item.title_mn,
-      title_en: item.title_en,
-      category_mn: item.category_mn ?? '',
-      category_en: item.category_en ?? '',
-      date_mn: item.date_mn ?? '',
-      date_en: item.date_en ?? '',
-      image: item.image,
-      excerpt_mn: item.excerpt_mn ?? '',
-      excerpt_en: item.excerpt_en ?? '',
-      content_mn: item.content_mn ?? '',
-      content_en: item.content_en ?? '',
-    });
-    setImageFile(null);
-    setModalOpen(true);
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-
-    const id = editingId ?? crypto.randomUUID();
-    let imageUrl = form.image;
-
-    if (imageFile) {
-      const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      const uploaded = await storageService.upload('images', imageFile, 'news/' + id + '.' + ext);
-      if (uploaded) imageUrl = uploaded;
-    }
-
-    const payload = {
-      title_mn: form.title_mn,
-      title_en: form.title_en,
-      category_mn: form.category_mn,
-      category_en: form.category_en,
-      date_mn: form.date_mn,
-      date_en: form.date_en,
-      image: imageUrl,
-      excerpt_mn: form.excerpt_mn,
-      excerpt_en: form.excerpt_en,
-      content_mn: form.content_mn,
-      content_en: form.content_en,
-    };
-
-    const success = editingId
-      ? await newsService.update(editingId, payload)
-      : await newsService.create({ id, ...payload });
-
-    if (success) {
-      setModalOpen(false);
-      await load();
-    }
-
-    setSaving(false);
-  };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm(t({ mn: 'Устгах уу?', en: 'Delete this news item?' }))) return;
@@ -150,7 +60,7 @@ export const AdminNewsPage = () => {
               <RefreshCw size={15} />
             </button>
             <button
-              onClick={openCreate}
+              onClick={() => navigate(`/${lang}/admin/news/new`)}
               className="btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
             >
               <Plus size={15} />
@@ -223,7 +133,7 @@ export const AdminNewsPage = () => {
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => openEdit(item)}
+                            onClick={() => navigate(`/${lang}/admin/news/${item.id}`)}
                             className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                             title="Edit"
                           >
@@ -245,61 +155,6 @@ export const AdminNewsPage = () => {
             </table>
           </div>
         </div>
-
-        {/* Modal */}
-        <AdminModal
-          open={modalOpen}
-          title={t({ mn: editingId ? 'Мэдээ засах' : 'Мэдээ нэмэх', en: editingId ? 'Edit News' : 'Add News' })}
-          onClose={() => setModalOpen(false)}
-          onSave={handleSave}
-          saving={saving}
-        >
-          <BilingualInput
-            label={t({ mn: 'Гарчиг', en: 'Title' })}
-            valueMn={form.title_mn}
-            valueEn={form.title_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, title_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, title_en: v }))}
-            required
-          />
-          <BilingualInput
-            label={t({ mn: 'Ангилал', en: 'Category' })}
-            valueMn={form.category_mn}
-            valueEn={form.category_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, category_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, category_en: v }))}
-          />
-          <BilingualInput
-            label={t({ mn: 'Огноо', en: 'Date' })}
-            valueMn={form.date_mn}
-            valueEn={form.date_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, date_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, date_en: v }))}
-            placeholderMn="2025.11.15"
-            placeholderEn="Nov 15, 2025"
-          />
-          <BilingualTextarea
-            label={t({ mn: 'Товч', en: 'Excerpt' })}
-            valueMn={form.excerpt_mn}
-            valueEn={form.excerpt_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, excerpt_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, excerpt_en: v }))}
-            rows={3}
-          />
-          <BilingualTextarea
-            label={t({ mn: 'Агуулга', en: 'Content' })}
-            valueMn={form.content_mn}
-            valueEn={form.content_en}
-            onChangeMn={(v) => setForm((f) => ({ ...f, content_mn: v }))}
-            onChangeEn={(v) => setForm((f) => ({ ...f, content_en: v }))}
-            rows={8}
-          />
-          <ImageUpload
-            label={t({ mn: 'Зураг', en: 'Image' })}
-            value={form.image}
-            onChange={(file) => setImageFile(file)}
-          />
-        </AdminModal>
       </div>
     </div>
   );

@@ -63,7 +63,7 @@ export const Hero = () => {
                 to={l('/join')}
                 className="btn-primary btn-lg flex items-center gap-2.5 w-fit"
               >
-                {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
+                {t({ mn: 'SDY чамайг дуудаж байна', en: 'SDY calling you' })}
                 <ArrowRight size={18} />
               </Link>
               <Link
@@ -112,10 +112,9 @@ export const Hero = () => {
             {/* Main image */}
             <div className="relative z-10 rounded-4xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=1200"
+                src="/IMG_8382.JPG"
                 alt={t({ mn: 'SDY залуу удирдагчид', en: 'SDY Youth Leaders' })}
                 className="w-full aspect-[4/5] object-cover"
-                referrerPolicy="no-referrer"
               />
               {/* Subtle gradient overlay for contrast */}
               <div className="absolute inset-0 bg-gradient-to-t from-sdy-black/35 via-transparent to-transparent" />

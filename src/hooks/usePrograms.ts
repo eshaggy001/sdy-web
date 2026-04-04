@@ -1,31 +1,20 @@
 import { useState, useEffect } from 'react';
-import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { mapProgram } from '../lib/mappers';
 import type { Program } from '../types';
 
 export function usePrograms() {
   const [data, setData] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
-  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        let { data: rows, error } = await supabase
+        const { data: rows, error } = await supabase
           .from('programs')
           .select('*, program_highlights(*)')
           .order('created_at', { ascending: true });
-
-        if (error && isAuthError(error) && await tryRefreshSession()) {
-          const retry = await supabase.from('programs').select('*, program_highlights(*)').order('created_at', { ascending: true });
-          rows = retry.data;
-          error = retry.error;
-        }
-
-        if (error) {
-          console.error('[usePrograms]', error.message);
-          if (isAuthError(error)) setAuthError(true);
-        }
+        if (error) console.error('[usePrograms]', error.message);
         setData((rows ?? []).map(mapProgram));
       } catch (err) {
         console.error('[usePrograms] fetch failed:', err);
@@ -36,7 +25,7 @@ export function usePrograms() {
     fetch();
   }, []);
 
-  return { data, loading, authError };
+  return { data, loading };
 }
 
 export function useProgram(id: string | undefined) {

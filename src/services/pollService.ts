@@ -1,4 +1,4 @@
-import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { mapPoll } from '../lib/mappers';
 import { Poll, PollStatus } from '../types';
 
@@ -21,18 +21,7 @@ export const pollService = {
         .select('*, poll_options(*)')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        if (isAuthError(error) && await tryRefreshSession()) {
-          const retry = await supabase.from('polls').select('*, poll_options(*)').order('created_at', { ascending: false });
-          if (!retry.error && retry.data) {
-            const { data: uv } = await supabase.from('user_votes').select('poll_id, option_id').eq('user_key', userKey);
-            const m: Record<string, string> = {};
-            for (const v of uv ?? []) m[v.poll_id] = v.option_id;
-            return retry.data.map((row) => mapPoll(row, m));
-          }
-        }
-        throw error;
-      }
+      if (error) throw error;
       if (!polls) return [];
 
       const { data: userVotes } = await supabase

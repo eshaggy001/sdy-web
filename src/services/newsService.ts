@@ -1,4 +1,4 @@
-import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export const newsService = {
   getAll: async () => {
@@ -9,10 +9,6 @@ export const newsService = {
 
     if (error) {
       console.error('newsService.getAll:', error);
-      if (isAuthError(error) && await tryRefreshSession()) {
-        const retry = await supabase.from('news_items').select('*').order('created_at', { ascending: false });
-        if (!retry.error) return retry.data ?? [];
-      }
       return [];
     }
     return data ?? [];

@@ -1,6 +1,6 @@
 // src/hooks/useDashboardData.ts
 import { useState, useEffect, useCallback } from 'react';
-import { supabase, tryRefreshSession } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export interface DashboardData {
   kpis: {
@@ -212,37 +212,6 @@ export function useDashboardData() {
       });
     } catch (err) {
       console.error('[useDashboardData]', err);
-      // If the batch fails (likely auth/RLS), try refreshing the session and retry once
-      const refreshed = await tryRefreshSession();
-      if (refreshed) {
-        try {
-          // Minimal retry: just re-run the full load after refresh
-          // Avoid infinite recursion by not calling load() — do a simple re-fetch
-          const [retryPolls, retryNews, retryEvents] = await Promise.all([
-            supabase.from('polls').select('*, poll_options(*)').eq('status', 'published').order('created_at', { ascending: false }).limit(2),
-            supabase.from('news_items').select('id, title_mn, title_en, created_at, view_count').order('view_count', { ascending: false }).order('created_at', { ascending: false }).limit(4),
-            supabase.from('events').select('*').order('date_start', { ascending: false }).limit(3),
-          ]);
-          console.log('[useDashboardData] Retry after session refresh succeeded');
-          // At minimum, populate the visible widgets
-          if (!retryPolls.error || !retryNews.error || !retryEvents.error) {
-            setData((prev) => prev ? {
-              ...prev,
-              polls: (retryPolls.data ?? []).map((p: any) => ({
-                id: p.id,
-                question: { mn: p.question_mn, en: p.question_en },
-                options: (p.poll_options ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order).map((o: any) => ({ text: { mn: o.text_mn, en: o.text_en }, votes: o.votes ?? 0 })),
-                totalVotes: p.total_votes ?? 0,
-                expiresAt: p.expires_at ?? '',
-              })),
-              news: (retryNews.data ?? []).map((n: any) => ({ id: n.id, title: { mn: n.title_mn, en: n.title_en }, createdAt: n.created_at, viewCount: n.view_count ?? 0 })),
-              events: (retryEvents.data ?? []).map((e: any) => ({ id: e.id, title: { mn: e.title_mn, en: e.title_en }, date: e.date_start, location: { mn: e.location_mn ?? '', en: e.location_en ?? '' }, status: e.status ?? 'upcoming' })),
-            } : prev);
-          }
-        } catch (retryErr) {
-          console.error('[useDashboardData] Retry also failed:', retryErr);
-        }
-      }
     } finally {
       setLoading(false);
     }

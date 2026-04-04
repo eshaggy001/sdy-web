@@ -17,7 +17,9 @@ export interface DashboardData {
     approved: number;
     active: number;
   };
-  growth: { month: string; actual: number }[];
+  growth: GrowthPoint[];
+  growthWeek: GrowthPoint[];
+  growthMonth: GrowthPoint[];
   regions: { location: string; count: number }[];
   polls: {
     id: string;
@@ -42,10 +44,12 @@ export interface DashboardData {
 }
 
 const MONTH_LABELS = ['1-р', '2-р', '3-р', '4-р', '5-р', '6-р', '7-р', '8-р', '9-р', '10-р', '11-р', '12-р'];
+export type GrowthPeriod = 'week' | 'month' | 'year';
+export interface GrowthPoint { label: string; actual: number }
 
-function groupByMonth(rows: { created_at: string }[] | { created_at: string; location: string }[]): { month: string; actual: number }[] {
+function groupByMonth(rows: { created_at: string }[]): GrowthPoint[] {
   const now = new Date();
-  const months: { month: string; actual: number }[] = [];
+  const months: GrowthPoint[] = [];
   for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const label = MONTH_LABELS[d.getMonth()];
@@ -54,9 +58,40 @@ function groupByMonth(rows: { created_at: string }[] | { created_at: string; loc
       const t = new Date(r.created_at);
       return t >= d && t < nextMonth;
     }).length;
-    months.push({ month: label, actual: count });
+    months.push({ label, actual: count });
   }
   return months;
+}
+
+function groupByDayLast7(rows: { created_at: string }[]): GrowthPoint[] {
+  const now = new Date();
+  const days: GrowthPoint[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    const next = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    const count = rows.filter((r) => {
+      const t = new Date(r.created_at);
+      return t >= d && t < next;
+    }).length;
+    days.push({ label: `${d.getMonth() + 1}/${d.getDate()}`, actual: count });
+  }
+  return days;
+}
+
+function groupByDayLastMonth(rows: { created_at: string }[]): GrowthPoint[] {
+  const now = new Date();
+  const endDay = now.getDate();
+  const points: GrowthPoint[] = [];
+  for (let day = 1; day <= endDay; day++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), day);
+    const next = new Date(now.getFullYear(), now.getMonth(), day + 1);
+    const count = rows.filter((r) => {
+      const t = new Date(r.created_at);
+      return t >= d && t < next;
+    }).length;
+    points.push({ label: `${day}`, actual: count });
+  }
+  return points;
 }
 
 function groupByLocation(rows: { location: string }[]): { location: string; count: number }[] {
@@ -120,6 +155,10 @@ export function useDashboardData() {
       const recentMembers = (recentMembersRes.data ?? []) as { created_at: string }[];
       const locationRows = (locationRes.data ?? []) as { location: string }[];
 
+      const growthYear = groupByMonth(recentMembers);
+      const growthWeek = groupByDayLast7(recentMembers);
+      const growthMonthData = groupByDayLastMonth(recentMembers);
+
       const polls = (pollsRes.data ?? []).map((p: any) => ({
         id: p.id,
         question: { mn: p.question_mn, en: p.question_en },
@@ -163,7 +202,9 @@ export function useDashboardData() {
           approved,
           active: approved,
         },
-        growth: groupByMonth(recentMembers as any),
+        growth: growthYear,
+        growthWeek,
+        growthMonth: growthMonthData,
         regions: groupByLocation(locationRows),
         polls,
         news,

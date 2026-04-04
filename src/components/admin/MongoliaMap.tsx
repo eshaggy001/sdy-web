@@ -1,75 +1,75 @@
 // src/components/admin/MongoliaMap.tsx
-import { MONGOLIA_SVG_PATH, DASHBOARD_REGIONS, type RegionData } from '@/src/constants/dashboardMock';
+import { DASHBOARD_REGIONS, type RegionData } from '@/src/constants/dashboardMock';
 
 /* ── Size tokens per density tier ── */
 const DOT_R: Record<RegionData['density'], number> = {
-  highest: 5,
-  high: 4,
-  medium: 3,
-  low: 2,
+  highest: 10,
+  high: 8,
+  medium: 6,
+  low: 5,
 };
 
 const GLOW_R: Record<RegionData['density'], number> = {
-  highest: 28,
-  high: 20,
-  medium: 14,
-  low: 8,
+  highest: 40,
+  high: 30,
+  medium: 22,
+  low: 14,
 };
 
 const GLOW_OPACITY: Record<RegionData['density'], number> = {
-  highest: 0.25,
-  high: 0.18,
-  medium: 0.12,
-  low: 0.06,
+  highest: 0.3,
+  high: 0.22,
+  medium: 0.14,
+  low: 0.08,
 };
 
 export const MongoliaMap = () => {
   return (
-    <svg viewBox="50 15 920 325" preserveAspectRatio="xMidYMid meet" className="w-full h-auto block">
-      <defs>
-        {/* Mongolia silhouette clip */}
-        <clipPath id="mnClip">
-          <path d={MONGOLIA_SVG_PATH} />
-        </clipPath>
+    <div className="relative w-full">
+      {/* Base map image */}
+      <img
+        src="/Mongolia_Map2.svg"
+        alt="Mongolia map"
+        className="w-full h-auto block dark:invert dark:brightness-[0.6] dark:contrast-125"
+        draggable={false}
+      />
 
-        {/* Tighter dot grid for better shape definition */}
-        <pattern id="baseDots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-          <circle cx="5" cy="5" r="1.2" fill="#d4d4d8" />
-        </pattern>
+      {/* Overlay SVG for dots and glows */}
+      <svg
+        viewBox="0 0 1000 481"
+        preserveAspectRatio="xMidYMid meet"
+        className="absolute inset-0 w-full h-full"
+      >
+        <defs>
+          {/* Radial glow for hotspots */}
+          {DASHBOARD_REGIONS.map((r) => (
+            <radialGradient key={`grad-${r.name.en}`} id={`glow-${r.name.en}`} cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 1.8} />
+              <stop offset="60%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 0.5} />
+              <stop offset="100%" stopColor="#ED1B24" stopOpacity="0" />
+            </radialGradient>
+          ))}
 
-        {/* Radial glow for hotspots */}
-        {DASHBOARD_REGIONS.map((r) => (
-          <radialGradient key={`grad-${r.name.en}`} id={`glow-${r.name.en}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 1.8} />
-            <stop offset="60%" stopColor="#ED1B24" stopOpacity={GLOW_OPACITY[r.density] * 0.5} />
-            <stop offset="100%" stopColor="#ED1B24" stopOpacity="0" />
-          </radialGradient>
-        ))}
-
-        {/* Pulse animations per density tier */}
-        <style>{`
-          @keyframes pulseHighest {
-            0% { r: 6; opacity: 0.35; }
-            70% { opacity: 0.06; }
-            100% { r: 18; opacity: 0; }
-          }
-          @keyframes pulseHigh {
-            0% { r: 5; opacity: 0.3; }
-            70% { opacity: 0.06; }
-            100% { r: 12; opacity: 0; }
-          }
-          .pulse-highest {
-            animation: pulseHighest 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          }
-          .pulse-high {
-            animation: pulseHigh 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          }
-        `}</style>
-      </defs>
-
-      <g clipPath="url(#mnClip)">
-        {/* Base dot grid — denser for cleaner silhouette */}
-        <rect x="50" y="15" width="920" height="325" fill="url(#baseDots)" />
+          {/* Pulse animations per density tier */}
+          <style>{`
+            @keyframes pulseHighest {
+              0% { r: 11; opacity: 0.4; }
+              70% { opacity: 0.06; }
+              100% { r: 32; opacity: 0; }
+            }
+            @keyframes pulseHigh {
+              0% { r: 9; opacity: 0.35; }
+              70% { opacity: 0.06; }
+              100% { r: 24; opacity: 0; }
+            }
+            .pulse-highest {
+              animation: pulseHighest 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+            .pulse-high {
+              animation: pulseHigh 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+          `}</style>
+        </defs>
 
         {/* Soft radial glow per region */}
         {DASHBOARD_REGIONS.map((r) => (
@@ -90,7 +90,7 @@ export const MongoliaMap = () => {
               key={`pulse-${r.name.en}`}
               cx={r.cx}
               cy={r.cy}
-              r={6}
+              r={7}
               fill="none"
               stroke="#ED1B24"
               strokeWidth={1}
@@ -107,10 +107,10 @@ export const MongoliaMap = () => {
             cy={r.cy}
             r={DOT_R[r.density]}
             fill="#ED1B24"
-            opacity={r.density === 'low' ? 0.55 : 0.85}
+            opacity={r.density === 'low' ? 0.6 : 0.9}
           />
         ))}
-      </g>
-    </svg>
+      </svg>
+    </div>
   );
 };

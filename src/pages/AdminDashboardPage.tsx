@@ -1,4 +1,5 @@
 // src/pages/AdminDashboardPage.tsx
+import { useState } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
@@ -6,7 +7,7 @@ import {
   Users2, ClipboardList, UserCheck, Activity, RefreshCw,
 } from 'lucide-react';
 import { MongoliaMap } from '../components/admin/MongoliaMap';
-import { useDashboardData } from '../hooks/useDashboardData';
+import { useDashboardData, type GrowthPeriod, type GrowthPoint } from '../hooks/useDashboardData';
 import {
   DASHBOARD_GROWTH,
   DASHBOARD_REGIONS,
@@ -54,16 +55,37 @@ export const AdminDashboardPage = () => {
   const { data, loading, refetch } = useDashboardData();
   const userName = user?.email?.split('@')[0] ?? 'Admin';
   const lang = language as 'mn' | 'en';
+  const [growthPeriod, setGrowthPeriod] = useState<GrowthPeriod>('year');
+  const [hoveredBar, setHoveredBar] = useState<number | null>(null);
 
-  // Growth chart: merge live actual data with mock targets
-  const growthData = data
+  // Growth chart: pick data based on selected period
+  const activeGrowthData: GrowthPoint[] = data
+    ? growthPeriod === 'week'
+      ? data.growthWeek
+      : growthPeriod === 'month'
+        ? data.growthMonth
+        : data.growth
+    : [];
+  // For year view, merge with mock targets; week/month have no targets
+  const growthData = growthPeriod === 'year' && data
     ? DASHBOARD_GROWTH.map((mock, i) => ({
         ...mock,
         actual: data.growth[i]?.actual ?? 0,
       }))
-    : DASHBOARD_GROWTH;
-  const maxTarget = Math.max(...growthData.map((m) => m.target));
-  const totalNewMembers = data ? data.growth.reduce((sum, m) => sum + m.actual, 0) : 0;
+    : activeGrowthData.map((p) => ({ label: p.label, actual: p.actual, target: 0 }));
+  const maxValue = Math.max(...growthData.map((m) => Math.max(m.actual, m.target)), 1);
+  const totalNewMembers = data ? activeGrowthData.reduce((sum, m) => sum + m.actual, 0) : 0;
+
+  const periodOptions: { key: GrowthPeriod; label: { mn: string; en: string } }[] = [
+    { key: 'week', label: { mn: '7 хоног', en: 'Week' } },
+    { key: 'month', label: { mn: 'Сар', en: 'Month' } },
+    { key: 'year', label: { mn: 'Жил', en: 'Year' } },
+  ];
+  const periodSummaryLabel: Record<GrowthPeriod, { mn: string; en: string }> = {
+    week: { mn: 'шинэ гишүүн (7 хоног)', en: 'new members (7 days)' },
+    month: { mn: 'шинэ гишүүн (энэ сар)', en: 'new members (this month)' },
+    year: { mn: 'шинэ гишүүн (12 сар)', en: 'new members (12 mo)' },
+  };
 
   // Map regions: match live location data against known aimag coordinates
   const regionData = data
@@ -210,54 +232,106 @@ export const AdminDashboardPage = () => {
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-sm font-bold text-sdy-black dark:text-white">{t({ mn: 'Гишүүдийн өсөлт', en: 'Member Growth' })}</h3>
               <div className="flex gap-1">
-                <span className="text-[11px] text-gray-400 px-2.5 py-1 rounded-md cursor-pointer">{t({ mn: '6 сар', en: '6 mo' })}</span>
-                <span className="text-[11px] text-white bg-sdy-black dark:bg-white dark:text-sdy-black px-2.5 py-1 rounded-md cursor-pointer">{t({ mn: '12 сар', en: '12 mo' })}</span>
+                {periodOptions.map((opt) => (
+                  <button
+                    key={opt.key}
+                    onClick={() => setGrowthPeriod(opt.key)}
+                    className={`text-[11px] px-2.5 py-1 rounded-md cursor-pointer transition-colors ${
+                      growthPeriod === opt.key
+                        ? 'text-white bg-sdy-black dark:bg-white dark:text-sdy-black'
+                        : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
+                  >
+                    {t(opt.label)}
+                  </button>
+                ))}
               </div>
             </div>
             {loading ? (
-              <Skeleton className="w-full h-52" />
+              <Skeleton className="w-full h-56" />
             ) : (
               <>
-                <div className="relative flex items-end gap-2 h-52 pb-7 pl-9 border-b border-gray-100 dark:border-gray-800">
-                  <div className="absolute left-0 top-0 bottom-7 flex flex-col justify-between w-8">
-                    {[50, 40, 30, 20, 10, 0].map((v) => (
-                      <span key={v} className="text-[9px] text-gray-300 dark:text-gray-600 text-right">{v || ''}</span>
-                    ))}
-                  </div>
-                  <div className="absolute left-9 right-0 top-0 bottom-7 flex flex-col justify-between pointer-events-none">
-                    {[...Array(5)].map((_, i) => <div key={i} className="border-t border-gray-100 dark:border-gray-800" />)}
-                  </div>
+                {/* Bar chart area */}
+                <div className="relative flex items-end gap-2.5 h-56 pb-8">
                   {growthData.map((m, i) => {
-                    const isCurrentMonth = i === growthData.length - 1;
-                    const targetH = `${(m.target / maxTarget) * 100}%`;
-                    const actualH = `${(m.actual / maxTarget) * 100}%`;
+                    const isActive = hoveredBar === i;
+                    const hasTarget = m.target > 0;
+                    const displayMax = hasTarget ? Math.max(m.target, m.actual) : m.actual;
+                    const barPct = maxValue > 0 ? Math.max((displayMax / maxValue) * 100, 4) : 4;
+                    const actualPct = displayMax > 0 ? (m.actual / displayMax) * 100 : 0;
+                    // Calculate growth % vs previous bar
+                    const prev = i > 0 ? growthData[i - 1].actual : 0;
+                    const growthPct = prev > 0 ? Math.round(((m.actual - prev) / prev) * 100) : (m.actual > 0 ? 100 : 0);
+
                     return (
-                      <div key={m.label} className="flex-1 flex flex-col items-center gap-1 z-10">
-                        <div className="w-full relative" style={{ height: targetH }}>
-                          <div className="absolute bottom-0 w-full rounded-xl" style={{ height: '100%', background: isCurrentMonth ? 'repeating-linear-gradient(45deg, #fecaca, #fecaca 2px, #fef2f2 2px, #fef2f2 6px)' : 'repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 2px, #f3f4f6 2px, #f3f4f6 6px)' }} />
-                          <div className="absolute bottom-0 w-full rounded-xl flex items-start justify-center pt-2" style={{ height: actualH, background: isCurrentMonth ? '#ED1B24' : '#030712' }}>
-                            <span className="text-[11px] font-extrabold text-white">{m.actual}</span>
+                      <div
+                        key={m.label}
+                        className="flex-1 flex flex-col items-center z-10 relative"
+                        onMouseEnter={() => setHoveredBar(i)}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      >
+                        {/* Tooltip badge */}
+                        {isActive && m.actual > 0 && (
+                          <div className="absolute -top-11 left-1/2 -translate-x-1/2 z-20">
+                            <div className="bg-sdy-red text-white text-[10px] font-bold px-2.5 py-1 rounded-lg whitespace-nowrap flex items-center gap-1.5 shadow-lg">
+                              <span>{growthPct >= 0 ? '+' : ''}{growthPct}%</span>
+                              <span className="opacity-60">|</span>
+                              <span>{m.actual}</span>
+                            </div>
+                            <div className="w-2 h-2 bg-sdy-red rotate-45 mx-auto -mt-1" />
+                          </div>
+                        )}
+
+                        {/* Bar container */}
+                        <div className="w-full flex justify-center" style={{ height: `${barPct}%` }}>
+                          <div className="relative w-full max-w-[32px] h-full">
+                            {/* Background bar (striped) */}
+                            <div
+                              className="absolute inset-0 rounded-full overflow-hidden"
+                              style={{
+                                background: 'repeating-linear-gradient(-55deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 6px)',
+                                backgroundColor: isActive ? '#fee2e2' : '#f3f4f6',
+                              }}
+                            />
+                            {/* Actual value bar */}
+                            {m.actual > 0 && (
+                              <div
+                                className="absolute bottom-0 left-0 right-0 rounded-full transition-all duration-300"
+                                style={{
+                                  height: `${actualPct}%`,
+                                  minHeight: '12px',
+                                  background: isActive ? '#ED1B24' : '#1f2937',
+                                  boxShadow: isActive ? '0 4px 14px rgba(237, 27, 36, 0.35)' : 'none',
+                                }}
+                              />
+                            )}
                           </div>
                         </div>
-                        <span className={`text-[10px] ${isCurrentMonth ? 'text-sdy-black dark:text-white font-bold' : 'text-gray-400'}`}>{m.label}</span>
+
+                        {/* Label */}
+                        <span className={`text-[10px] mt-2 ${isActive ? 'text-sdy-red font-bold' : 'text-gray-400'}`}>{m.label}</span>
                       </div>
                     );
                   })}
                 </div>
-                <div className="flex justify-between mt-3 pl-9">
+
+                {/* Summary row */}
+                <div className="flex justify-between mt-4">
                   <div>
                     <span className="text-[22px] font-black text-sdy-black dark:text-white">+{formatNumber(totalNewMembers)}</span>
-                    <span className="text-xs text-gray-400 ml-1.5">{t({ mn: 'шинэ гишүүн (12 сар)', en: 'new members (12 mo)' })}</span>
+                    <span className="text-xs text-gray-400 ml-1.5">{t(periodSummaryLabel[growthPeriod])}</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-2.5 h-2.5 bg-sdy-black dark:bg-white rounded-sm" />
+                      <div className="w-2.5 h-2.5 bg-gray-800 dark:bg-white rounded-full" />
                       <span className="text-[10px] text-gray-400">{t({ mn: 'Бодит', en: 'Actual' })}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-sm" style={{ background: 'repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 1px, #f3f4f6 1px, #f3f4f6 3px)' }} />
-                      <span className="text-[10px] text-gray-400">{t({ mn: 'Зорилт', en: 'Target' })}</span>
-                    </div>
+                    {growthPeriod === 'year' && (
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'repeating-linear-gradient(-55deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)', backgroundColor: '#f3f4f6' }} />
+                        <span className="text-[10px] text-gray-400">{t({ mn: 'Зорилт', en: 'Target' })}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </>

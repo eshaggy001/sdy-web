@@ -5,14 +5,14 @@
 
 ## Overview
 
-Add full Events (Арга хэмжээ) CRUD to the admin panel and a public-facing events page for users. Events are short-duration activities (rallies, meetings, forums, competitions) — distinct from Programs which are long-term training/scholarship initiatives.
+Add full Events (Арга хэмжээ) CRUD to the admin panel. On the public side, events are displayed within the existing Programs page (not a separate page) using tabs to switch between Programs and Events. Events are short-duration activities (rallies, meetings, forums, competitions) — distinct from Programs which are long-term training/scholarship initiatives.
 
 ## Design Decisions
 
 - **Pattern:** Follow the existing Programs CRUD pattern exactly (service, hook, mapper, admin pages, public pages)
 - **Registration:** Optional per event (`registrationOpen` toggle + optional `maxParticipants`)
 - **Status:** 5-state — Draft, Published, Ongoing, Completed, Cancelled
-- **Public display:** Grid card layout with filter tabs (like Programs page)
+- **Public display:** Shown inside ProgramsPage via top-level tabs ("Хөтөлбөрүүд" | "Арга хэмжээ"), no separate events page
 - **Dates:** Real timestamps (`timestamptz`) instead of localized strings — enables proper sorting and filtering
 
 ## Data Model
@@ -109,12 +109,15 @@ Add "Арга хэмжээ" menu item with Calendar icon, positioned after Progr
 
 ## Public Pages
 
-### EventsPage.tsx — Grid Card List
+### ProgramsPage.tsx — Modified (existing file)
 
-- Filter tabs: Бүгд (All) / Удахгүй (Upcoming) / Явагдаж байгаа (Ongoing) / Дууссан (Past)
+Add top-level tabs to switch between "Хөтөлбөрүүд" (Programs) and "Арга хэмжээ" (Events):
+
+- **Tab 1: Хөтөлбөрүүд** — existing programs grid with category filters (unchanged)
+- **Tab 2: Арга хэмжээ** — events grid with status filter tabs: Бүгд (All) / Удахгүй (Upcoming) / Явагдаж байгаа (Ongoing) / Дууссан (Past)
 - Only shows events with status: `published`, `ongoing`, `completed` (hides `draft` and `cancelled`)
-- Card displays: Image, Title, Date range, Location, Status badge, Register button (if registrationOpen)
-- Follows `ProgramsPage.tsx` grid layout
+- Event card displays: Image, Title, Date range, Location, Status badge, Register button (if registrationOpen)
+- No separate `EventsPage.tsx` — everything lives in ProgramsPage
 
 ### EventDetailPage.tsx — Detail View
 
@@ -149,8 +152,8 @@ Added to `src/lib/mappers.ts`. Converts DB snake_case row to camelCase `Event` t
 
 ```
 Public:
-  /:lang/events          → EventsPage
-  /:lang/events/:id      → EventDetailPage
+  /:lang/programs            → ProgramsPage (with tabs for Programs + Events)
+  /:lang/events/:id          → EventDetailPage
 
 Admin:
   /:lang/admin/events        → AdminEventsPage
@@ -160,7 +163,7 @@ Admin:
 
 ### Navigation
 
-Add "Арга хэмжээ" to `NAV_ITEMS` in constants.ts — positioned after "Хөтөлбөрүүд" (Programs).
+No new NAV_ITEM needed — events are accessed through the existing "Хөтөлбөрүүд" nav item. The ProgramsPage tabs handle switching.
 
 ## Files to Create
 
@@ -170,7 +173,6 @@ Add "Арга хэмжээ" to `NAV_ITEMS` in constants.ts — positioned after 
 | `src/hooks/useEvents.ts` | React hook |
 | `src/pages/AdminEventsPage.tsx` | Admin list |
 | `src/pages/AdminEventEditPage.tsx` | Admin create/edit form |
-| `src/pages/EventsPage.tsx` | Public grid list |
 | `src/pages/EventDetailPage.tsx` | Public detail view |
 
 ## Files to Modify
@@ -179,8 +181,8 @@ Add "Арга хэмжээ" to `NAV_ITEMS` in constants.ts — positioned after 
 |------|--------|
 | `src/types.ts` | Add `Event` interface |
 | `src/lib/mappers.ts` | Add `mapEvent()` |
-| `src/constants.ts` | Add events NAV_ITEM |
-| `src/App.tsx` | Add 4 new routes |
+| `src/App.tsx` | Add 3 new routes (event detail + 2 admin) |
+| `src/pages/ProgramsPage.tsx` | Add tabs for Programs/Events switching |
 | `src/components/admin/AdminSidebar.tsx` | Add "Арга хэмжээ" menu |
 | `supabase/schema.sql` | Add `events` + `event_registrations` tables |
 | `src/hooks/useDashboardData.ts` | Update events query if needed |

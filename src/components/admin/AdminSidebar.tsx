@@ -4,12 +4,13 @@ import { useI18n } from '../../contexts/I18nContext';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, FileText, Newspaper, Users2, Columns3, BarChart3,
-  ClipboardList, ClipboardCheck, Inbox, UserCog, LogOut, Menu, X, ChevronLeft, Shield
+  ClipboardList, ClipboardCheck, Inbox, UserCog, LogOut, Menu, X, ChevronLeft, Shield, CalendarDays
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { icon: LayoutDashboard, path: '/admin',             labelMn: 'Хянах самбар',      labelEn: 'Dashboard',       adminOnly: false },
   { icon: FileText,        path: '/admin/programs',     labelMn: 'Хөтөлбөрүүд',      labelEn: 'Programs',        adminOnly: false },
+  { icon: CalendarDays,  path: '/admin/events',      labelMn: 'Арга хэмжээ',      labelEn: 'Events',          adminOnly: false },
   { icon: Newspaper,       path: '/admin/news',         labelMn: 'Мэдээ',             labelEn: 'News',            adminOnly: false },
   { icon: Users2,          path: '/admin/leaders',      labelMn: 'Удирдлага',         labelEn: 'Leaders',         adminOnly: false },
   { icon: Columns3,        path: '/admin/pillars',      labelMn: 'Тулгуур чиглэл',   labelEn: 'Pillars',         adminOnly: false },

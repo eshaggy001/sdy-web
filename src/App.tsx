@@ -25,6 +25,15 @@ import { AdminPillarsPage } from './pages/AdminPillarsPage';
 import { AdminStatsPage } from './pages/AdminStatsPage';
 import { AdminRegistrationsPage } from './pages/AdminRegistrationsPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AdminProgramEditPage } from './pages/AdminProgramEditPage';
+import { AdminNewsEditPage } from './pages/AdminNewsEditPage';
+import { AdminLeaderEditPage } from './pages/AdminLeaderEditPage';
+import { AdminPillarEditPage } from './pages/AdminPillarEditPage';
+import { AdminStatEditPage } from './pages/AdminStatEditPage';
+import { AdminPollEditPage } from './pages/AdminPollEditPage';
+import { AdminEventsPage } from './pages/AdminEventsPage';
+import { AdminEventEditPage } from './pages/AdminEventEditPage';
+import { EventDetailPage } from './pages/EventDetailPage';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { AnimatePresence } from 'motion/react';
 import { I18nProvider } from './contexts/I18nContext';
@@ -54,6 +63,7 @@ function AppContent() {
               <Route path="ideology" element={<Ideology />} />
               <Route path="programs" element={<ProgramsPage />} />
               <Route path="programs/:id" element={<ProgramDetailPage />} />
+              <Route path="events/:id" element={<EventDetailPage />} />
               <Route path="news" element={<NewsPage />} />
               <Route path="news/:id" element={<NewsDetailPage />} />
               <Route path="join" element={<JoinPage />} />
@@ -68,11 +78,19 @@ function AppContent() {
               {/* Admin routes (with layout) */}
               <Route path="admin" element={<ProtectedRoute><AdminLayout><AdminDashboardPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/programs" element={<ProtectedRoute><AdminLayout><AdminProgramsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/programs/:id" element={<ProtectedRoute><AdminLayout><AdminProgramEditPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/events" element={<ProtectedRoute><AdminLayout><AdminEventsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/events/:id" element={<ProtectedRoute><AdminLayout><AdminEventEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/news" element={<ProtectedRoute><AdminLayout><AdminNewsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/news/:id" element={<ProtectedRoute><AdminLayout><AdminNewsEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/leaders" element={<ProtectedRoute><AdminLayout><AdminLeadersPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/leaders/:id" element={<ProtectedRoute><AdminLayout><AdminLeaderEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/pillars" element={<ProtectedRoute><AdminLayout><AdminPillarsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/pillars/:id" element={<ProtectedRoute><AdminLayout><AdminPillarEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/stats" element={<ProtectedRoute><AdminLayout><AdminStatsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/stats/:id" element={<ProtectedRoute><AdminLayout><AdminStatEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/polls" element={<ProtectedRoute><AdminLayout><AdminPollsPage /></AdminLayout></ProtectedRoute>} />
+              <Route path="admin/polls/:id" element={<ProtectedRoute><AdminLayout><AdminPollEditPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/registrations" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminRegistrationsPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/submissions" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminSubmissionsPage /></AdminLayout></ProtectedRoute>} />
               <Route path="admin/users" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminUsersPage /></AdminLayout></ProtectedRoute>} />

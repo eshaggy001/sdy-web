@@ -47,7 +47,12 @@ export const Navbar = () => {
             <img
               src="/sdy-logo.png"
               alt="SDY Mongolia"
-              className="h-8 w-auto transition-opacity duration-200 group-hover:opacity-80"
+              className="h-8 w-auto transition-opacity duration-200 group-hover:opacity-80 dark:hidden"
+            />
+            <img
+              src="/sdy-logo-dm.png"
+              alt="SDY Mongolia"
+              className="h-8 w-auto transition-opacity duration-200 group-hover:opacity-80 hidden dark:block"
             />
           </Link>
 

@@ -94,6 +94,32 @@ export const registrationService = {
     }
     return counts;
   },
+
+  registerEvent: async (data: { event_id: string; name: string; email: string; phone?: string; message?: string }): Promise<{ success: boolean; duplicate?: boolean }> => {
+    const { error } = await supabase.from('event_registrations').insert(data);
+    if (error) {
+      if (error.code === '23505') return { success: false, duplicate: true };
+      console.error('registrationService.registerEvent:', error);
+      return { success: false };
+    }
+    return { success: true };
+  },
+
+  getEventCounts: async (): Promise<Record<string, number>> => {
+    const { data, error } = await supabase
+      .from('event_registrations')
+      .select('event_id');
+
+    if (error) {
+      console.error('registrationService.getEventCounts:', error);
+      return {};
+    }
+    const counts: Record<string, number> = {};
+    for (const row of data ?? []) {
+      counts[row.event_id] = (counts[row.event_id] || 0) + 1;
+    }
+    return counts;
+  },
 };
 
 function mapRegistration(row: Record<string, unknown>): ProgramRegistration {

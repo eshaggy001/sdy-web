@@ -86,7 +86,7 @@ Deno.serve(async (req: Request) => {
 
       const siteUrl = Deno.env.get('SITE_URL') || 'https://www.sdy.mn';
       const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-        redirectTo: `${siteUrl}/mn/admin`,
+        redirectTo: `${siteUrl}/mn/admin/reset-password`,
       });
       if (error) throw error;
 

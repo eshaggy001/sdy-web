@@ -336,7 +336,7 @@ export const AdminDashboardPage = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-[13px] font-semibold text-sdy-black dark:text-white leading-snug mb-0.5">{t(ev.title)}</div>
-                          <div className="text-[11px] text-gray-400">{ev.location}</div>
+                          <div className="text-[11px] text-gray-400">{t(ev.location)}</div>
                           <div className="mt-1.5">
                             {ev.status === 'upcoming' ? (
                               <span className="text-[10px] text-white bg-sdy-red px-2 py-0.5 rounded-full font-semibold">{t({ mn: 'Удахгүй', en: 'Upcoming' })}</span>

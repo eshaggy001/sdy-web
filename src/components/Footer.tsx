@@ -146,11 +146,11 @@ export const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-sdy-red flex-shrink-0" />
-                <a href="mailto:hello@sdy.mn" className="hover:text-white transition-colors">hello@sdy.mn</a>
+                <a href="mailto:info@sdy.mn" className="hover:text-white transition-colors">info@sdy.mn</a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-sdy-red flex-shrink-0" />
-                <span>+976 7000 0000</span>
+                <span>+976 99247526</span>
               </li>
               <li className="pt-2">
                 <span className="inline-block px-3 py-1.5 border border-white/10 rounded-lg text-[10px] font-black tracking-widest uppercase text-gray-600">

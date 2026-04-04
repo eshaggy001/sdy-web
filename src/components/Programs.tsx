@@ -1,13 +1,25 @@
 import React from 'react';
 import { usePrograms } from '../hooks/usePrograms';
+import { useRegistrationCounts } from '../hooks/useRegistrations';
 import { motion } from 'motion/react';
-import { Calendar, MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, ArrowUpRight, Users, Lock, Clock, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import type { Program } from '@/src/types';
 
 export const Programs = () => {
   const { t, l } = useI18n();
   const { data: programs, loading } = usePrograms();
+  const { counts: regCounts } = useRegistrationCounts();
+
+  const getProgramRegStatus = (program: Program): string => {
+    const count = regCounts[program.id] ?? 0;
+    const isFull = program.maxParticipants ? count >= program.maxParticipants : false;
+    if (program.registrationOpen && isFull) return 'full';
+    if (program.registrationOpen) return 'open';
+    if (program.status.en !== 'Active') return 'coming';
+    return 'closed';
+  };
 
   return (
     <section id="programs" className="py-28 bg-sdy-gray dark:bg-gray-900">
@@ -34,11 +46,11 @@ export const Programs = () => {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {loading ? Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="animate-pulse bg-white dark:bg-gray-800 rounded-xl overflow-hidden card-shadow">
-              <div className="h-52 bg-gray-100 dark:bg-gray-700" />
-              <div className="p-7 space-y-3">
+              <div className="h-64 bg-gray-100 dark:bg-gray-700" />
+              <div className="p-8 space-y-3">
                 <div className="h-4 bg-gray-100 dark:bg-gray-700 rounded w-3/4" />
                 <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-full" />
                 <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-5/6" />
@@ -47,55 +59,81 @@ export const Programs = () => {
           )) : programs.map((program, index) => (
             <motion.div
               key={program.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="card-shadow flex flex-col h-full overflow-hidden group"
+              className="card-shadow flex flex-col h-full overflow-hidden p-0 group"
             >
-              {/* Image */}
-              <div className="relative h-52 overflow-hidden">
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={program.image}
                   alt={t(program.title)}
-                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-sdy-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest text-sdy-black dark:text-white shadow-sm">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest text-sdy-black shadow-sm">
                     {t(program.pillar)}
                   </span>
                 </div>
+                <div className="absolute bottom-4 right-4 flex gap-2">
+                  {(() => {
+                    const status = getProgramRegStatus(program);
+                    if (status === 'full') {
+                      return (
+                        <span className="flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg bg-red-500 text-white">
+                          <Users size={12} /> {t({ mn: 'Дүүрсэн', en: 'Full' })}
+                        </span>
+                      );
+                    }
+                    if (status === 'open') {
+                      return (
+                        <span className="flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg bg-green-500 text-white">
+                          <UserCheck size={12} /> {t({ mn: 'Бүртгэл нээлттэй', en: 'Open' })}
+                        </span>
+                      );
+                    }
+                    if (status === 'coming') {
+                      return (
+                        <span className="flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg bg-amber-500 text-white">
+                          <Clock size={12} /> {t({ mn: 'Удахгүй нээгдэнэ', en: 'Coming Soon' })}
+                        </span>
+                      );
+                    }
+                    return (
+                      <span className="flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg bg-gray-500 text-white">
+                        <Lock size={12} /> {t({ mn: 'Бүртгэл хаалттай', en: 'Closed' })}
+                      </span>
+                    );
+                  })()}
+                </div>
               </div>
-
-              {/* Content */}
-              <div className="p-7 flex-grow flex flex-col">
-                <h3 className="text-xl font-black mb-3 text-sdy-black dark:text-white group-hover:text-sdy-red transition-colors duration-200 leading-snug">
-                  {t(program.title)}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6 line-clamp-3 leading-relaxed text-sm flex-grow">
+              <div className="p-8 flex-grow">
+                <h3 className="text-2xl font-black mb-4 group-hover:text-sdy-red transition-colors">{t(program.title)}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-8 line-clamp-3 leading-relaxed">
                   {t(program.description)}
                 </p>
-
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2.5 text-[12px] font-bold text-gray-400 dark:text-gray-500">
-                    <Calendar size={14} className="text-sdy-red flex-shrink-0" />
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
+                    <Calendar size={18} className="text-sdy-red" />
                     <span>{t(program.date)}</span>
                   </div>
-                  <div className="flex items-center gap-2.5 text-[12px] font-bold text-gray-400 dark:text-gray-500">
-                    <MapPin size={14} className="text-sdy-red flex-shrink-0" />
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
+                    <MapPin size={18} className="text-sdy-red" />
                     <span>{t(program.location || { mn: 'Улаанбаатар, Монгол', en: 'Ulaanbaatar, Mongolia' })}</span>
                   </div>
                 </div>
-
-                <Link
-                  to={l('/join')}
-                  className="btn-primary btn-card btn-full flex items-center gap-2"
-                >
-                  {t({ mn: 'Одоо бүртгүүлэх', en: 'Apply Now' })}
-                  <ArrowRight size={15} />
+              </div>
+              <div className="p-8 pt-0 flex gap-3">
+                <Link to={l(`/programs/${program.id}`)} className={`${program.registrationOpen ? 'flex-1' : 'w-full'} inline-flex items-center justify-center gap-2 rounded-xl border-2 border-sdy-black dark:border-white px-4 py-4 text-xs font-black uppercase tracking-wider text-sdy-black dark:text-white transition-all hover:bg-sdy-black hover:text-white dark:hover:bg-white dark:hover:text-sdy-black active:scale-[0.97]`}>
+                  {t({ mn: 'Дэлгэрэнгүй', en: 'Learn More' })}
                 </Link>
+                {program.registrationOpen && (
+                  <Link to={l(`/programs/${program.id}#register`)} className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-sdy-red px-4 py-4 text-xs font-black uppercase tracking-wider text-white transition-all hover:bg-sdy-red-dark active:scale-[0.97] shadow-lg shadow-sdy-red/20">
+                    {t({ mn: 'Бүртгүүлэх', en: 'Apply' })} <ArrowRight size={14} />
+                  </Link>
+                )}
               </div>
             </motion.div>
           ))}

@@ -36,7 +36,7 @@ export interface DashboardData {
     id: string;
     title: { mn: string; en: string };
     date: string;
-    location: string;
+    location: { mn: string; en: string };
     status: string;
   }[];
 }
@@ -143,8 +143,8 @@ export function useDashboardData() {
       const events = (eventsRes.data ?? []).map((e: any) => ({
         id: e.id,
         title: { mn: e.title_mn, en: e.title_en },
-        date: e.date,
-        location: e.location ?? '',
+        date: e.date_start,
+        location: { mn: e.location_mn ?? '', en: e.location_en ?? '' },
         status: e.status ?? 'upcoming',
       }));
 

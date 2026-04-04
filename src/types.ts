@@ -13,6 +13,7 @@ export interface NavItem {
 export interface Stat {
   label: LocalizedString;
   value: string;
+  unit?: LocalizedString;
   icon?: LucideIcon;
 }
 

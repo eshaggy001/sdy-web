@@ -52,6 +52,7 @@ export function mapStat(row: Record<string, unknown>): Stat {
   return {
     label: { mn: row.label_mn as string, en: row.label_en as string },
     value: row.value as string,
+    unit: row.unit_mn ? { mn: row.unit_mn as string, en: row.unit_en as string } : undefined,
     icon: STAT_ICONS[row.icon_name as string],
   };
 }

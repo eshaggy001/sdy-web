@@ -17,7 +17,7 @@ function parseStatValue(raw: string) {
   };
 }
 
-function AnimatedNumber({ value, inView }: { value: string; inView: boolean }) {
+function AnimatedNumber({ value, inView, unit }: { value: string; inView: boolean; unit?: string }) {
   const parsed = parseStatValue(value);
   const [display, setDisplay] = useState(0);
 
@@ -47,6 +47,7 @@ function AnimatedNumber({ value, inView }: { value: string; inView: boolean }) {
       {parsed.prefix}
       {formatted}
       {parsed.suffix}
+      {unit && <span className="text-[0.5em] font-bold ml-1">{unit}</span>}
     </span>
   );
 }
@@ -97,7 +98,7 @@ export const ImpactBar = () => {
                 {/* Red accent line */}
                 <div className="w-8 h-1 bg-sdy-red rounded-full mb-4 mx-auto lg:mx-0" />
                 <div className="text-4xl md:text-5xl font-black tracking-tighter mb-1.5 tabular-nums">
-                  <AnimatedNumber value={stat.value} inView={isInView} />
+                  <AnimatedNumber value={stat.value} inView={isInView} unit={stat.unit ? t(stat.unit) : undefined} />
                 </div>
                 <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                   {t(stat.label)}

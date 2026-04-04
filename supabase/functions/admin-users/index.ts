@@ -84,7 +84,7 @@ Deno.serve(async (req: Request) => {
       const { email, role } = await req.json();
       if (!email) throw new Error('email required');
 
-      const siteUrl = Deno.env.get('SITE_URL') || 'https://sdy.vercel.app';
+      const siteUrl = Deno.env.get('SITE_URL') || 'https://www.sdy.mn';
       const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
         redirectTo: `${siteUrl}/mn/admin`,
       });

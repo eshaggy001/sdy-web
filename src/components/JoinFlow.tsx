@@ -85,7 +85,7 @@ export const JoinFlow = () => {
                 to={l('/join')}
                 className="btn-secondary btn-lg bg-white text-sdy-red border-white hover:bg-red-50 hover:text-sdy-red hover:border-white gap-2.5 w-fit shadow-xl shadow-black/20"
               >
-                {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
+                {t({ mn: 'SDY чамайг дуудаж байна', en: 'SDY calling you' })}
                 <ArrowRight size={18} />
               </Link>
             </div>
@@ -99,7 +99,7 @@ export const JoinFlow = () => {
               className="relative hidden lg:block min-h-[480px]"
             >
               <img
-                src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800"
+                src="/IMG_8386.JPG"
                 alt={t({ mn: 'Залуучуудын хамтын ажиллагаа', en: 'Youth Collaboration' })}
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

@@ -49,7 +49,7 @@ export const JoinPage = () => {
     {
       title: { mn: 'Манлайллын сургалт', en: 'Leadership Training' },
       description: {
-        mn: 'НАЗХ Академи болон үндэсний улс төрийн удирдагчидтай хийх онцгой сургалтуудад хамрагдах.',
+        mn: 'SDY Академи болон үндэсний улс төрийн удирдагчидтай хийх онцгой сургалтуудад хамрагдах.',
         en: 'Access to SDY Academy and exclusive workshops with national political leaders.'
       },
       icon: Zap,
@@ -313,7 +313,7 @@ export const JoinPage = () => {
                       <input type="checkbox" required className="mt-1 w-5 h-5 text-sdy-red border-gray-300 rounded focus:ring-sdy-red" />
                       <p className="text-sm text-gray-500 dark:text-gray-400 font-bold">
                         {t({
-                          mn: 'Би үйлчилгээний нөхцөлийг зөвшөөрч байгаа бөгөөд НАЗХ-ны нийгмийн ардчиллын үнэт зүйлсийг дэмжиж байна.',
+                          mn: 'Би үйлчилгээний нөхцөлийг зөвшөөрч байгаа бөгөөд SDY-ны нийгмийн ардчиллын үнэт зүйлсийг дэмжиж байна.',
                           en: 'I agree to the terms and conditions and support the social democratic values of SDY Mongolia.'
                         })}
                       </p>
@@ -349,7 +349,7 @@ export const JoinPage = () => {
                     <CheckCircle2 size={48} />
                   </div>
                   <h2 className="text-4xl font-black text-sdy-black dark:text-white mb-6 tracking-tight uppercase">
-                    {t({ mn: 'НАЗХ-д тавтай морил!', en: 'Welcome to SDY!' })}
+                    {t({ mn: 'SDY-д тавтай морил!', en: 'Welcome to SDY!' })}
                   </h2>
                   <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
                     {t({ mn: 'Нэгдсэнд баярлалаа, ', en: 'Thank you for joining, ' })}

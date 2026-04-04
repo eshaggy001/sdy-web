@@ -340,7 +340,7 @@ insert into news_items (id, title_mn, title_en, category_mn, category_en, date_m
  'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=1200',
  'SDY боловсрол болон идэвхтэй оролцоогоор дамжуулан Монголын улс төрийн ирээдүйг хэрхэн тодорхойлж байна вэ.',
  'How SDY is shaping the future of Mongolian politics through education and active participation.',
- 'Нийгмийн Ардчилсан Залуучуудын Холбоо (НАЗХ) нь 1997 оноос хойш Монголын залуу удирдагчдыг бэлтгэхэд тасралтгүй ажиллаж байна.',
+ 'Нийгмийн Ардчилсан Залуучуудын Холбоо (SDY) нь 1997 оноос хойш Монголын залуу удирдагчдыг бэлтгэхэд тасралтгүй ажиллаж байна.',
  'The Social Democratic Youth (SDY) has been tirelessly working to develop Mongolia''s young leaders since 1997.'),
 
 ('2',
@@ -384,9 +384,9 @@ on conflict do nothing;
 insert into leaders (id, name_mn, name_en, role_mn, role_en, image, bio_mn, bio_en, sort_order) values
   ('puredagva',
    'Б. Пүрэвдагва', 'B. Pürevdagva',
-   'НАМЗХ-ны Ерөнхийлөгч', 'SDY President',
+   'SDY-ны Ерөнхийлөгч', 'SDY President',
    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
-   '2024 оноос хойш НАМЗХ-г удирдаж байгаа бөгөөд дижитал шилжилт, бүс нутгийн өсөлтөд анхаарлаа хандуулж байна.',
+   '2024 оноос хойш SDY-г удирдаж байгаа бөгөөд дижитал шилжилт, бүс нутгийн өсөлтөд анхаарлаа хандуулж байна.',
    'Leading SDY since 2024 with a focus on digital transformation and regional growth.',
    1),
 

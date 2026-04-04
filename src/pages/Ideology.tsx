@@ -106,7 +106,7 @@ export const Ideology = () => {
                   })}
                 </p>
                 <Link to={l('/join')} className="btn-primary btn-lg inline-flex items-center gap-2">
-                  {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join the Movement' })} <ArrowRight size={20} />
+                  {t({ mn: 'SDY чамайг дуудаж байна', en: 'SDY calling you' })} <ArrowRight size={20} />
                 </Link>
               </div>
             </div>

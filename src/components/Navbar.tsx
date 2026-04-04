@@ -157,7 +157,7 @@ export const Navbar = () => {
                   to={l('/join')}
                   className="btn-primary btn-lg btn-full flex items-center"
                 >
-                  {t({ mn: 'Хөдөлгөөнд нэгдэх', en: 'Join The Movement' })}
+                  {t({ mn: 'SDY чамайг дуудаж байна', en: 'SDY calling you' })}
                 </Link>
               </div>
             </div>

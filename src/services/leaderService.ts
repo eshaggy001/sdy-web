@@ -15,8 +15,7 @@ export const leaderService = {
   },
 
   create: async (item: Record<string, unknown>) => {
-    const id = crypto.randomUUID();
-    const { error } = await supabase.from('leaders').insert({ id, ...item });
+    const { error } = await supabase.from('leaders').insert(item);
     if (error) {
       console.error('leaderService.create:', error);
       return false;

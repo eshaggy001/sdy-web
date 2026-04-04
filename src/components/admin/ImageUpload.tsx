@@ -42,15 +42,18 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, label
         onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
       />
       {displayUrl ? (
-        <div className="relative group">
+        <div className="relative group cursor-pointer" onClick={() => inputRef.current?.click()}>
           <img
             src={displayUrl}
             alt="Preview"
-            className="w-full h-40 object-cover rounded-xl border-2 border-gray-100"
+            className="w-full h-40 object-cover rounded-xl border-2 border-gray-100 group-hover:opacity-75 transition-opacity"
           />
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="bg-black/60 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Зураг солих</span>
+          </div>
           <button
             type="button"
-            onClick={() => { handleFile(null); if (inputRef.current) inputRef.current.value = ''; }}
+            onClick={(e) => { e.stopPropagation(); handleFile(null); if (inputRef.current) inputRef.current.value = ''; }}
             className="absolute top-2 right-2 p-1.5 bg-white/90 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow"
           >
             <X size={14} />

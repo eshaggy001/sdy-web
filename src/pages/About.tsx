@@ -14,7 +14,7 @@ export const About = () => {
     <>
     <SEOMeta
       title={t({ mn: 'Бидний тухай', en: 'About Us' })}
-      description={t({ mn: '1997 онд байгуулагдсан НАЗХ нь Монголын залуучуудын хамгийн том байгууллага. 60,000+ гишүүн, 21 аймгийн сүлжээ.', en: 'Founded in 1997, SDY is Mongolia\'s largest youth organization with 60,000+ members across 21 aimags.' })}
+      description={t({ mn: '1997 онд байгуулагдсан SDY нь Монголын залуучуудын хамгийн том байгууллага. 60,000+ гишүүн, 21 аймгийн сүлжээ.', en: 'Founded in 1997, SDY is Mongolia\'s largest youth organization with 60,000+ members across 21 aimags.' })}
       path="/mn/about"
     />
     <motion.div
@@ -35,7 +35,7 @@ export const About = () => {
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
             {t({
-              mn: '1997 онд байгуулагдсан Нийгмийн Ардчилсан Залуучуудын Холбоо (НАЗХ) нь өдгөө Монгол Улсын өнцөг булан бүрт 60,000 гаруй гишүүнтэй, залуучуудын хамгийн том байгууллага болон өргөжжээ.',
+              mn: '1997 онд байгуулагдсан Нийгмийн Ардчилсан Залуучуудын Холбоо (SDY) нь өдгөө Монгол Улсын өнцөг булан бүрт 60,000 гаруй гишүүнтэй, залуучуудын хамгийн том байгууллага болон өргөжжээ.',
               en: 'Founded in 1997, the Social Democratic Youth (SDY) has grown into Mongolia\'s largest youth organization, representing over 60,000 members across every corner of our nation.'
             })}
           </p>
@@ -94,7 +94,7 @@ export const About = () => {
             </div>
             <p className="text-gray-600 dark:text-gray-300 max-w-md text-lg">
               {t({ 
-                mn: 'Манай хөдөлгөөнийг удирдаж, НАЗХ-ны ирээдүйг тодорхойлж буй зүтгэлтнүүдтэй танилцана уу.',
+                mn: 'Манай хөдөлгөөнийг удирдаж, SDY-ны ирээдүйг тодорхойлж буй зүтгэлтнүүдтэй танилцана уу.',
                 en: 'Meet the dedicated individuals leading our movement and shaping the future of SDY.'
               })}
             </p>
@@ -145,7 +145,7 @@ export const About = () => {
               })}
             </p>
             <Link to={l('/join')} className="btn-primary btn-xl inline-flex items-center gap-3">
-              {t({ mn: 'НАЗХ-д нэгдэх', en: 'Join SDY Now' })} <ArrowRight size={24} />
+              {t({ mn: 'SDY-д нэгдэх', en: 'Join SDY Now' })} <ArrowRight size={24} />
             </Link>
           </div>
         </div>

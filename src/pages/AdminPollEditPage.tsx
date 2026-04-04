@@ -9,6 +9,8 @@ import { pollService } from '../services/pollService';
 import {
   AdminEditLayout, SectionCard, LangDivider, FieldLabel, fieldClass,
 } from '../components/admin/AdminEditLayout';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
 
 /* ─── Helpers ─── */
 
@@ -210,23 +212,62 @@ export const AdminPollEditPage = () => {
 
   const handleSave = async () => {
     if (!form) return;
-    setSaving(true);
-    setSaveError(null);
-    const payload = {
-      ...form,
-      isActive: form.status === 'published',
-      expiresAt: new Date(form.expiresAt!).toISOString(),
-    };
-    const result = form.id
-      ? await pollService.updatePoll(form.id, payload)
-      : await pollService.createPoll(payload);
-    setSaving(false);
-    if (!result) {
-      setSaveError(t({ mn: 'Хадгалахад алдаа гарлаа. Консол шалгана уу.', en: 'Save failed. Check console for details.' }));
+    // Re-entry guard — rapid double clicks
+    if (saving) {
+      logService('warn', 'save.reentry_blocked', { operation: 'AdminPollEditPage.handleSave' });
       return;
     }
-    setDirty(false);
-    window.history.back();
+
+    logService('info', 'save.start', {
+      operation: 'AdminPollEditPage.handleSave',
+      mode: form.id ? 'update' : 'create',
+      id: form.id ?? 'new',
+    });
+
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      const payload = {
+        ...form,
+        isActive: form.status === 'published',
+        expiresAt: new Date(form.expiresAt!).toISOString(),
+      };
+      const result = form.id
+        ? await pollService.updatePoll(form.id, payload)
+        : await pollService.createPoll(payload);
+
+      if (!result) {
+        logService('warn', 'save.service_returned_null', { operation: 'AdminPollEditPage.handleSave' });
+        setSaveError(
+          t({ mn: 'Хадгалахад алдаа гарлаа. Дахин оролдоно уу.', en: 'Save failed. Please try again.' }),
+        );
+        return;
+      }
+
+      logService('info', 'save.success', {
+        operation: 'AdminPollEditPage.handleSave',
+        id: result.id,
+      });
+      setDirty(false);
+      window.history.back();
+    } catch (err) {
+      const se = toServiceError('AdminPollEditPage.handleSave', err);
+      logService('error', 'save.threw', {
+        operation: se.operation,
+        code: se.code,
+        message: se.message,
+      });
+      setSaveError(
+        se.code === 'NETWORK'
+          ? t({ mn: 'Сүлжээний алдаа. Интернэтээ шалгаад дахин оролдоно уу.', en: 'Network error. Check your connection and try again.' })
+          : t({ mn: `Хадгалахад алдаа гарлаа: ${se.message}`, en: `Save failed: ${se.message}` }),
+      );
+    } finally {
+      // CRITICAL: always reset saving state
+      setSaving(false);
+      logService('info', 'save.finished', { operation: 'AdminPollEditPage.handleSave' });
+    }
   };
 
   /* ─── Derived ─── */

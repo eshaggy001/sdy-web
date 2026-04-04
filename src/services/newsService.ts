@@ -1,58 +1,92 @@
 import { supabase } from '../lib/supabase';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
+
+function logErr(operation: string, err: unknown) {
+  const se = toServiceError(operation, err);
+  logService('error', se.code, {
+    operation: se.operation,
+    message: se.message,
+    retryable: se.retryable,
+  });
+}
 
 export const newsService = {
   getAll: async () => {
-    const { data, error } = await supabase
-      .from('news_items')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('newsService.getAll:', error);
+    try {
+      const { data, error } = await supabase
+        .from('news_items')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) {
+        logErr('newsService.getAll', error);
+        return [];
+      }
+      return data ?? [];
+    } catch (err) {
+      logErr('newsService.getAll', err);
       return [];
     }
-    return data ?? [];
   },
 
   getById: async (id: string) => {
-    const { data, error } = await supabase
-      .from('news_items')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error('newsService.getById:', error);
+    try {
+      const { data, error } = await supabase
+        .from('news_items')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (error) {
+        logErr('newsService.getById', error);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      logErr('newsService.getById', err);
       return null;
     }
-    return data;
   },
 
   create: async (item: Record<string, unknown>) => {
-    const id = crypto.randomUUID();
-    const { error } = await supabase.from('news_items').insert({ id, view_count: 0, ...item });
-    if (error) {
-      console.error('newsService.create:', error);
+    try {
+      const id = crypto.randomUUID();
+      const { error } = await supabase.from('news_items').insert({ id, view_count: 0, ...item });
+      if (error) {
+        logErr('newsService.create', error);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      logErr('newsService.create', err);
       return false;
     }
-    return true;
   },
 
   update: async (id: string, item: Record<string, unknown>) => {
-    const { error } = await supabase.from('news_items').update(item).eq('id', id);
-    if (error) {
-      console.error('newsService.update:', error);
+    try {
+      const { error } = await supabase.from('news_items').update(item).eq('id', id);
+      if (error) {
+        logErr('newsService.update', error);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      logErr('newsService.update', err);
       return false;
     }
-    return true;
   },
 
   delete: async (id: string) => {
-    const { error } = await supabase.from('news_items').delete().eq('id', id);
-    if (error) {
-      console.error('newsService.delete:', error);
+    try {
+      const { error } = await supabase.from('news_items').delete().eq('id', id);
+      if (error) {
+        logErr('newsService.delete', error);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      logErr('newsService.delete', err);
       return false;
     }
-    return true;
   },
 };

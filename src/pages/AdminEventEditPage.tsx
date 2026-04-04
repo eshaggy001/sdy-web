@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { MapPin, CalendarDays, ClipboardList } from 'lucide-react';
+import { MapPin, CalendarDays, ClipboardList, AlertCircle } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { eventService } from '../services/eventService';
 import { registrationService } from '../services/registrationService';
@@ -12,6 +12,8 @@ import {
   AdminEditLayout, SectionCard, LangDivider, FieldLabel,
   fieldClass, textareaClass,
 } from '../components/admin/AdminEditLayout';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
 
 const EMPTY_FORM = {
   title_mn: '', title_en: '',
@@ -50,6 +52,7 @@ export const AdminEventEditPage = () => {
 
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -99,38 +102,109 @@ export const AdminEventEditPage = () => {
   };
 
   const handleSave = async () => {
+    // Guard against double-click re-entry. React batches, but two rapid clicks
+    // can still race on the async handler.
+    if (saving) {
+      logService('warn', 'save.reentry_blocked', { operation: 'AdminEventEditPage.handleSave' });
+      return;
+    }
+
+    logService('info', 'save.start', {
+      operation: 'AdminEventEditPage.handleSave',
+      mode: isNew ? 'create' : 'update',
+      id: id ?? 'new',
+    });
+
     setSaving(true);
-    const itemId = isNew ? crypto.randomUUID() : id!;
-    let imageUrl = form.image;
-    if (imageFile) {
-      const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      const uploaded = await storageService.upload('images', imageFile, 'events/' + itemId + '.' + ext);
-      if (uploaded) imageUrl = uploaded;
+    setSaveError(null);
+
+    try {
+      const itemId = isNew ? crypto.randomUUID() : id!;
+
+      // Image upload is best-effort: if it fails, we keep the previous image
+      // and continue saving the event. Failure is logged but non-fatal.
+      let imageUrl = form.image;
+      if (imageFile) {
+        const ext = imageFile.name.split('.').pop() ?? 'jpg';
+        try {
+          const uploaded = await storageService.upload('images', imageFile, 'events/' + itemId + '.' + ext);
+          if (uploaded) {
+            imageUrl = uploaded;
+          } else {
+            logService('warn', 'save.image_upload_failed', { operation: 'AdminEventEditPage.handleSave', itemId });
+          }
+        } catch (err) {
+          logService('error', 'save.image_upload_threw', {
+            operation: 'AdminEventEditPage.handleSave',
+            message: toServiceError('storageService.upload', err).message,
+          });
+          // Continue without image update
+        }
+      }
+
+      const payload = {
+        title_mn: form.title_mn,
+        title_en: form.title_en,
+        description_mn: form.description_mn,
+        description_en: form.description_en,
+        content_mn: form.content_mn,
+        content_en: form.content_en,
+        image: imageUrl,
+        date_start: form.date_start ? new Date(form.date_start).toISOString() : null,
+        date_end: form.date_end ? new Date(form.date_end).toISOString() : null,
+        location_mn: form.location_mn,
+        location_en: form.location_en,
+        status: form.status,
+        registration_open: form.registration_open,
+        max_participants: form.max_participants ? parseInt(form.max_participants) : null,
+      };
+
+      const success = isNew
+        ? await eventService.create({ id: itemId, ...payload })
+        : await eventService.update(itemId, payload);
+
+      if (success) {
+        logService('info', 'save.success', {
+          operation: 'AdminEventEditPage.handleSave',
+          itemId,
+          mode: isNew ? 'create' : 'update',
+        });
+        setDirty(false);
+        window.history.back();
+      } else {
+        // Service returned false — failure was already logged inside the service.
+        // Surface a visible error to the user instead of silently doing nothing.
+        logService('warn', 'save.service_returned_false', {
+          operation: 'AdminEventEditPage.handleSave',
+          mode: isNew ? 'create' : 'update',
+        });
+        setSaveError(
+          t({
+            mn: 'Хадгалахад алдаа гарлаа. Дахин оролдоно уу.',
+            en: 'Save failed. Please try again.',
+          }),
+        );
+      }
+    } catch (err) {
+      // ANY thrown error — network, JS bug, anything. Convert to visible UI state.
+      const se = toServiceError('AdminEventEditPage.handleSave', err);
+      logService('error', 'save.threw', {
+        operation: se.operation,
+        code: se.code,
+        message: se.message,
+      });
+      setSaveError(
+        se.code === 'NETWORK'
+          ? t({ mn: 'Сүлжээний алдаа. Интернэтээ шалгаад дахин оролдоно уу.', en: 'Network error. Check your connection and try again.' })
+          : t({ mn: `Хадгалахад алдаа гарлаа: ${se.message}`, en: `Save failed: ${se.message}` }),
+      );
+    } finally {
+      // CRITICAL: always reset saving state, regardless of success/failure/throw.
+      // Without this finally block, any unhandled rejection above leaves the
+      // button stuck with a spinner forever.
+      setSaving(false);
+      logService('info', 'save.finished', { operation: 'AdminEventEditPage.handleSave' });
     }
-    const payload = {
-      title_mn: form.title_mn,
-      title_en: form.title_en,
-      description_mn: form.description_mn,
-      description_en: form.description_en,
-      content_mn: form.content_mn,
-      content_en: form.content_en,
-      image: imageUrl,
-      date_start: form.date_start ? new Date(form.date_start).toISOString() : null,
-      date_end: form.date_end ? new Date(form.date_end).toISOString() : null,
-      location_mn: form.location_mn,
-      location_en: form.location_en,
-      status: form.status,
-      registration_open: form.registration_open,
-      max_participants: form.max_participants ? parseInt(form.max_participants) : null,
-    };
-    const success = isNew
-      ? await eventService.create({ id: itemId, ...payload })
-      : await eventService.update(itemId, payload);
-    if (success) {
-      setDirty(false);
-      window.history.back();
-    }
-    setSaving(false);
   };
 
   if (loading) {
@@ -294,6 +368,27 @@ export const AdminEventEditPage = () => {
             {registrations.length > 0 && (
               <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-sdy-red/10 text-sdy-red">{registrations.length}</span>
             )}
+          </button>
+        </div>
+      )}
+
+      {saveError && (
+        <div
+          role="alert"
+          className="mb-4 flex items-start gap-2.5 rounded-lg border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-900/20 p-3 text-xs text-red-700 dark:text-red-400"
+        >
+          <AlertCircle size={14} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="font-semibold mb-0.5">{t({ mn: 'Хадгалах амжилтгүй', en: 'Save failed' })}</div>
+            <div>{saveError}</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSaveError(null)}
+            className="text-red-500 hover:text-red-700 dark:hover:text-red-300 text-lg leading-none"
+            aria-label={t({ mn: 'Хаах', en: 'Dismiss' })}
+          >
+            ×
           </button>
         </div>
       )}

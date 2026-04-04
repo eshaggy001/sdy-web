@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { AlertCircle } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { newsService } from '../services/newsService';
 import { storageService } from '../services/storageService';
@@ -8,6 +9,8 @@ import {
   AdminEditLayout, SectionCard, LangDivider, FieldLabel,
   fieldClass, textareaClass,
 } from '../components/admin/AdminEditLayout';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
 
 const EMPTY_FORM = {
   title_mn: '', title_en: '',
@@ -25,6 +28,7 @@ export const AdminNewsEditPage = () => {
 
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -54,27 +58,87 @@ export const AdminNewsEditPage = () => {
   }, [id, isNew]);
 
   const handleSave = async () => {
-    setSaving(true);
-    const itemId = isNew ? crypto.randomUUID() : id!;
-    let imageUrl = form.image;
-    if (imageFile) {
-      const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      const uploaded = await storageService.upload('images', imageFile, 'news/' + itemId + '.' + ext);
-      if (uploaded) imageUrl = uploaded;
+    if (saving) {
+      logService('warn', 'save.reentry_blocked', { operation: 'AdminNewsEditPage.handleSave' });
+      return;
     }
-    const payload = {
-      title_mn: form.title_mn, title_en: form.title_en,
-      category_mn: form.category_mn, category_en: form.category_en,
-      date_mn: form.date_mn, date_en: form.date_en,
-      image: imageUrl,
-      excerpt_mn: form.excerpt_mn, excerpt_en: form.excerpt_en,
-      content_mn: form.content_mn, content_en: form.content_en,
-    };
-    const success = isNew
-      ? await newsService.create({ id: itemId, ...payload })
-      : await newsService.update(itemId, payload);
-    if (success) { setDirty(false); window.history.back(); }
-    setSaving(false);
+
+    logService('info', 'save.start', {
+      operation: 'AdminNewsEditPage.handleSave',
+      mode: isNew ? 'create' : 'update',
+      id: id ?? 'new',
+    });
+
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      const itemId = isNew ? crypto.randomUUID() : id!;
+
+      let imageUrl = form.image;
+      if (imageFile) {
+        const ext = imageFile.name.split('.').pop() ?? 'jpg';
+        try {
+          const uploaded = await storageService.upload('images', imageFile, 'news/' + itemId + '.' + ext);
+          if (uploaded) {
+            imageUrl = uploaded;
+          } else {
+            logService('warn', 'save.image_upload_failed', { operation: 'AdminNewsEditPage.handleSave', itemId });
+          }
+        } catch (err) {
+          logService('error', 'save.image_upload_threw', {
+            operation: 'AdminNewsEditPage.handleSave',
+            message: toServiceError('storageService.upload', err).message,
+          });
+        }
+      }
+
+      const payload = {
+        title_mn: form.title_mn, title_en: form.title_en,
+        category_mn: form.category_mn, category_en: form.category_en,
+        date_mn: form.date_mn, date_en: form.date_en,
+        image: imageUrl,
+        excerpt_mn: form.excerpt_mn, excerpt_en: form.excerpt_en,
+        content_mn: form.content_mn, content_en: form.content_en,
+      };
+
+      const success = isNew
+        ? await newsService.create({ id: itemId, ...payload })
+        : await newsService.update(itemId, payload);
+
+      if (success) {
+        logService('info', 'save.success', {
+          operation: 'AdminNewsEditPage.handleSave',
+          itemId,
+          mode: isNew ? 'create' : 'update',
+        });
+        setDirty(false);
+        window.history.back();
+      } else {
+        logService('warn', 'save.service_returned_false', {
+          operation: 'AdminNewsEditPage.handleSave',
+          mode: isNew ? 'create' : 'update',
+        });
+        setSaveError(
+          t({ mn: 'Хадгалахад алдаа гарлаа. Дахин оролдоно уу.', en: 'Save failed. Please try again.' }),
+        );
+      }
+    } catch (err) {
+      const se = toServiceError('AdminNewsEditPage.handleSave', err);
+      logService('error', 'save.threw', {
+        operation: se.operation,
+        code: se.code,
+        message: se.message,
+      });
+      setSaveError(
+        se.code === 'NETWORK'
+          ? t({ mn: 'Сүлжээний алдаа. Интернэтээ шалгаад дахин оролдоно уу.', en: 'Network error. Check your connection and try again.' })
+          : t({ mn: `Хадгалахад алдаа гарлаа: ${se.message}`, en: `Save failed: ${se.message}` }),
+      );
+    } finally {
+      setSaving(false);
+      logService('info', 'save.finished', { operation: 'AdminNewsEditPage.handleSave' });
+    }
   };
 
   if (loading) {
@@ -127,6 +191,27 @@ export const AdminNewsEditPage = () => {
         </>
       }
     >
+      {saveError && (
+        <div
+          role="alert"
+          className="mb-4 flex items-start gap-2.5 rounded-lg border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-900/20 p-3 text-xs text-red-700 dark:text-red-400"
+        >
+          <AlertCircle size={14} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="font-semibold mb-0.5">{t({ mn: 'Хадгалах амжилтгүй', en: 'Save failed' })}</div>
+            <div>{saveError}</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSaveError(null)}
+            className="text-red-500 hover:text-red-700 dark:hover:text-red-300 text-lg leading-none"
+            aria-label={t({ mn: 'Хаах', en: 'Dismiss' })}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* ─── Mongolian ─── */}
       <SectionCard>
         <LangDivider lang="mn" />

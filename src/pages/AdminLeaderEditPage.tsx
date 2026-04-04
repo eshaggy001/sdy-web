@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { AlertCircle } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { leaderService } from '../services/leaderService';
 import { storageService } from '../services/storageService';
@@ -8,6 +9,8 @@ import {
   AdminEditLayout, SectionCard, LangDivider, FieldLabel,
   fieldClass, textareaClass,
 } from '../components/admin/AdminEditLayout';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
 
 const EMPTY_FORM = {
   name_mn: '', name_en: '',
@@ -24,6 +27,7 @@ export const AdminLeaderEditPage = () => {
 
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -52,25 +56,85 @@ export const AdminLeaderEditPage = () => {
   }, [id, isNew]);
 
   const handleSave = async () => {
-    setSaving(true);
-    const itemId = isNew ? crypto.randomUUID() : id!;
-    let imageUrl = form.image;
-    if (imageFile) {
-      const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      const uploaded = await storageService.upload('images', imageFile, 'leaders/' + itemId + '.' + ext);
-      if (uploaded) imageUrl = uploaded;
+    if (saving) {
+      logService('warn', 'save.reentry_blocked', { operation: 'AdminLeaderEditPage.handleSave' });
+      return;
     }
-    const payload = {
-      name_mn: form.name_mn, name_en: form.name_en,
-      role_mn: form.role_mn, role_en: form.role_en,
-      bio_mn: form.bio_mn, bio_en: form.bio_en,
-      image: imageUrl, sort_order: form.sort_order,
-    };
-    const success = isNew
-      ? await leaderService.create({ id: itemId, ...payload })
-      : await leaderService.update(itemId, payload);
-    if (success) { setDirty(false); window.history.back(); }
-    setSaving(false);
+
+    logService('info', 'save.start', {
+      operation: 'AdminLeaderEditPage.handleSave',
+      mode: isNew ? 'create' : 'update',
+      id: id ?? 'new',
+    });
+
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      const itemId = isNew ? crypto.randomUUID() : id!;
+
+      let imageUrl = form.image;
+      if (imageFile) {
+        const ext = imageFile.name.split('.').pop() ?? 'jpg';
+        try {
+          const uploaded = await storageService.upload('images', imageFile, 'leaders/' + itemId + '.' + ext);
+          if (uploaded) {
+            imageUrl = uploaded;
+          } else {
+            logService('warn', 'save.image_upload_failed', { operation: 'AdminLeaderEditPage.handleSave', itemId });
+          }
+        } catch (err) {
+          logService('error', 'save.image_upload_threw', {
+            operation: 'AdminLeaderEditPage.handleSave',
+            message: toServiceError('storageService.upload', err).message,
+          });
+        }
+      }
+
+      const payload = {
+        name_mn: form.name_mn, name_en: form.name_en,
+        role_mn: form.role_mn, role_en: form.role_en,
+        bio_mn: form.bio_mn, bio_en: form.bio_en,
+        image: imageUrl, sort_order: form.sort_order,
+      };
+
+      const success = isNew
+        ? await leaderService.create({ id: itemId, ...payload })
+        : await leaderService.update(itemId, payload);
+
+      if (success) {
+        logService('info', 'save.success', {
+          operation: 'AdminLeaderEditPage.handleSave',
+          itemId,
+          mode: isNew ? 'create' : 'update',
+        });
+        setDirty(false);
+        window.history.back();
+      } else {
+        logService('warn', 'save.service_returned_false', {
+          operation: 'AdminLeaderEditPage.handleSave',
+          mode: isNew ? 'create' : 'update',
+        });
+        setSaveError(
+          t({ mn: 'Хадгалахад алдаа гарлаа. Дахин оролдоно уу.', en: 'Save failed. Please try again.' }),
+        );
+      }
+    } catch (err) {
+      const se = toServiceError('AdminLeaderEditPage.handleSave', err);
+      logService('error', 'save.threw', {
+        operation: se.operation,
+        code: se.code,
+        message: se.message,
+      });
+      setSaveError(
+        se.code === 'NETWORK'
+          ? t({ mn: 'Сүлжээний алдаа. Интернэтээ шалгаад дахин оролдоно уу.', en: 'Network error. Check your connection and try again.' })
+          : t({ mn: `Хадгалахад алдаа гарлаа: ${se.message}`, en: `Save failed: ${se.message}` }),
+      );
+    } finally {
+      setSaving(false);
+      logService('info', 'save.finished', { operation: 'AdminLeaderEditPage.handleSave' });
+    }
   };
 
   if (loading) {
@@ -117,6 +181,27 @@ export const AdminLeaderEditPage = () => {
         </>
       }
     >
+      {saveError && (
+        <div
+          role="alert"
+          className="mb-4 flex items-start gap-2.5 rounded-lg border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-900/20 p-3 text-xs text-red-700 dark:text-red-400"
+        >
+          <AlertCircle size={14} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="font-semibold mb-0.5">{t({ mn: 'Хадгалах амжилтгүй', en: 'Save failed' })}</div>
+            <div>{saveError}</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSaveError(null)}
+            className="text-red-500 hover:text-red-700 dark:hover:text-red-300 text-lg leading-none"
+            aria-label={t({ mn: 'Хаах', en: 'Dismiss' })}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* ─── Mongolian ─── */}
       <SectionCard>
         <LangDivider lang="mn" />

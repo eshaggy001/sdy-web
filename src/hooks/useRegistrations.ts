@@ -42,3 +42,23 @@ export function useProgramRegistrations(programId: string | undefined) {
 
   return { data, loading, refresh };
 }
+
+export function useEventRegistrationCounts() {
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
+  const refresh = async () => {
+    try {
+      const data = await registrationService.getEventCounts();
+      setCounts(data);
+    } catch (err) {
+      console.error('[useEventRegistrationCounts]', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { refresh(); }, []);
+
+  return { counts, loading, refresh };
+}

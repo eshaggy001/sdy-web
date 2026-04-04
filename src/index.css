@@ -8,7 +8,7 @@
 
   --color-sdy-red: #ED1B24;
   --color-sdy-red-dark: #cc151e;
-  --color-sdy-black: #1C1917;
+  --color-sdy-black: #030712;
   --color-sdy-white: #FFFFFF;
   --color-sdy-gray: #FFFFFF;
   --color-sdy-gray-dark: #44403C;
@@ -22,18 +22,37 @@
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes ticker {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes bounce-subtle {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(6px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
 }
 
 @layer base {
@@ -43,7 +62,12 @@
     @apply bg-sdy-gray text-sdy-black font-sans antialiased overflow-x-hidden dark:bg-gray-950 dark:text-gray-100;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold tracking-tight text-sdy-black dark:text-white;
   }
 
@@ -54,6 +78,7 @@
 }
 
 @layer utilities {
+
   /* Navigation */
   .glass-nav {
     @apply fixed top-0 z-50 w-full border-b border-black/5 bg-white/90 backdrop-blur-xl transition-all duration-300 dark:border-white/10 dark:bg-gray-950/90;
@@ -61,12 +86,12 @@
 
   /* Cards */
   .glass-card {
-    @apply rounded-2xl border border-white/40 bg-white/60 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)];
+    @apply rounded-2xl border border-white/40 bg-white/60 backdrop-blur-lg shadow-[0_8px_30px_rgb(0, 0, 0, 0.04)] transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.08)] hover:-translate-y-1 dark:border-white/10 dark:bg-white/5 dark:shadow-[0_8px_30px_rgb(0, 0, 0, 0.2)] dark:hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.3)];
   }
 
   /* ✅ FIXED: card-shadow was used but never defined */
   .card-shadow {
-    @apply bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-gray-100/80 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:-translate-y-1 dark:bg-gray-900 dark:border-gray-800 dark:shadow-[0_2px_16px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)];
+    @apply bg-white rounded-2xl shadow-[0_2px_16px_rgba(0, 0, 0, 0.06)] border border-gray-100/80 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0, 0, 0, 0.1)] hover:-translate-y-1 dark:bg-gray-900 dark:border-gray-800 dark:shadow-[0_2px_16px_rgba(0, 0, 0, 0.3)] dark:hover:shadow-[0_8px_32px_rgba(0, 0, 0, 0.4)];
   }
 
   /* Buttons */
@@ -86,18 +111,23 @@
   .btn-sm {
     @apply px-5 py-2.5 text-[13px];
   }
+
   .btn-lg {
     @apply px-10 py-4;
   }
+
   .btn-xl {
     @apply px-10 py-5 text-lg;
   }
+
   .btn-full {
     @apply w-full justify-center;
   }
+
   .btn-card {
     @apply px-4 py-3 text-xs tracking-wider;
   }
+
   .btn-filter {
     @apply px-6 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-all whitespace-nowrap;
   }
@@ -106,12 +136,15 @@
   .input {
     @apply w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-sdy-red outline-none transition-all font-bold dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-sdy-red;
   }
+
   .input-icon {
     @apply pl-12;
   }
+
   .input-sm {
     @apply px-3 py-3 text-sm;
   }
+
   .input-dark {
     @apply bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-transparent focus:ring-2 focus:ring-sdy-red;
   }
@@ -139,7 +172,7 @@
   /* Background utilities */
   .bg-gradient-radial-sdy {
     background: radial-gradient(circle at 100% 0%, rgba(237, 27, 36, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(237, 27, 36, 0.05) 0%, transparent 50%);
+      radial-gradient(circle at 0% 100%, rgba(237, 27, 36, 0.05) 0%, transparent 50%);
   }
 
   /* Scroll bounce animation */

@@ -312,13 +312,18 @@ test.describe('Forced token expiry & queuedLock', () => {
   test('token refresh works after forced expiry — no session corruption', async ({ page }) => {
     test.setTimeout(120_000);
 
-    // Collect all auth-related console output
+    // Collect all auth-related console output (capture raw args for structured log bodies)
     const authLogs: string[] = [];
     const errors: string[] = [];
-    page.on('console', (msg) => {
+    page.on('console', async (msg) => {
       const text = msg.text();
-      if (text.includes('[Auth]') || text.includes('lock') || text.includes('token')) {
-        authLogs.push(`[${msg.type()}] ${text}`);
+      if (text.includes('[auth]') || text.includes('[lock]') || text.includes('[Auth]')) {
+        try {
+          const args = await Promise.all(msg.args().map((a) => a.jsonValue().catch(() => null)));
+          authLogs.push(`${new Date().toISOString()} [${msg.type()}] ${JSON.stringify(args)}`);
+        } catch {
+          authLogs.push(`${new Date().toISOString()} [${msg.type()}] ${text}`);
+        }
       }
     });
     page.on('pageerror', (err) => {
@@ -367,21 +372,16 @@ test.describe('Forced token expiry & queuedLock', () => {
     expect(didExpire).toBe(true);
     console.log('⚡ Token expiry forced in localStorage');
 
-    // 4. Fire 5 concurrent getSession() calls to stress the queuedLock.
-    //    The app exposes `window.__test_supabase` in dev mode.
-    //    All 5 calls hit an expired token — the lock must serialize the refresh
-    //    so only one token exchange happens and all callers get the same result.
     // 4. Stress-test queuedLock: fire 5 concurrent getSession() calls.
-    //    Each one sees an expired token and tries to refresh. The lock must
-    //    serialize refresh so only one network call happens.
-    //    Race with a 30s timeout in case the lock deadlocks — that IS the bug.
+    //    With the new queue-based lock, ALL 5 must resolve within 15 seconds
+    //    (the previous implementation would deadlock 4/5 indefinitely).
     console.log('🔒 Stress-testing queuedLock with 5 concurrent getSession() calls...');
 
     const concurrentResults = await Promise.race([
       page.evaluate(async () => {
         const supabase = (window as any).__test_supabase;
         if (!supabase) {
-          return { elapsed: 0, available: false, deadlocked: false, outcomes: [] };
+          return { elapsed: 0, available: false, deadlocked: false, outcomes: [] as any[] };
         }
         const start = Date.now();
         const results = await Promise.allSettled([
@@ -409,46 +409,39 @@ test.describe('Forced token expiry & queuedLock', () => {
           })),
         };
       }),
-      // Deadlock detector: if getSession hangs >30s, the lock is broken
+      // Deadlock detector: 15s is the strict SLO for 5 concurrent getSession()
       new Promise<{ elapsed: number; available: boolean; deadlocked: boolean; outcomes: any[] }>((resolve) =>
-        setTimeout(() => resolve({ elapsed: 30_000, available: true, deadlocked: true, outcomes: [] }), 30_000)
+        setTimeout(() => resolve({ elapsed: 15_000, available: true, deadlocked: true, outcomes: [] }), 15_000)
       ),
     ]);
 
-    if (concurrentResults.deadlocked) {
-      console.log('❌ DEADLOCK DETECTED — 5 concurrent getSession() hung for >30s');
-      console.log('   This means queuedLock is not correctly releasing under concurrent expired-token refresh.');
-      // Don't fail hard — report it and continue to test navigation recovery
-    } else if (concurrentResults.available) {
-      console.log(`⏱  5 concurrent getSession() completed in ${concurrentResults.elapsed}ms`);
-      for (const o of concurrentResults.outcomes) {
-        console.log(`  [${o.index}] ${o.status} | session=${o.hasSession} | email=${o.email} | error=${o.error}`);
-      }
+    // Dump all captured auth/lock logs BEFORE asserting, so failures are debuggable
+    if (concurrentResults.deadlocked || authLogs.length > 0) {
+      console.log(`\n🔍 Auth/lock logs captured during stress test (${authLogs.length}):`);
+      authLogs.forEach((l) => console.log(`  ${l}`));
+    }
 
-      // 5. Verify: all calls settled (no unhandled lock errors)
-      const allSettled = concurrentResults.outcomes.every(
-        (o: any) => o.status === 'fulfilled'
-      );
-      if (!allSettled) {
-        const failures = concurrentResults.outcomes.filter((o: any) => o.status === 'rejected');
-        console.log(`⚠ ${failures.length}/5 calls rejected (lock contention expected):`);
-        failures.forEach((o: any) => console.log(`  [${o.index}] ${o.error}`));
-      }
+    // STRICT: no deadlocks tolerated
+    expect(concurrentResults.deadlocked, 'queuedLock deadlocked — 5 concurrent getSession() hung >15s').toBe(false);
 
-      // 6. Verify: no session corruption — sessions that succeeded have same email
-      const sessionEmails = concurrentResults.outcomes
-        .filter((o: any) => o.hasSession)
-        .map((o: any) => o.email);
-      const uniqueEmails = [...new Set(sessionEmails)];
-      if (uniqueEmails.length > 0) {
-        expect(uniqueEmails).toHaveLength(1);
-        expect(uniqueEmails[0]).toBe(preExpiryEmail);
-        console.log('✅ No session corruption — all sessions match original email');
-      } else {
-        console.log('⚠ No sessions returned from concurrent calls — checking via navigation');
-      }
-    } else {
-      console.log('⚠ __test_supabase not available — skipping direct lock test');
+    console.log(`⏱  5 concurrent getSession() completed in ${concurrentResults.elapsed}ms`);
+    for (const o of concurrentResults.outcomes) {
+      console.log(`  [${o.index}] ${o.status} | session=${o.hasSession} | email=${o.email} | error=${o.error}`);
+    }
+
+    // STRICT: all 5 must settle as fulfilled (no stolen-lock errors)
+    const allFulfilled = concurrentResults.outcomes.every((o: any) => o.status === 'fulfilled');
+    expect(allFulfilled, 'All 5 concurrent getSession() calls must succeed').toBe(true);
+
+    // STRICT: all returned sessions must have the same email (no corruption)
+    const sessionEmails = concurrentResults.outcomes
+      .filter((o: any) => o.hasSession)
+      .map((o: any) => o.email);
+    const uniqueEmails = [...new Set(sessionEmails)];
+    expect(uniqueEmails.length, 'All concurrent sessions must have same email').toBeLessThanOrEqual(1);
+    if (uniqueEmails.length === 1) {
+      expect(uniqueEmails[0]).toBe(preExpiryEmail);
+      console.log('✅ No session corruption — all 5 sessions match original email');
     }
 
     // 7. Verify: post-refresh session in localStorage is valid
@@ -506,6 +499,64 @@ test.describe('Forced token expiry & queuedLock', () => {
 });
 
 // ---------------------------------------------------------------------------
+// REAL TOKEN REFRESH (requires short JWT TTL — SKIPPED by default)
+// ---------------------------------------------------------------------------
+
+test.describe('Real token refresh', () => {
+  // To enable:
+  //   1. Supabase Dashboard → Project Settings → Auth → JWT expiry limit → 120 (2 minutes)
+  //   2. Remove `.skip` from the test below
+  //   3. Run: ADMIN_EMAIL=... ADMIN_PASSWORD=... npx playwright test -g "real token refresh"
+  //   4. Restore JWT expiry to your normal value after testing
+  test.skip('real token refresh — requires JWT TTL ≤ 2min', async ({ page }) => {
+    test.setTimeout(300_000); // 5 minutes
+
+    const authLogs: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.text().includes('[auth]')) {
+        authLogs.push(`${new Date().toISOString()} ${msg.text()}`);
+      }
+    });
+
+    await adminLogin(page);
+
+    const initial = await page.evaluate(() => {
+      const keys = Object.keys(localStorage).filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'));
+      if (!keys.length) return null;
+      const s = JSON.parse(localStorage.getItem(keys[0])!);
+      return { expiresAt: s.expires_at, email: s.user?.email };
+    });
+    console.log(`Initial session: exp=${initial?.expiresAt}`);
+
+    // Wait for Supabase auto-refresh (fires at expires_in - 60s, so ~60s for 2min TTL)
+    console.log('⏳ Waiting 90s for auto-refresh to fire...');
+    await page.waitForTimeout(90_000);
+
+    const refreshed = await page.evaluate(() => {
+      const keys = Object.keys(localStorage).filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'));
+      if (!keys.length) return null;
+      const s = JSON.parse(localStorage.getItem(keys[0])!);
+      return { expiresAt: s.expires_at, email: s.user?.email };
+    });
+
+    // Verify token refreshed — expires_at should have advanced
+    expect(refreshed?.expiresAt).toBeGreaterThan(initial!.expiresAt);
+    expect(refreshed?.email).toBe(initial?.email);
+    console.log(`✅ Token refreshed: ${initial?.expiresAt} → ${refreshed?.expiresAt}`);
+
+    // Verify TOKEN_REFRESHED event fired in auth logs
+    const hasRefreshEvent = authLogs.some((l) => /event\.token_refreshed/i.test(l));
+    expect(hasRefreshEvent, 'TOKEN_REFRESHED event should have fired').toBe(true);
+
+    // Verify admin action still works post-refresh
+    await page.goto('/mn/admin/events');
+    await page.waitForLoadState('networkidle');
+    await expect(page).not.toHaveURL(/\/login/);
+    console.log('✅ Admin page accessible after real refresh');
+  });
+});
+
+// ---------------------------------------------------------------------------
 // 10-MINUTE STABILITY TEST
 // ---------------------------------------------------------------------------
 
@@ -524,7 +575,7 @@ test.describe('Long-running stability', () => {
     page.on('console', (msg) => {
       const text = msg.text();
       const ts = new Date().toISOString();
-      if (text.includes('[Auth]')) {
+      if (text.includes('[auth]') || text.includes('[lock]') || text.includes('[Auth]')) {
         authLogs.push(`${ts} ${text}`);
       }
       if (msg.type() === 'error') {

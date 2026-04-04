@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { fetchUserRole, type UserRole } from '../lib/roles';
+import { logAuth } from '../lib/logger';
 
 interface AuthContextType {
   user: User | null;
@@ -20,85 +21,105 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [role, setRole] = useState<UserRole | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadRole = async (u: User | null) => {
-    if (u) {
-      const r = await fetchUserRole(u.id);
-      setRole(r);
-    } else {
-      setRole(null);
-    }
-  };
-
   useEffect(() => {
-    console.log('[Auth] Starting getSession...');
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const u = session?.user ?? null;
-      console.log('[Auth] Session:', u ? u.email : 'none');
-      setUser(u);
-      try {
-        console.log('[Auth] Loading role...');
-        await loadRole(u);
-        console.log('[Auth] Role loaded');
-      } catch (err) {
-        console.error('[Auth] Failed to load role:', err);
-        setRole('editor');
-      }
-      console.log('[Auth] Setting isLoading=false');
-      setIsLoading(false);
-    });
+    // AuthProvider is the single source of truth for session readiness.
+    // We subscribe to onAuthStateChange only — Supabase fires INITIAL_SESSION
+    // synchronously on subscribe, which covers the startup path. There's no
+    // need for a separate getSession() call, which was the source of the
+    // parallel race that triggered `fetchUserRole: Failed to fetch`.
+    let cancelled = false;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(`[Auth] Event: ${event} at ${new Date().toISOString()}`);
-      if (event === 'TOKEN_REFRESHED') {
-        console.log('[Auth] Token refreshed — session expires:', session?.expires_at
-          ? new Date(session.expires_at * 1000).toISOString()
-          : 'unknown');
-      }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      // CRITICAL: this callback is invoked from INSIDE the Supabase auth lock
+      // (during token refresh, sign-in, sign-out). If we await any DB call
+      // here synchronously, we re-enter the lock and deadlock.
+      //
+      // Defer all async work to a microtask via setTimeout(0) so the current
+      // lock holder can release before we do anything that might re-acquire it.
+      logAuth('info', `event.${event.toLowerCase()}`, {
+        email: session?.user?.email ?? null,
+        expiresAt: session?.expires_at ?? null,
+      });
+
+      if (cancelled) return;
+
+      // Sync state updates are safe — they don't touch Supabase
       if (event === 'SIGNED_OUT') {
-        console.log('[Auth] Signed out — clearing state');
         setUser(null);
         setRole(null);
+        setIsLoading(false);
         return;
       }
+
       const u = session?.user ?? null;
       setUser(u);
-      try {
-        await loadRole(u);
-      } catch (err) {
-        console.error('Failed to load role on auth change:', err);
-        setRole('editor');
+
+      if (!u) {
+        setRole(null);
+        setIsLoading(false);
+        return;
       }
+
+      // Defer async work (role fetch requires a DB query which needs the lock)
+      setTimeout(async () => {
+        if (cancelled) return;
+        try {
+          const r = await fetchUserRole(u.id, session);
+          if (!cancelled) setRole(r);
+        } catch (err) {
+          logAuth('error', 'role.fetch.failed', { err: String(err) });
+          if (!cancelled) setRole('editor');
+        } finally {
+          if (!cancelled) setIsLoading(false);
+        }
+      }, 0);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string): Promise<{ error: string | null }> => {
+    logAuth('info', 'signin.start', { email });
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return { error: error.message };
-    // Load role immediately so it's ready before navigate
-    if (data.user) {
-      setUser(data.user);
-      await loadRole(data.user);
+    if (error) {
+      logAuth('error', 'signin.failed', { email, message: error.message });
+      return { error: error.message };
     }
+    logAuth('info', 'signin.success', { email: data.user?.email });
+    // onAuthStateChange('SIGNED_IN') will handle setting user/role/isLoading.
+    // We don't need to eagerly set anything here — that was the second half
+    // of the duplicate code path we removed.
     return { error: null };
   };
 
   const resetPassword = async (email: string): Promise<{ error: string | null }> => {
+    logAuth('info', 'password.reset.request', { email });
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/mn/admin/reset-password`,
     });
-    if (error) return { error: error.message };
+    if (error) {
+      logAuth('error', 'password.reset.failed', { email, message: error.message });
+      return { error: error.message };
+    }
     return { error: null };
   };
 
   const updatePassword = async (newPassword: string): Promise<{ error: string | null }> => {
+    logAuth('info', 'password.update.start');
     const { error } = await supabase.auth.updateUser({ password: newPassword });
-    if (error) return { error: error.message };
+    if (error) {
+      logAuth('error', 'password.update.failed', { message: error.message });
+      return { error: error.message };
+    }
+    logAuth('info', 'password.update.success');
     return { error: null };
   };
 
   const signOut = async () => {
+    logAuth('info', 'signout.start');
     await supabase.auth.signOut();
   };
 

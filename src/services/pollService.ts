@@ -1,6 +1,17 @@
 import { supabase } from '../lib/supabase';
 import { mapPoll } from '../lib/mappers';
+import { logService } from '../lib/logger';
+import { toServiceError } from '../lib/errors';
 import { Poll, PollStatus } from '../types';
+
+function logErr(operation: string, err: unknown) {
+  const se = toServiceError(operation, err);
+  logService('error', se.code, {
+    operation: se.operation,
+    message: se.message,
+    retryable: se.retryable,
+  });
+}
 
 function getUserKey(): string {
   let key = localStorage.getItem('sdy_user_key');
@@ -36,7 +47,7 @@ export const pollService = {
 
       return polls.map((row) => mapPoll(row, userVoteMap));
     } catch (err) {
-      console.error('pollService.getPolls:', err);
+      logErr('pollService.getPolls', err);
       return [];
     }
   },
@@ -92,7 +103,7 @@ export const pollService = {
       const polls = await pollService.getPolls();
       return polls.find((p) => p.id === pollId) ?? null;
     } catch (err) {
-      console.error('pollService.vote:', err);
+      logErr('pollService.vote', err);
       return null;
     }
   },
@@ -132,7 +143,7 @@ export const pollService = {
       const polls = await pollService.getPolls();
       return polls.find((p) => p.id === id) ?? mapPoll({ ...newPoll, poll_options: [] });
     } catch (err) {
-      console.error('pollService.createPoll:', err);
+      logErr('pollService.createPoll', err);
       return null;
     }
   },
@@ -170,7 +181,7 @@ export const pollService = {
       const polls = await pollService.getPolls();
       return polls.find((p) => p.id === pollId) ?? null;
     } catch (err) {
-      console.error('pollService.updatePoll:', err);
+      logErr('pollService.updatePoll', err);
       return null;
     }
   },
@@ -180,7 +191,7 @@ export const pollService = {
       const { error } = await supabase.from('polls').delete().eq('id', pollId);
       if (error) throw error;
     } catch (err) {
-      console.error('pollService.deletePoll:', err);
+      logErr('pollService.deletePoll', err);
     }
   },
 
@@ -190,7 +201,7 @@ export const pollService = {
       const { error } = await supabase.from('polls').update({ status: newStatus }).eq('id', poll.id);
       if (error) throw error;
     } catch (err) {
-      console.error('pollService.toggleStatus:', err);
+      logErr('pollService.toggleStatus', err);
     }
   },
 };

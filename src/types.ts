@@ -55,6 +55,37 @@ export interface ProgramRegistration {
   createdAt: string;
 }
 
+export type EventStatus = 'draft' | 'published' | 'ongoing' | 'completed' | 'cancelled';
+
+export interface SDYEvent {
+  id: string;
+  title: LocalizedString;
+  description: LocalizedString;
+  content?: LocalizedString;
+  image?: string;
+  dateStart: string;
+  dateEnd?: string;
+  location?: LocalizedString;
+  status: EventStatus;
+  registrationOpen: boolean;
+  maxParticipants?: number | null;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventRegistration {
+  id: string;
+  eventId: string;
+  eventTitle?: LocalizedString;
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+}
+
 export interface NewsItem {
   id: string;
   title: LocalizedString;

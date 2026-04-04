@@ -1,5 +1,5 @@
 import { Zap, Heart, Globe, Shield, Users, LucideIcon } from 'lucide-react';
-import type { Program, NewsItem, Leader, Stat, Pillar, Poll, PollOption } from '../types';
+import type { Program, NewsItem, Leader, Stat, Pillar, Poll, PollOption, SDYEvent } from '../types';
 
 const PILLAR_ICONS: Record<string, LucideIcon> = { Zap, Heart, Globe, Shield };
 const STAT_ICONS: Record<string, LucideIcon> = { Users, Globe, Shield };
@@ -88,5 +88,24 @@ export function mapPoll(
     showOnHomepage: row.show_on_homepage as boolean,
     userHasVoted: !!userVoteMap[row.id as string],
     selectedOptionId: userVoteMap[row.id as string],
+  };
+}
+
+export function mapEvent(row: Record<string, unknown>): SDYEvent {
+  return {
+    id: row.id as string,
+    title: { mn: row.title_mn as string, en: row.title_en as string },
+    description: { mn: row.description_mn as string, en: row.description_en as string },
+    content: row.content_mn ? { mn: row.content_mn as string, en: row.content_en as string } : undefined,
+    image: row.image as string | undefined,
+    dateStart: row.date_start as string,
+    dateEnd: row.date_end as string | undefined,
+    location: row.location_mn ? { mn: row.location_mn as string, en: row.location_en as string } : undefined,
+    status: row.status as SDYEvent['status'],
+    registrationOpen: (row.registration_open as boolean) ?? false,
+    maxParticipants: (row.max_participants as number | null) ?? null,
+    sortOrder: (row.sort_order as number) ?? 0,
+    createdAt: row.created_at as string,
+    updatedAt: row.updated_at as string,
   };
 }

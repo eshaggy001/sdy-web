@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SEOMeta } from '../components/SEOMeta';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Send, CheckCircle2 } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { supabase } from '../lib/supabase';
 
 export const ContactPage = () => {
   const { t } = useI18n();
+  const location = useLocation();
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+
+  // Reset form state when navigating back to this page
+  useEffect(() => {
+    setForm({ name: '', email: '', subject: '', message: '' });
+    setSending(false);
+    setSent(false);
+  }, [location.key]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

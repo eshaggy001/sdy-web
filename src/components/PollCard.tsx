@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Clock, Users, ArrowRight } from 'lucide-react';
 import { Poll, PollOption } from '../types';
@@ -14,6 +14,11 @@ interface PollCardProps {
 export const PollCard: React.FC<PollCardProps> = ({ poll: initialPoll, onVote, compact = false }) => {
   const { t } = useI18n();
   const [poll, setPoll] = useState<Poll>(initialPoll);
+
+  // Sync internal state when prop changes (e.g. after navigation)
+  useEffect(() => {
+    setPoll(initialPoll);
+  }, [initialPoll]);
 
   const handleVote = async (optionId: string) => {
     if (poll.userHasVoted || !poll.isActive) return;

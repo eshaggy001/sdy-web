@@ -152,6 +152,23 @@ export const AdminPollEditPage = () => {
     showOnHomepage: true,
   });
 
+  // Reset UI state when switching between items
+  useEffect(() => {
+    setDirty(false);
+    setSaveError(null);
+    setForm({
+      question: { mn: '', en: '' },
+      options: [
+        { id: crypto.randomUUID(), text: { mn: 'Тийм', en: 'Yes' }, votes: 0 },
+        { id: crypto.randomUUID(), text: { mn: 'Үгүй', en: 'No' }, votes: 0 },
+      ],
+      status: 'draft',
+      totalVotes: 0,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      showOnHomepage: true,
+    });
+  }, [id]);
+
   useEffect(() => {
     if (!isNew && id) {
       (async () => {

@@ -53,6 +53,15 @@ export const AdminProgramEditPage = () => {
     setDirty(true);
   }, []);
 
+  // Reset UI state when switching between items
+  useEffect(() => {
+    setDirty(false);
+    setActiveTab('details');
+    setImageFile(null);
+    setForm(EMPTY_FORM);
+    setHighlights([]);
+  }, [id]);
+
   useEffect(() => {
     if (!isNew && id) {
       (async () => {

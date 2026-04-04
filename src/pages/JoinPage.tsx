@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SEOMeta } from '../components/SEOMeta';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, User, Mail, Phone, MapPin, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { supabase } from '../lib/supabase';
 
@@ -34,6 +34,7 @@ const LOCATIONS = [
 
 export const JoinPage = () => {
   const { t, l, language } = useI18n();
+  const location = useLocation();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -44,6 +45,14 @@ export const JoinPage = () => {
     location: '',
     phone: ''
   });
+
+  // Reset form state when navigating back to this page
+  useEffect(() => {
+    setStep(1);
+    setSubmitting(false);
+    setFormData({ firstName: '', lastName: '', email: '', age: '', location: '', phone: '' });
+    setError('');
+  }, [location.key]);
 
   const benefits = [
     {

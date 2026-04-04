@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, ArrowLeft, ArrowRight, Mail, Tag } from 'lucide-react';
 import { useNews, useNewsItem } from '../hooks/useNews';
 import { useI18n } from '../contexts/I18nContext';
 import { SEOMeta } from '../components/SEOMeta';
+import { supabase } from '../lib/supabase';
 
 export const NewsDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t, l } = useI18n();
   const { data: article, loading } = useNewsItem(id);
   const { data: news, loading: newsLoading } = useNews();
+
+  // Increment view count (fire-and-forget)
+  useEffect(() => {
+    if (!id) return;
+    supabase.rpc('increment_view_count', { row_id: id });
+  }, [id]);
 
   if (loading) return null;
   if (!article) return <Navigate to={l('/news')} replace />;

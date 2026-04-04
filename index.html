@@ -1,18 +1,34 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SDY - Залуучуудын Ардчилсан Нам</title>
-    <script>
-      if (localStorage.getItem('sdy_theme') === 'dark')
-        document.documentElement.classList.add('dark')
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
 
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDY - The Social Democratic Youth of Mongolia</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SDY - The Social Democratic Youth of Mongolia" />
+  <meta property="og:description" content="The Social Democratic Youth of Mongolia" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/SDY_OG_Image_1200x630.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SDY - The Social Democratic Youth of Mongolia" />
+  <meta name="twitter:description" content="The Social Democratic Youth of Mongolia" />
+  <meta name="twitter:image" content="/SDY_OG_Image_1200x630.png" />
+  <script>
+    if (localStorage.getItem('sdy_theme') === 'dark')
+      document.documentElement.classList.add('dark')
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

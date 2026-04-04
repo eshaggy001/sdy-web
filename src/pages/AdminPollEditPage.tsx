@@ -143,8 +143,8 @@ export const AdminPollEditPage = () => {
   const [form, setForm] = useState<Partial<Poll>>({
     question: { mn: '', en: '' },
     options: [
-      { id: 'opt1', text: { mn: 'Тийм', en: 'Yes' }, votes: 0 },
-      { id: 'opt2', text: { mn: 'Үгүй', en: 'No' }, votes: 0 },
+      { id: crypto.randomUUID(), text: { mn: 'Тийм', en: 'Yes' }, votes: 0 },
+      { id: crypto.randomUUID(), text: { mn: 'Үгүй', en: 'No' }, votes: 0 },
     ],
     status: 'draft',
     totalVotes: 0,
@@ -166,7 +166,7 @@ export const AdminPollEditPage = () => {
   /* ─── Option Management ─── */
 
   const addOption = () => {
-    const newId = `opt_${Date.now()}`;
+    const newId = crypto.randomUUID();
     setForm({
       ...form,
       options: [...(form.options ?? []), { id: newId, text: { mn: '', en: '' }, votes: 0 }],
@@ -189,23 +189,25 @@ export const AdminPollEditPage = () => {
 
   /* ─── Save ─── */
 
+  const [saveError, setSaveError] = useState<string | null>(null);
+
   const handleSave = async () => {
     if (!form) return;
     setSaving(true);
-    if (form.id) {
-      await pollService.updatePoll(form.id, {
-        ...form,
-        isActive: form.status === 'published',
-        expiresAt: new Date(form.expiresAt!).toISOString(),
-      });
-    } else {
-      await pollService.createPoll({
-        ...form,
-        isActive: form.status === 'published',
-        expiresAt: new Date(form.expiresAt!).toISOString(),
-      });
-    }
+    setSaveError(null);
+    const payload = {
+      ...form,
+      isActive: form.status === 'published',
+      expiresAt: new Date(form.expiresAt!).toISOString(),
+    };
+    const result = form.id
+      ? await pollService.updatePoll(form.id, payload)
+      : await pollService.createPoll(payload);
     setSaving(false);
+    if (!result) {
+      setSaveError(t({ mn: 'Хадгалахад алдаа гарлаа. Консол шалгана уу.', en: 'Save failed. Check console for details.' }));
+      return;
+    }
     setDirty(false);
     window.history.back();
   };
@@ -243,6 +245,11 @@ export const AdminPollEditPage = () => {
       dirty={dirty}
       sidebar={
         <>
+          {saveError && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 text-sm text-red-600 dark:text-red-400">
+              {saveError}
+            </div>
+          )}
           {/* ─── Settings ─── */}
           <SectionCard title={t({ mn: 'Тохиргоо', en: 'Settings' })}>
             <div>

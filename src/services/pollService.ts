@@ -117,15 +117,16 @@ export const pollService = {
       if (error) throw error;
 
       if (pollData.options?.length) {
-        await supabase.from('poll_options').insert(
+        const { error: optError } = await supabase.from('poll_options').insert(
           pollData.options.map((o) => ({
-            id: o.id || crypto.randomUUID(),
+            id: o.id && o.id.includes('-') ? o.id : crypto.randomUUID(),
             poll_id: id,
             text_mn: o.text.mn,
             text_en: o.text.en,
             votes: 0,
           }))
         );
+        if (optError) throw optError;
       }
 
       const polls = await pollService.getPolls();
@@ -151,16 +152,19 @@ export const pollService = {
       if (error) throw error;
 
       if (pollData.options) {
-        await supabase.from('poll_options').delete().eq('poll_id', pollId);
-        await supabase.from('poll_options').insert(
+        const { error: delError } = await supabase.from('poll_options').delete().eq('poll_id', pollId);
+        if (delError) throw delError;
+
+        const { error: insError } = await supabase.from('poll_options').insert(
           pollData.options.map((o) => ({
-            id: o.id || crypto.randomUUID(),
+            id: o.id && o.id.includes('-') ? o.id : crypto.randomUUID(),
             poll_id: pollId,
             text_mn: o.text.mn,
             text_en: o.text.en,
             votes: o.votes ?? 0,
           }))
         );
+        if (insError) throw insError;
       }
 
       const polls = await pollService.getPolls();

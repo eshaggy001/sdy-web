@@ -49,7 +49,7 @@ function AppContent() {
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       {(!isAdminRoute || isAdminLogin) && <Navbar />}
       <main className="flex-grow">
-        <Routes location={location}>
+        <Routes>
             <Route path="/" element={<Navigate to="/mn" replace />} />
 
             <Route path="/:lang">
@@ -71,24 +71,26 @@ function AppContent() {
               <Route path="admin/forgot-password" element={<AdminForgotPasswordPage />} />
               <Route path="admin/reset-password" element={<AdminResetPasswordPage />} />
 
-              {/* Admin routes (with layout) */}
-              <Route path="admin" element={<ProtectedRoute><AdminLayout><AdminDashboardPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/programs" element={<ProtectedRoute><AdminLayout><AdminProgramsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/programs/:id" element={<ProtectedRoute><AdminLayout><AdminProgramEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/events" element={<ProtectedRoute><AdminLayout><AdminEventsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/events/:id" element={<ProtectedRoute><AdminLayout><AdminEventEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/news" element={<ProtectedRoute><AdminLayout><AdminNewsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/news/:id" element={<ProtectedRoute><AdminLayout><AdminNewsEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/leaders" element={<ProtectedRoute><AdminLayout><AdminLeadersPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/leaders/:id" element={<ProtectedRoute><AdminLayout><AdminLeaderEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/pillars" element={<ProtectedRoute><AdminLayout><AdminPillarsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/pillars/:id" element={<ProtectedRoute><AdminLayout><AdminPillarEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/stats" element={<ProtectedRoute><AdminLayout><AdminStatsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/stats/:id" element={<ProtectedRoute><AdminLayout><AdminStatEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/polls" element={<ProtectedRoute><AdminLayout><AdminPollsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/polls/:id" element={<ProtectedRoute><AdminLayout><AdminPollEditPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/submissions" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminSubmissionsPage /></AdminLayout></ProtectedRoute>} />
-              <Route path="admin/users" element={<ProtectedRoute requiredRole="admin"><AdminLayout><AdminUsersPage /></AdminLayout></ProtectedRoute>} />
+              {/* Admin routes (nested under shared layout) */}
+              <Route path="admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="programs" element={<AdminProgramsPage />} />
+                <Route path="programs/:id" element={<AdminProgramEditPage />} />
+                <Route path="events" element={<AdminEventsPage />} />
+                <Route path="events/:id" element={<AdminEventEditPage />} />
+                <Route path="news" element={<AdminNewsPage />} />
+                <Route path="news/:id" element={<AdminNewsEditPage />} />
+                <Route path="leaders" element={<AdminLeadersPage />} />
+                <Route path="leaders/:id" element={<AdminLeaderEditPage />} />
+                <Route path="pillars" element={<AdminPillarsPage />} />
+                <Route path="pillars/:id" element={<AdminPillarEditPage />} />
+                <Route path="stats" element={<AdminStatsPage />} />
+                <Route path="stats/:id" element={<AdminStatEditPage />} />
+                <Route path="polls" element={<AdminPollsPage />} />
+                <Route path="polls/:id" element={<AdminPollEditPage />} />
+                <Route path="submissions" element={<ProtectedRoute requiredRole="admin"><AdminSubmissionsPage /></ProtectedRoute>} />
+                <Route path="users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
+              </Route>
             </Route>
           </Routes>
       </main>

@@ -108,7 +108,7 @@ export function useDashboardData() {
         supabase.from('member_applications').select('location').not('location', 'is', null),
         supabase.from('polls').select('*, poll_options(*)').eq('status', 'published').order('created_at', { ascending: false }).limit(2),
         supabase.from('news_items').select('id, title_mn, title_en, created_at, view_count').order('view_count', { ascending: false }).order('created_at', { ascending: false }).limit(4),
-        supabase.from('events').select('*').order('date', { ascending: false }).limit(3),
+        supabase.from('events').select('*').order('date_start', { ascending: false }).limit(3),
       ]);
 
       const total = totalRes.count ?? 0;

@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
 
 export const leaderService = {
   getAll: async () => {
@@ -9,6 +9,10 @@ export const leaderService = {
 
     if (error) {
       console.error('leaderService.getAll:', error);
+      if (isAuthError(error) && await tryRefreshSession()) {
+        const retry = await supabase.from('leaders').select('*').order('sort_order', { ascending: true });
+        if (!retry.error) return retry.data ?? [];
+      }
       return [];
     }
     return data ?? [];

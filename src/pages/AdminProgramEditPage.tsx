@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Plus, X, MapPin, CalendarDays, Users as UsersIcon, Clock, ClipboardList } from 'lucide-react';
 import { useI18n } from '../contexts/I18nContext';
 import { programService } from '../services/programService';
+import { pillarService } from '../services/pillarService';
 import { registrationService } from '../services/registrationService';
 import { storageService } from '../services/storageService';
 import { useProgramRegistrations } from '../hooks/useRegistrations';
@@ -18,6 +19,45 @@ interface HighlightRow {
   text_en: string;
   sort_order: number;
 }
+
+interface PillarOption {
+  id: string;
+  title_mn: string;
+  title_en: string;
+}
+
+const STATUS_OPTIONS = [
+  { value: 'active',    mn: 'Идэвхтэй',        en: 'Active' },
+  { value: 'upcoming',  mn: 'Удахгүй',          en: 'Upcoming' },
+  { value: 'completed', mn: 'Дууссан',           en: 'Completed' },
+  { value: 'draft',     mn: 'Ноорог',            en: 'Draft' },
+  { value: 'cancelled', mn: 'Цуцлагдсан',        en: 'Cancelled' },
+];
+
+const formatDateMn = (dateStr: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+};
+
+const formatDateEn = (dateStr: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+const toInputDate = (mnOrEn: string) => {
+  if (!mnOrEn) return '';
+  // Try parsing YYYY.MM.DD format
+  const dotMatch = mnOrEn.match(/^(\d{4})\.(\d{2})\.(\d{2})$/);
+  if (dotMatch) return `${dotMatch[1]}-${dotMatch[2]}-${dotMatch[3]}`;
+  // Try parsing any date string
+  try {
+    const d = new Date(mnOrEn);
+    if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  } catch { /* ignore */ }
+  return '';
+};
 
 const EMPTY_FORM = {
   title_mn: '', title_en: '',
@@ -46,12 +86,38 @@ export const AdminProgramEditPage = () => {
   const [highlights, setHighlights] = useState<HighlightRow[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState<'details' | 'registrations'>('details');
+  const [pillars, setPillars] = useState<PillarOption[]>([]);
+  const [newPillarMn, setNewPillarMn] = useState('');
+  const [newPillarEn, setNewPillarEn] = useState('');
+  const [showNewPillar, setShowNewPillar] = useState(false);
   const { data: registrations, loading: regsLoading, refresh: refreshRegs } = useProgramRegistrations(isNew ? undefined : id);
 
   const set = useCallback(<K extends keyof typeof EMPTY_FORM>(key: K, val: (typeof EMPTY_FORM)[K]) => {
     setForm((f) => ({ ...f, [key]: val }));
     setDirty(true);
   }, []);
+
+  // Load pillars from DB
+  useEffect(() => {
+    (async () => {
+      const data = await pillarService.getAll();
+      setPillars(data as PillarOption[]);
+    })();
+  }, []);
+
+  const handleAddPillar = async () => {
+    if (!newPillarMn.trim() || !newPillarEn.trim()) return;
+    const ok = await pillarService.create({ title_mn: newPillarMn.trim(), title_en: newPillarEn.trim(), sort_order: pillars.length });
+    if (ok) {
+      const data = await pillarService.getAll();
+      setPillars(data as PillarOption[]);
+      set('pillar_mn', newPillarMn.trim());
+      set('pillar_en', newPillarEn.trim());
+      setNewPillarMn('');
+      setNewPillarEn('');
+      setShowNewPillar(false);
+    }
+  };
 
   // Reset UI state when switching between items
   useEffect(() => {
@@ -60,6 +126,7 @@ export const AdminProgramEditPage = () => {
     setImageFile(null);
     setForm(EMPTY_FORM);
     setHighlights([]);
+    setShowNewPillar(false);
   }, [id]);
 
   useEffect(() => {
@@ -71,13 +138,14 @@ export const AdminProgramEditPage = () => {
           setForm({
             title_mn: item.title_mn, title_en: item.title_en,
             pillar_mn: item.pillar_mn ?? '', pillar_en: item.pillar_en ?? '',
-            status_mn: item.status_mn ?? '', status_en: item.status_en ?? '',
+            status_mn: STATUS_OPTIONS.find(o => o.mn === item.status_mn || o.en === item.status_en)?.value ?? item.status_mn ?? '',
+            status_en: '',
             description_mn: item.description_mn ?? '', description_en: item.description_en ?? '',
             image: item.image,
-            date_mn: item.date_mn ?? '', date_en: item.date_en ?? '',
+            date_mn: toInputDate(item.date_mn ?? ''), date_en: '',
             location_mn: item.location_mn ?? '', location_en: item.location_en ?? '',
-            capacity_mn: item.capacity_mn ?? '', capacity_en: item.capacity_en ?? '',
-            deadline_mn: item.deadline_mn ?? '', deadline_en: item.deadline_en ?? '',
+            capacity_mn: item.capacity_mn ?? '', capacity_en: '',
+            deadline_mn: toInputDate(item.deadline_mn ?? ''), deadline_en: '',
             content_mn: item.content_mn ?? '', content_en: item.content_en ?? '',
             max_participants: item.max_participants != null ? String(item.max_participants) : '',
             registration_open: item.registration_open ?? false,
@@ -125,16 +193,18 @@ export const AdminProgramEditPage = () => {
       const uploaded = await storageService.upload('images', imageFile, 'programs/' + itemId + '.' + ext);
       if (uploaded) imageUrl = uploaded;
     }
+    const statusOpt = STATUS_OPTIONS.find(o => o.value === form.status_mn);
     const payload = {
       title_mn: form.title_mn, title_en: form.title_en,
       pillar_mn: form.pillar_mn, pillar_en: form.pillar_en,
-      status_mn: form.status_mn, status_en: form.status_en,
+      status_mn: statusOpt?.mn ?? form.status_mn,
+      status_en: statusOpt?.en ?? form.status_mn,
       description_mn: form.description_mn, description_en: form.description_en,
       image: imageUrl,
-      date_mn: form.date_mn, date_en: form.date_en,
+      date_mn: formatDateMn(form.date_mn), date_en: formatDateEn(form.date_mn),
       location_mn: form.location_mn, location_en: form.location_en,
-      capacity_mn: form.capacity_mn, capacity_en: form.capacity_en,
-      deadline_mn: form.deadline_mn, deadline_en: form.deadline_en,
+      capacity_mn: form.capacity_mn, capacity_en: form.capacity_mn,
+      deadline_mn: formatDateMn(form.deadline_mn), deadline_en: formatDateEn(form.deadline_mn),
       content_mn: form.content_mn, content_en: form.content_en,
       max_participants: form.max_participants ? parseInt(form.max_participants) : null,
       registration_open: form.registration_open,
@@ -180,17 +250,80 @@ export const AdminProgramEditPage = () => {
           <SectionCard title={t({ mn: 'Тохиргоо', en: 'Settings' })}>
             <div>
               <FieldLabel>{t({ mn: 'Багана', en: 'Pillar' })}</FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <input className={fieldClass} placeholder="MN" value={form.pillar_mn} onChange={(e) => set('pillar_mn', e.target.value)} />
-                <input className={fieldClass} placeholder="EN" value={form.pillar_en} onChange={(e) => set('pillar_en', e.target.value)} />
-              </div>
+              <select
+                className={fieldClass}
+                value={pillars.some(p => p.title_mn === form.pillar_mn) ? form.pillar_mn : '__custom'}
+                onChange={(e) => {
+                  if (e.target.value === '__new') {
+                    setShowNewPillar(true);
+                  } else {
+                    const p = pillars.find(p => p.title_mn === e.target.value);
+                    if (p) {
+                      set('pillar_mn', p.title_mn);
+                      set('pillar_en', p.title_en);
+                    }
+                    setShowNewPillar(false);
+                  }
+                }}
+              >
+                {!form.pillar_mn && <option value="__custom">{t({ mn: 'Сонгоно уу...', en: 'Select...' })}</option>}
+                {form.pillar_mn && !pillars.some(p => p.title_mn === form.pillar_mn) && (
+                  <option value="__custom">{form.pillar_mn}</option>
+                )}
+                {pillars.map((p) => (
+                  <option key={p.id} value={p.title_mn}>
+                    {t({ mn: p.title_mn, en: p.title_en })}
+                  </option>
+                ))}
+                <option value="__new">+ {t({ mn: 'Шинээр нэмэх', en: 'Add new' })}</option>
+              </select>
+              {showNewPillar && (
+                <div className="mt-2 space-y-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <input
+                    className={fieldClass}
+                    placeholder={t({ mn: 'Нэр (MN)', en: 'Name (MN)' })}
+                    value={newPillarMn}
+                    onChange={(e) => setNewPillarMn(e.target.value)}
+                  />
+                  <input
+                    className={fieldClass}
+                    placeholder={t({ mn: 'Нэр (EN)', en: 'Name (EN)' })}
+                    value={newPillarEn}
+                    onChange={(e) => setNewPillarEn(e.target.value)}
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleAddPillar}
+                      className="px-3 py-1.5 text-xs font-semibold bg-sdy-red text-white rounded-lg hover:bg-sdy-red/90 transition-colors"
+                    >
+                      {t({ mn: 'Нэмэх', en: 'Add' })}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPillar(false)}
+                      className="px-3 py-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      {t({ mn: 'Болих', en: 'Cancel' })}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <div>
               <FieldLabel>{t({ mn: 'Төлөв', en: 'Status' })}</FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <input className={fieldClass} placeholder="MN" value={form.status_mn} onChange={(e) => set('status_mn', e.target.value)} />
-                <input className={fieldClass} placeholder="EN" value={form.status_en} onChange={(e) => set('status_en', e.target.value)} />
-              </div>
+              <select
+                className={fieldClass}
+                value={form.status_mn}
+                onChange={(e) => set('status_mn', e.target.value)}
+              >
+                <option value="">{t({ mn: 'Сонгоно уу...', en: 'Select...' })}</option>
+                {STATUS_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {t({ mn: opt.mn, en: opt.en })}
+                  </option>
+                ))}
+              </select>
             </div>
           </SectionCard>
 
@@ -227,10 +360,12 @@ export const AdminProgramEditPage = () => {
           <SectionCard title={t({ mn: 'Нэмэлт мэдээлэл', en: 'Details' })}>
             <div>
               <FieldLabel><CalendarDays size={12} className="inline mr-1 -mt-0.5" />{t({ mn: 'Огноо', en: 'Date' })}</FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <input className={fieldClass} placeholder="2025.11.15" value={form.date_mn} onChange={(e) => set('date_mn', e.target.value)} />
-                <input className={fieldClass} placeholder="Nov 15, 2025" value={form.date_en} onChange={(e) => set('date_en', e.target.value)} />
-              </div>
+              <input
+                type="date"
+                className={fieldClass}
+                value={form.date_mn}
+                onChange={(e) => set('date_mn', e.target.value)}
+              />
             </div>
             <div>
               <FieldLabel><MapPin size={12} className="inline mr-1 -mt-0.5" />{t({ mn: 'Байршил', en: 'Location' })}</FieldLabel>
@@ -240,18 +375,24 @@ export const AdminProgramEditPage = () => {
               </div>
             </div>
             <div>
-              <FieldLabel><UsersIcon size={12} className="inline mr-1 -mt-0.5" />{t({ mn: 'Багтаамж', en: 'Capacity' })}</FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <input className={fieldClass} placeholder="MN" value={form.capacity_mn} onChange={(e) => set('capacity_mn', e.target.value)} />
-                <input className={fieldClass} placeholder="EN" value={form.capacity_en} onChange={(e) => set('capacity_en', e.target.value)} />
-              </div>
+              <FieldLabel><UsersIcon size={12} className="inline mr-1 -mt-0.5" />{t({ mn: 'Оролцогчид', en: 'Participants' })}</FieldLabel>
+              <input
+                type="number"
+                min={0}
+                className={fieldClass}
+                value={form.capacity_mn}
+                onChange={(e) => set('capacity_mn', e.target.value)}
+                placeholder={t({ mn: 'Тоо оруулна уу', en: 'Enter number' })}
+              />
             </div>
             <div>
               <FieldLabel><Clock size={12} className="inline mr-1 -mt-0.5" />{t({ mn: 'Эцсийн хугацаа', en: 'Deadline' })}</FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <input className={fieldClass} placeholder="MN" value={form.deadline_mn} onChange={(e) => set('deadline_mn', e.target.value)} />
-                <input className={fieldClass} placeholder="EN" value={form.deadline_en} onChange={(e) => set('deadline_en', e.target.value)} />
-              </div>
+              <input
+                type="date"
+                className={fieldClass}
+                value={form.deadline_mn}
+                onChange={(e) => set('deadline_mn', e.target.value)}
+              />
             </div>
           </SectionCard>
 

@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
 
 export const eventService = {
   getAll: async () => {
@@ -9,6 +9,10 @@ export const eventService = {
 
     if (error) {
       console.error('eventService.getAll:', error);
+      if (isAuthError(error) && await tryRefreshSession()) {
+        const retry = await supabase.from('events').select('*').order('date_start', { ascending: false });
+        if (!retry.error) return retry.data ?? [];
+      }
       return [];
     }
     return data ?? [];
@@ -23,6 +27,10 @@ export const eventService = {
 
     if (error) {
       console.error('eventService.getPublished:', error);
+      if (isAuthError(error) && await tryRefreshSession()) {
+        const retry = await supabase.from('events').select('*').in('status', ['published', 'ongoing', 'completed']).order('date_start', { ascending: false });
+        if (!retry.error) return retry.data ?? [];
+      }
       return [];
     }
     return data ?? [];

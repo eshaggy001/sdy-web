@@ -9,6 +9,11 @@ export interface AdminUser {
 }
 
 async function callEdgeFunction(action: string, method: 'GET' | 'POST', body?: Record<string, unknown>) {
+  // getUser() validates the token server-side and triggers a refresh if expired,
+  // unlike getSession() which only returns the cached (potentially stale) session.
+  const { error: userError } = await supabase.auth.getUser();
+  if (userError) throw new Error('Not authenticated: ' + userError.message);
+
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) throw new Error('Not authenticated');
 

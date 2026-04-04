@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase, isAuthError, tryRefreshSession } from '../lib/supabase';
 
 interface ProgramHighlight {
   text_mn: string;
@@ -15,6 +15,10 @@ export const programService = {
 
     if (error) {
       console.error('programService.getAll:', error);
+      if (isAuthError(error) && await tryRefreshSession()) {
+        const retry = await supabase.from('programs').select('*, program_highlights(*)').order('created_at', { ascending: false });
+        if (!retry.error) return retry.data ?? [];
+      }
       return [];
     }
     return data ?? [];

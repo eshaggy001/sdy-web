@@ -81,3 +81,39 @@ create policy "authenticated update event_registrations" on event_registrations
   for update using (auth.uid() is not null) with check (auth.uid() is not null);
 create policy "authenticated delete event_registrations" on event_registrations
   for delete using (auth.uid() is not null);
+
+-- ---------------------------------------------------------------
+-- SEED DATA
+-- ---------------------------------------------------------------
+insert into events (
+  title_mn, title_en,
+  description_mn, description_en,
+  content_mn, content_en,
+  image,
+  date_start, date_end,
+  location_mn, location_en,
+  status, registration_open, max_participants
+) values (
+  'SDY Залуучуудын чуулган 2026',
+  'SDY Youth Assembly 2026',
+  'Нийгмийн Ардчилсан Залуучуудын жил бүрийн чуулган. Бүх аймгаас төлөөлөгчид оролцож, тогтоол баталдаг.',
+  'The annual assembly of Social Democratic Youth. Delegates from all aimags participate and adopt resolutions.',
+  'SDY Залуучуудын чуулган бол Нийгмийн Ардчилсан Залуучуудын Холбооны хамгийн чухал арга хэмжээ юм. Жил бүр зохион байгуулагддаг энэхүү чуулганд 21 аймгаас төлөөлөгчид ирж, байгууллагын стратеги, бодлогын чиглэлийг хэлэлцэж, удирдлагаа сонгодог.
+
+2026 оны чуулган нь "Залуучуудын оролцоо — Ардчиллын ирээдүй" гэсэн уриан дор болох бөгөөд 300 гаруй төлөөлөгч хамрагдана. Хоёр өдрийн хугацаанд панел хэлэлцүүлэг, бүлгийн ажил, тогтоол батлах зэрэг үйл ажиллагаа явагдана.
+
+Бүртгэлтэй оролцогчдод дараах боломжууд нээлттэй: удирдлагатай шууд уулзалт, бодлогын санал гаргах, сүлжээ тогтоох.',
+  'The SDY Youth Assembly is the most important event of the Social Democratic Youth organization. Held annually, delegates from all 21 aimags gather to discuss organizational strategy, policy direction, and elect leadership.
+
+The 2026 assembly will be held under the theme "Youth Participation — The Future of Democracy" with over 300 delegates expected. Over two days, participants will engage in panel discussions, group work, and resolution adoption.
+
+Registered participants gain access to: direct meetings with leadership, policy proposal submissions, and networking opportunities.',
+  'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200',
+  '2026-05-15T09:00:00+08:00',
+  '2026-05-16T18:00:00+08:00',
+  'Улаанбаатар, Төв соёлын ордон',
+  'Ulaanbaatar, Central Cultural Palace',
+  'published',
+  true,
+  300
+) on conflict do nothing;

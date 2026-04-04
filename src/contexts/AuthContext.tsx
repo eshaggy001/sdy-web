@@ -48,11 +48,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(`[Auth] Event: ${event} at ${new Date().toISOString()}`);
       if (event === 'TOKEN_REFRESHED') {
-        console.log('[Auth] Token refreshed successfully');
+        console.log('[Auth] Token refreshed — session expires:', session?.expires_at
+          ? new Date(session.expires_at * 1000).toISOString()
+          : 'unknown');
       }
       if (event === 'SIGNED_OUT') {
-        console.log('[Auth] Signed out');
+        console.log('[Auth] Signed out — clearing state');
         setUser(null);
         setRole(null);
         return;

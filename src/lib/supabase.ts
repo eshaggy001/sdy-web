@@ -73,3 +73,8 @@ export const supabase = createClient(
     },
   }
 );
+
+// Expose for E2E tests (dev only) — allows page.evaluate() to call getSession()
+if (import.meta.env.DEV) {
+  (window as any).__test_supabase = supabase;
+}
